@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { TextFormFieldConfiguration } from "../models";
 import { FormLabel } from "./FormLabel";
 import { FormField } from "./FormField";
+import { ChangeEventHandler } from "react";
 
 const Input = styled.input`
   width: 100%;
@@ -13,15 +14,30 @@ const Input = styled.input`
 
 export interface FormTextFieldProps {
   configuration: TextFormFieldConfiguration;
+  onChange?: (value: string) => void;
 }
 
 export function FormTextField({
   configuration: { label, name, placeholder, inputType },
+  onChange,
 }: FormTextFieldProps) {
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const value = event.target.value;
+    if (onChange) {
+      console.log("THIS WAS HIT", value);
+      onChange(value);
+    }
+  };
+
   return (
     <FormField>
       <FormLabel htmlFor={`${name}_email`}>{label}</FormLabel>
-      <Input type={inputType} id={`${name}_email`} placeholder={placeholder} />
+      <Input
+        onChange={handleOnChange}
+        type={inputType}
+        id={`${name}_email`}
+        placeholder={placeholder}
+      />
     </FormField>
   );
 }

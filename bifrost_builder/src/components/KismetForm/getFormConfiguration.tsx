@@ -17,7 +17,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT,
         label: "Full Name",
-        name: "full_name",
+        name: "fullName",
         placeholder: "Your full name",
         inputType: "text",
       },
@@ -31,7 +31,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT,
         label: "Phone Number",
-        name: "phone_number",
+        name: "phoneNumber",
         placeholder: "Your phone number",
         inputType: "tel",
       },
@@ -56,7 +56,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT_AREA,
         label: "Additional Details",
-        name: "additional_details",
+        name: "additionalDetails",
         placeholder: "Any additional details...",
       },
     ];
@@ -65,7 +65,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT,
         label: "Full Name",
-        name: "full_name",
+        name: "fullName",
         placeholder: "Your full name",
         inputType: "text",
       },
@@ -90,7 +90,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.SELECT,
         label: "Bed Type",
-        name: "bed_type",
+        name: "bedType",
         options: [
           { label: "Studio", name: "studio" },
           { label: "One", name: "one" },
@@ -101,7 +101,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT,
         label: "Check-In Date & Check-Out Date",
-        name: "check_in_and_check_out_date",
+        name: "dates",
         placeholder: "Your check-in and check-out dates",
         inputType: "text",
       },
@@ -115,7 +115,7 @@ export function getFormFieldConfigurations(): FormFieldConfiguration[] {
       {
         formFieldType: FormFieldType.TEXT_AREA,
         label: "Additional Details",
-        name: "additional_details",
+        name: "additionalDetails",
         placeholder: "Any additional details...",
       },
     ];

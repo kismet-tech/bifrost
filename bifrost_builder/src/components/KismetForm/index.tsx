@@ -3,8 +3,10 @@ import { FormTextField } from "./components/FormTextField";
 import { FormFieldConfiguration, FormFieldType } from "./models";
 import { FormSelectField } from "./components/FormSelectField";
 import { FormTextAreaField } from "./components/FormTextAreaField";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FacebookLoginButton } from "./components/FacebookLoginButton/FacebookLoginButton";
+import axios from "axios";
+import { deepEqual } from "@/utilities/deepEqual";
 
 const Form = styled.form`
   width: 50vw;
@@ -52,8 +54,51 @@ interface KismetFormProps {
 export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
   const [formWasSubmitted, updateFormWasSubmitted] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const getInitialFormState = () => {
+    return formFieldConfigurations.reduce(
+      (formState, formFieldConfiguration) => {
+        if (formFieldConfiguration.formFieldType === FormFieldType.SELECT) {
+          return {
+            ...formState,
+            [formFieldConfiguration.name]:
+              formFieldConfiguration.options[0].name,
+          };
+        } else {
+          return { ...formState, [formFieldConfiguration.name]: "" };
+        }
+      },
+      {}
+    );
+  };
+
+  const [formState, updateFormState] = useState(getInitialFormState());
+
+  const handleUpdateFormState = useCallback(
+    ({ name, value }: { name: string; value: string }) => {
+      updateFormState((previousFormState) => {
+        const updatedFormState = { ...previousFormState, [name]: value };
+
+        if (!deepEqual(previousFormState, updatedFormState)) {
+          return updatedFormState;
+        }
+
+        return previousFormState;
+      });
+    },
+    []
+  );
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const apiBaseUrl = "https://api.makekismet.com";
+    // const apiBaseUrl = "http://localhost:4000";
+
+    await axios.post(
+      `${apiBaseUrl}/Bifrost/SubmitGroupBookingForm`,
+      { ...formState, groupBookingFormType: "Group Booking" },
+      {}
+    );
 
     updateFormWasSubmitted(true);
   };
@@ -65,7 +110,7 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
       <Form onSubmit={handleSubmit}>
         <FormTitle>Get in touch with our team</FormTitle>
 
-        <FacebookButtonWrapper hidden={false}>
+        <FacebookButtonWrapper hidden={true}>
           <FacebookLoginButton />
         </FacebookButtonWrapper>
 
@@ -75,6 +120,12 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
               <FormTextField
                 key={index}
                 configuration={formFieldConfiguration}
+                onChange={(value) => {
+                  handleUpdateFormState({
+                    name: formFieldConfiguration.name,
+                    value,
+                  });
+                }}
               />
             );
           } else if (
@@ -84,6 +135,12 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
               <FormTextAreaField
                 key={index}
                 configuration={formFieldConfiguration}
+                onChange={(value) => {
+                  handleUpdateFormState({
+                    name: formFieldConfiguration.name,
+                    value,
+                  });
+                }}
               />
             );
           } else if (
@@ -93,6 +150,12 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
               <FormSelectField
                 key={index}
                 configuration={formFieldConfiguration}
+                onChange={(value) => {
+                  handleUpdateFormState({
+                    name: formFieldConfiguration.name,
+                    value,
+                  });
+                }}
               />
             );
           }

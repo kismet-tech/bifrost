@@ -9,9 +9,7 @@ console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 console.log("🧊  Placing the Bifrost 🧊");
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 
-const replaceForm = () => {
-  // console.log("Attempting to replace the existing form...");
-
+const replaceForm = async () => {
   const formFieldConfigurations: FormFieldConfiguration[] =
     getFormFieldConfigurations();
 
