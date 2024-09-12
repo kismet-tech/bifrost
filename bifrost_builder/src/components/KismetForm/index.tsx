@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import { FormTextField } from "./components/FormTextField";
-import { FormFieldConfiguration, FormFieldType } from "./models";
-import { FormSelectField } from "./components/FormSelectField";
-import { FormTextAreaField } from "./components/FormTextAreaField";
+import { FormBlockConfiguration, FormBlockType } from "./models";
 import { useCallback, useState } from "react";
 import { FacebookLoginButton } from "./components/FacebookLoginButton/FacebookLoginButton";
 import axios from "axios";
 import { deepEqual } from "@/utilities/deepEqual";
+import { RenderableFormBlock } from "./components/RenderedFormBlock";
 
 const Form = styled.form`
   width: 50vw;
@@ -20,26 +18,18 @@ const Form = styled.form`
   }
 `;
 
-const FormTitle = styled.div`
-  font-size: 1.875rem; /* Equivalent to text-3xl */
-  font-weight: bold;
-  text-decoration: underline;
-  margin-bottom: 1rem;
-  font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-`;
-
-const Button = styled.button`
-  width: 100%;
-  margin-top: 1.5rem;
-  background-color: #57c0b2;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-`;
+// const Button = styled.button`
+//   width: 100%;
+//   margin-top: 1.5rem;
+//   background-color: #57c0b2;
+//   color: white;
+//   padding: 0.5rem 1rem;
+//   border-radius: 0.25rem;
+//   border: none;
+//   cursor: pointer;
+//   font-size: 1rem;
+//   font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+// `;
 
 const FacebookButtonWrapper = styled.div`
   width: 50%; /* Make the Facebook button half the size of the form */
@@ -48,35 +38,49 @@ const FacebookButtonWrapper = styled.div`
 `;
 
 interface KismetFormProps {
-  formFieldConfigurations: FormFieldConfiguration[];
+  formFieldConfigurations: FormBlockConfiguration[];
 }
 
 export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
-  const [formWasSubmitted, updateFormWasSubmitted] = useState(false);
-
-  const getInitialFormState = () => {
+  const getInitialFormState = (): Record<string, string> => {
     return formFieldConfigurations.reduce(
       (formState, formFieldConfiguration) => {
-        if (formFieldConfiguration.formFieldType === FormFieldType.SELECT) {
+        if (
+          formFieldConfiguration.formBlockType === FormBlockType.TEXT_INPUT ||
+          formFieldConfiguration.formBlockType === FormBlockType.TEXT_AREA_INPUT
+        ) {
+          return { ...formState, [formFieldConfiguration.keyName]: "" };
+        } else if (
+          formFieldConfiguration.formBlockType === FormBlockType.SELECT_INPUT
+        ) {
           return {
             ...formState,
-            [formFieldConfiguration.name]:
-              formFieldConfiguration.options[0].name,
+            [formFieldConfiguration.keyName]:
+              formFieldConfiguration.options[0].keyValue,
           };
         } else {
-          return { ...formState, [formFieldConfiguration.name]: "" };
+          return { ...formState };
         }
       },
       {}
     );
   };
 
-  const [formState, updateFormState] = useState(getInitialFormState());
+  // const [
+  //   renderedFormFieldConfigurations,
+  //   updateRenderedFormFieldConfigurations,
+  // ] = useState<FormBlockConfiguration[]>([...formFieldConfigurations]);
+  const [formFieldConfigurationsStack, updateFormFieldConfigurationsStack] =
+    useState<FormBlockConfiguration[][]>([formFieldConfigurations]);
+
+  const [formState, updateFormState] = useState<Record<string, string>>(
+    getInitialFormState()
+  );
 
   const handleUpdateFormState = useCallback(
-    ({ name, value }: { name: string; value: string }) => {
+    ({ keyName, keyValue }: { keyName: string; keyValue: string }) => {
       updateFormState((previousFormState) => {
-        const updatedFormState = { ...previousFormState, [name]: value };
+        const updatedFormState = { ...previousFormState, [keyName]: keyValue };
 
         if (!deepEqual(previousFormState, updatedFormState)) {
           return updatedFormState;
@@ -88,81 +92,99 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
     []
   );
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const pushFormFieldConfigurationStack: (
+    formBlockConfigurations: FormBlockConfiguration[]
+  ) => void = (formBlockConfigurations: FormBlockConfiguration[]) => {
+    updateFormFieldConfigurationsStack(
+      (previousFormFieldConfigurationsStack: FormBlockConfiguration[][]) => {
+        return [
+          ...previousFormFieldConfigurationsStack,
+          formBlockConfigurations,
+        ];
+      }
+    );
+  };
+
+  const popRightFormFieldConfigurationStack = () => {
+    updateFormFieldConfigurationsStack(
+      (previousFormFieldConfigurationsStack) => {
+        console.log(
+          `previousFormFieldConfigurationsStack.length: ${previousFormFieldConfigurationsStack.length}`
+        );
+        if (previousFormFieldConfigurationsStack.length > 0) {
+          const poppedFormFieldConfigurations =
+            previousFormFieldConfigurationsStack[
+              previousFormFieldConfigurationsStack.length - 1
+            ];
+
+          updateFormState((previousFormState): Record<string, string> => {
+            const updatedFormState: Record<string, string> = {
+              ...previousFormState,
+            };
+
+            poppedFormFieldConfigurations.forEach(
+              (poppedFormFieldConfiguration) => {
+                if ("keyName" in poppedFormFieldConfiguration) {
+                  delete updatedFormState[poppedFormFieldConfiguration.keyName];
+                }
+              }
+            );
+
+            return updatedFormState;
+          });
+
+          const udatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
+            [...previousFormFieldConfigurationsStack.slice(0, -1)];
+
+          return udatedFormFieldConfigurationsStack;
+        } else {
+          return previousFormFieldConfigurationsStack;
+        }
+      }
+    );
+  };
+
+  const handleSubmitForm = async () => {
+    console.log("handleSubmitForm WAS HIT");
+    console.log(formState);
 
     const apiBaseUrl = "https://api.makekismet.com";
     // const apiBaseUrl = "http://localhost:4000";
-
     await axios.post(
       `${apiBaseUrl}/Bifrost/SubmitGroupBookingForm`,
-      { ...formState, groupBookingFormType: "Group Booking" },
+      { formData: formState },
       {}
     );
 
-    updateFormWasSubmitted(true);
+    console.log("COMPLETED");
   };
 
-  if (formWasSubmitted) {
-    return <div>Thank you!</div>;
-  } else {
-    return (
-      <Form onSubmit={handleSubmit}>
-        <FormTitle>Get in touch with our team</FormTitle>
+  const renderedFormFieldConfigurations =
+    formFieldConfigurationsStack[formFieldConfigurationsStack.length - 1];
 
-        <FacebookButtonWrapper hidden={true}>
-          <FacebookLoginButton />
-        </FacebookButtonWrapper>
+  return (
+    <Form>
+      <FacebookButtonWrapper hidden={true}>
+        <FacebookLoginButton />
+      </FacebookButtonWrapper>
 
-        {formFieldConfigurations.map((formFieldConfiguration, index) => {
-          if (formFieldConfiguration.formFieldType === FormFieldType.TEXT) {
-            return (
-              <FormTextField
-                key={index}
-                configuration={formFieldConfiguration}
-                onChange={(value) => {
-                  handleUpdateFormState({
-                    name: formFieldConfiguration.name,
-                    value,
-                  });
-                }}
-              />
-            );
-          } else if (
-            formFieldConfiguration.formFieldType === FormFieldType.TEXT_AREA
-          ) {
-            return (
-              <FormTextAreaField
-                key={index}
-                configuration={formFieldConfiguration}
-                onChange={(value) => {
-                  handleUpdateFormState({
-                    name: formFieldConfiguration.name,
-                    value,
-                  });
-                }}
-              />
-            );
-          } else if (
-            formFieldConfiguration.formFieldType === FormFieldType.SELECT
-          ) {
-            return (
-              <FormSelectField
-                key={index}
-                configuration={formFieldConfiguration}
-                onChange={(value) => {
-                  handleUpdateFormState({
-                    name: formFieldConfiguration.name,
-                    value,
-                  });
-                }}
-              />
-            );
-          }
-        })}
-
-        <Button>Submit</Button>
-      </Form>
-    );
-  }
+      {renderedFormFieldConfigurations.map(
+        (renderedFormFieldConfiguration, index) => {
+          return (
+            <RenderableFormBlock
+              key={index}
+              renderedFormFieldConfiguration={renderedFormFieldConfiguration}
+              formState={formState}
+              handleUpdateFormState={handleUpdateFormState}
+              handleSubmitForm={handleSubmitForm}
+              pushFormFieldConfigurationStack={pushFormFieldConfigurationStack}
+              popRightFormFieldConfigurationStack={
+                popRightFormFieldConfigurationStack
+              }
+            />
+          );
+        }
+      )}
+    </Form>
+  );
 }
