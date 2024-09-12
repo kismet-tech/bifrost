@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SelectFormFieldConfiguration } from "../models";
+import { SelectInputFormBlockConfiguration } from "../models";
 import { FormField } from "./FormField";
 import { FormLabel } from "./FormLabel";
 import { ChangeEventHandler } from "react";
@@ -13,12 +13,14 @@ const Select = styled.select`
 `;
 
 export interface FormSelectFieldProps {
-  configuration: SelectFormFieldConfiguration;
+  configuration: SelectInputFormBlockConfiguration;
+  formState: Record<string, string>;
   onChange?: (value: string) => void;
 }
 
 export function FormSelectField({
-  configuration: { label, name, options },
+  configuration: { label, keyName, options },
+  formState,
   onChange,
 }: FormSelectFieldProps) {
   const handleOnChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
@@ -28,11 +30,18 @@ export function FormSelectField({
     }
   };
 
+  const selectedValue = formState[keyName] || options[0].keyValue;
+
   return (
     <FormField>
-      <FormLabel htmlFor={`form_${name}`}>{label}</FormLabel>
-      <Select onChange={handleOnChange} name={name} id={`form_${name}`}>
-        {options.map(({ label, name }) => (
+      <FormLabel htmlFor={`form_${keyName}`}>{label}</FormLabel>
+      <Select
+        value={selectedValue}
+        onChange={handleOnChange}
+        name={keyName}
+        id={`form_${keyName}`}
+      >
+        {options.map(({ label, keyValue: name }) => (
           <option key={name} value={name}>
             {label}
           </option>
