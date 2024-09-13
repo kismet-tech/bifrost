@@ -7,6 +7,9 @@ import { deepEqual } from "@/utilities/deepEqual";
 import { RenderableFormBlock } from "./components/RenderedFormBlock";
 
 const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   width: 50vw;
   margin: 0 auto;
   padding: 2rem; /* Add padding around the form */

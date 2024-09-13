@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 export const SmartGreetingSubheaderWrapper = styled.div`
   font-size: 1.3rem; /* Equivalent to text-3xl */
-  font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
 `;
 
 interface SmartGreetingSubheaderProps {
