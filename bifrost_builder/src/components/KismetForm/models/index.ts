@@ -6,6 +6,7 @@ export enum FormBlockType {
   //////////////////////////////////////////////////
   HEADER = "HEADER",
   SUBHEADER = "SUBHEADER",
+
   SMART_GREETING_SUBHEADER = "SMART_GREETING_SUBHEADER",
 
   //////////////////////////////////////////////////
@@ -35,10 +36,12 @@ export interface SubheaderBlockConfiguration
   backupText: string;
 }
 
+
 export interface SmartGreetingSubheaderBlockConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.SMART_GREETING_SUBHEADER;
 }
+
 
 export interface BaseFormFieldConfiguration {
   formBlockType: FormBlockType;
