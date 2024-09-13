@@ -1,10 +1,18 @@
+import styled from "styled-components";
 import { FormBlockConfiguration } from "../../models";
 import {
   BranchingNodeButtonConfiguration,
   BranchingNodeFormBlockConfiguration,
 } from "../../models/BranchingNodeFormBlockConfiguration";
+import { FormButton } from "../FormButton";
 
-interface RenderableBrancingNodeProps {
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+interface RenderableBranchingNodeProps {
   branchingNodeFormBlockConfiguration: BranchingNodeFormBlockConfiguration;
   handleUpdateFormState: ({
     keyName,
@@ -24,7 +32,7 @@ export function RenderableBrancingNode({
   handleUpdateFormState,
   pushFormFieldConfigurationStack,
   handleSubmitForm,
-}: RenderableBrancingNodeProps) {
+}: RenderableBranchingNodeProps) {
   const handleButtonClick =
     ({
       branchingNodeButtonConfiguration,
@@ -48,16 +56,18 @@ export function RenderableBrancingNode({
       }
     };
 
-  return branchingNodeFormBlockConfiguration.buttons.map((button, index) => {
-    return (
-      <button
-        onClick={handleButtonClick({
-          branchingNodeButtonConfiguration: button,
-        })}
-        key={index}
-      >
-        {button.label}
-      </button>
-    );
-  });
+  return (
+    <ButtonWrapper>
+      {branchingNodeFormBlockConfiguration.buttons.map((button, index) => (
+        <FormButton
+          onClick={handleButtonClick({
+            branchingNodeButtonConfiguration: button,
+          })}
+          key={index}
+        >
+          {button.label}
+        </FormButton>
+      ))}
+    </ButtonWrapper>
+  );
 }

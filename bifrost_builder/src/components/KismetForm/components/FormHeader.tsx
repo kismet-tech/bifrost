@@ -3,11 +3,7 @@ import { HeaderBlockConfiguration } from "../models";
 import { maybeRenderTemplate } from "@/utilities/templating/maybeRenderTemplate";
 
 export const FormHeaderWraper = styled.div`
-  font-size: 1.875rem; /* Equivalent to text-3xl */
-  font-weight: bold;
-  // text-decoration: underline;
-  margin-bottom: 1rem;
-  font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2rem;
 `;
 
 interface FormHeaderProps {

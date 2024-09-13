@@ -3,8 +3,7 @@ import { SubheaderBlockConfiguration } from "../models";
 import { maybeRenderTemplate } from "@/utilities/templating/maybeRenderTemplate";
 
 export const FormSubheaderWrapper = styled.div`
-  font-size: 1.3rem; /* Equivalent to text-3xl */
-  font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
 `;
 
 interface FormSubheaderProps {
