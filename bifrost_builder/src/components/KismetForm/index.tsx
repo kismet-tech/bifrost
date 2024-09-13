@@ -145,9 +145,6 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
   };
 
   const handleSubmitForm = async () => {
-    console.log("handleSubmitForm WAS HIT");
-    console.log(formState);
-
     const apiBaseUrl = "https://api.makekismet.com";
     // const apiBaseUrl = "http://localhost:4000";
     await axios.post(
