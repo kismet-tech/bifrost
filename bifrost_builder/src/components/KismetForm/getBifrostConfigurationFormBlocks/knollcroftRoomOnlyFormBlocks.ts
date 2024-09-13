@@ -107,6 +107,9 @@ export const knollcroftRoomOnlyFormBlocks: FormBlockConfiguration[] = [
     templateText: "Hi {{firstName}}",
   },
   {
+    formBlockType: FormBlockType.SMART_GREETING_SUBHEADER,
+  },
+  {
     formBlockType: FormBlockType.BRANCHING_NODE,
     keyName: "date_flexibility",
     buttons: [

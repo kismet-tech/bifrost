@@ -6,6 +6,7 @@ import { FormTextAreaField } from "./FormTextAreaField";
 import { FormTextField } from "./FormTextField";
 import { RenderableBrancingNode } from "./RenderedBranchingNode";
 import { ReturnToPreviousBranchButton } from "./ReturnToPreviousBranchButton";
+import { SmartGreetingSubheader } from "./SmartGreetingSubheader";
 
 interface RenderableFormBlockProps {
   renderedFormFieldConfiguration: FormBlockConfiguration;
@@ -118,6 +119,16 @@ export function RenderableFormBlock({
         popRightFormFieldConfigurationStack={
           popRightFormFieldConfigurationStack
         }
+      />
+    );
+  } else if (
+    renderedFormFieldConfiguration.formBlockType ===
+    FormBlockType.SMART_GREETING_SUBHEADER
+  ) {
+    return (
+      <SmartGreetingSubheader
+        configuration={renderedFormFieldConfiguration}
+        formState={formState}
       />
     );
   }

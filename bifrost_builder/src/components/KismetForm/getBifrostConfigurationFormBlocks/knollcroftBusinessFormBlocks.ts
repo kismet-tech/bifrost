@@ -62,6 +62,9 @@ export const knollcroftBusinessFormBlocks: FormBlockConfiguration[] = [
     templateText: "Hi {{firstName}}",
   },
   {
+    formBlockType: FormBlockType.SMART_GREETING_SUBHEADER,
+  },
+  {
     formBlockType: FormBlockType.TEXT_INPUT,
     label: "Company",
     keyName: "company",

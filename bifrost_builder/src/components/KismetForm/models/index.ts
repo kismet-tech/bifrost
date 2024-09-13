@@ -6,6 +6,7 @@ export enum FormBlockType {
   //////////////////////////////////////////////////
   HEADER = "HEADER",
   SUBHEADER = "SUBHEADER",
+  SMART_GREETING_SUBHEADER = "SMART_GREETING_SUBHEADER",
 
   //////////////////////////////////////////////////
   // Inputs
@@ -32,6 +33,11 @@ export interface SubheaderBlockConfiguration
   formBlockType: FormBlockType.SUBHEADER;
   templateText?: string;
   backupText: string;
+}
+
+export interface SmartGreetingSubheaderBlockConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.SMART_GREETING_SUBHEADER;
 }
 
 export interface BaseFormFieldConfiguration {
@@ -85,6 +91,7 @@ export type FormBlockConfiguration =
   | SelectInputFormBlockConfiguration
   | HeaderBlockConfiguration
   | SubheaderBlockConfiguration
+  | SmartGreetingSubheaderBlockConfiguration
   | BranchingNodeFormBlockConfiguration
   | ReturnToPreviousBranchButtonConfiguration;
 
