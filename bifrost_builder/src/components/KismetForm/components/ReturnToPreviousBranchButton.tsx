@@ -1,4 +1,5 @@
 import { ReturnToPreviousBranchButtonConfiguration } from "../models";
+import { FormButton } from "./FormButton";
 
 interface ReturnToPreviousBranchButtonProps {
   returnToPreviousBranchButtonConfiguration: ReturnToPreviousBranchButtonConfiguration;
@@ -17,10 +18,8 @@ export function ReturnToPreviousBranchButton({
   };
 
   return (
-    <>
-      <button onClick={onClick}>
-        {returnToPreviousBranchButtonConfiguration.label}
-      </button>
-    </>
+    <FormButton onClick={onClick}>
+      {returnToPreviousBranchButtonConfiguration.label}
+    </FormButton>
   );
 }

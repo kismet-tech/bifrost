@@ -32,7 +32,7 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
     keyName: "next",
     buttons: [
       {
-        label: "next",
+        label: "Next",
         keyValue: "next",
         submitsForm: false,
         branchFormBlocks: [
@@ -80,7 +80,7 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
           },
           {
             formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-            label: "back",
+            label: "Back",
           },
         ],
       },
@@ -88,7 +88,7 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "back",
+    label: "Back",
   },
 ];
 
@@ -125,6 +125,6 @@ export const knollcroftRoomOnlyFormBlocks: FormBlockConfiguration[] = [
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "back",
+    label: "Back",
   },
 ];

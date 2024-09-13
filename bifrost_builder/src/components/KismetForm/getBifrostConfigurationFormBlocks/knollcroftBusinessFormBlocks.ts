@@ -28,7 +28,7 @@ export const knollcroftBusinessDatesPeopleRoomsFormBlocks: FormBlockConfiguratio
       keyName: "next",
       buttons: [
         {
-          label: "next",
+          label: "Next",
           submitsForm: true,
           keyValue: "",
           branchFormBlocks: [
@@ -47,7 +47,7 @@ export const knollcroftBusinessDatesPeopleRoomsFormBlocks: FormBlockConfiguratio
     },
     {
       formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-      label: "back",
+      label: "Back",
     },
   ];
 
@@ -90,14 +90,14 @@ export const knollcroftBusinessFormBlocks: FormBlockConfiguration[] = [
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "back",
+    label: "Back",
   },
   {
     formBlockType: FormBlockType.BRANCHING_NODE,
     keyName: "next",
     buttons: [
       {
-        label: "next",
+        label: "Next",
         keyValue: "next",
         submitsForm: false,
         branchFormBlocks: [
@@ -114,7 +114,7 @@ export const knollcroftBusinessFormBlocks: FormBlockConfiguration[] = [
             keyName: "requires_hotel_rooms",
             buttons: [
               {
-                label: "yes",
+                label: "Yes",
                 keyValue: "true",
                 submitsForm: false,
                 branchFormBlocks: [
@@ -141,7 +141,7 @@ export const knollcroftBusinessFormBlocks: FormBlockConfiguration[] = [
                 ],
               },
               {
-                label: "no",
+                label: "No",
                 keyValue: "does_not_require_hotel_rooms",
                 submitsForm: true,
                 branchFormBlocks: [
@@ -160,7 +160,7 @@ export const knollcroftBusinessFormBlocks: FormBlockConfiguration[] = [
           },
           {
             formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-            label: "back",
+            label: "Back",
           },
         ],
       },
