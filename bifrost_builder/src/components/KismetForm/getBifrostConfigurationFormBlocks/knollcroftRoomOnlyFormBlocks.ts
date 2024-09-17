@@ -1,10 +1,6 @@
 import { FormBlockConfiguration, FormBlockType } from "../models";
 
 export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
-  // {
-  //   formBlockType: FormBlockType.HEADER,
-  //   backupText: "Help us to quote",
-  // },
   {
     formBlockType: FormBlockType.HEADER,
     backupText: "",
