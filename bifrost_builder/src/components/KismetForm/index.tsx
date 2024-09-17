@@ -1,10 +1,19 @@
 import styled from "styled-components";
-import { FormBlockConfiguration, FormBlockType } from "./models";
+import {
+  BifrostConfiguration,
+  FormBlockConfiguration,
+  FormBlockType,
+} from "./models";
 import { useCallback, useState } from "react";
 import { FacebookLoginButton } from "./components/FacebookLoginButton/FacebookLoginButton";
 import axios from "axios";
 import { deepEqual } from "@/utilities/deepEqual";
-import { RenderableFormBlock } from "./components/RenderedFormBlock";
+import { RenderedFormBlock } from "./components/RenderedFormBlock";
+import {
+  registerBifrostFormInputUrl,
+  submitGroupBookingFormUrl,
+} from "@/config";
+import { v4 as uuidv4 } from "uuid";
 
 const Form = styled.form`
   display: flex;
@@ -41,12 +50,14 @@ const FacebookButtonWrapper = styled.div`
 `;
 
 interface KismetFormProps {
-  formFieldConfigurations: FormBlockConfiguration[];
+  bifrostConfiguration: BifrostConfiguration;
 }
 
-export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
+export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
+  const [localFormUserSessionId] = useState<string>(uuidv4());
+
   const getInitialFormState = (): Record<string, string> => {
-    return formFieldConfigurations.reduce(
+    return bifrostConfiguration.formBlocks.reduce(
       (formState, formFieldConfiguration) => {
         if (
           formFieldConfiguration.formBlockType === FormBlockType.TEXT_INPUT ||
@@ -74,11 +85,24 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
   //   updateRenderedFormFieldConfigurations,
   // ] = useState<FormBlockConfiguration[]>([...formFieldConfigurations]);
   const [formFieldConfigurationsStack, updateFormFieldConfigurationsStack] =
-    useState<FormBlockConfiguration[][]>([formFieldConfigurations]);
+    useState<FormBlockConfiguration[][]>([bifrostConfiguration.formBlocks]);
 
   const [formState, updateFormState] = useState<Record<string, string>>(
     getInitialFormState()
   );
+
+  const registerBifrostFormInput = async () => {
+    await axios.post(
+      registerBifrostFormInputUrl,
+      {
+        hotelId: bifrostConfiguration.hotelId,
+        bifrostFormId: bifrostConfiguration.bifrostFormId,
+        localFormUserSessionId,
+        formData: formState,
+      },
+      {}
+    );
+  };
 
   const handleUpdateFormState = useCallback(
     ({ keyName, keyValue }: { keyName: string; keyValue: string }) => {
@@ -148,11 +172,13 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
   };
 
   const handleSubmitForm = async () => {
-    const apiBaseUrl = "https://api.makekismet.com";
-    // const apiBaseUrl = "http://localhost:4000";
     await axios.post(
-      `${apiBaseUrl}/Bifrost/SubmitGroupBookingForm`,
-      { formData: formState },
+      submitGroupBookingFormUrl,
+      {
+        hotelId: bifrostConfiguration.hotelId,
+        bifrostFormId: bifrostConfiguration.bifrostFormId,
+        formData: formState,
+      },
       {}
     );
 
@@ -171,7 +197,7 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
       {renderedFormFieldConfigurations.map(
         (renderedFormFieldConfiguration, index) => {
           return (
-            <RenderableFormBlock
+            <RenderedFormBlock
               key={index}
               renderedFormFieldConfiguration={renderedFormFieldConfiguration}
               formState={formState}
@@ -181,6 +207,7 @@ export function KismetForm({ formFieldConfigurations }: KismetFormProps) {
               popRightFormFieldConfigurationStack={
                 popRightFormFieldConfigurationStack
               }
+              registerBifrostFormInput={registerBifrostFormInput}
             />
           );
         }

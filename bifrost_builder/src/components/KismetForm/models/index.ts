@@ -21,6 +21,8 @@ export enum FormBlockType {
   //////////////////////////////////////////////////
   BRANCHING_NODE = "BRANCHING_NODE",
   RETURN_TO_PREVIOUS_BRANCH_BUTTON = "RETURN_TO_PREVIOUS_BRANCH_BUTTON",
+
+  METADATA = "METADATA",
 }
 
 export interface HeaderBlockConfiguration extends BaseFormFieldConfiguration {
@@ -36,12 +38,10 @@ export interface SubheaderBlockConfiguration
   backupText: string;
 }
 
-
 export interface SmartGreetingSubheaderBlockConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.SMART_GREETING_SUBHEADER;
 }
-
 
 export interface BaseFormFieldConfiguration {
   formBlockType: FormBlockType;
@@ -88,6 +88,13 @@ export interface ReturnToPreviousBranchButtonConfiguration
   label: string;
 }
 
+export interface MetadataBlockConfiguration extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.METADATA;
+
+  keyName: string;
+  keyValue: string;
+}
+
 export type FormBlockConfiguration =
   | TextInputFormBlockConfiguration
   | TextAreaInputFormBlockConfiguration
@@ -96,8 +103,11 @@ export type FormBlockConfiguration =
   | SubheaderBlockConfiguration
   | SmartGreetingSubheaderBlockConfiguration
   | BranchingNodeFormBlockConfiguration
-  | ReturnToPreviousBranchButtonConfiguration;
+  | ReturnToPreviousBranchButtonConfiguration
+  | MetadataBlockConfiguration;
 
 export interface BifrostConfiguration {
+  hotelId: string;
+  bifrostFormId: string;
   formBlocks: FormBlockConfiguration[];
 }

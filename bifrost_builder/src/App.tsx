@@ -4,7 +4,13 @@ import { KismetForm } from "./components/KismetForm";
 function App() {
   return (
     <>
-      <KismetForm formFieldConfigurations={[]} />
+      <KismetForm
+        bifrostConfiguration={{
+          hotelId: "testing",
+          bifrostFormId: "testing-1",
+          formBlocks: [],
+        }}
+      />
     </>
   );
 }
