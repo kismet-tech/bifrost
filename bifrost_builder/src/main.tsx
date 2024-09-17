@@ -5,7 +5,9 @@ import { getBifrostConfiguration } from "./getBifrostConfiguration";
 
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 console.log("🧊  Placing the Bifrost 🧊");
+console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+
 
 export const main = () => {
   const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
