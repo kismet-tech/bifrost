@@ -1,5 +1,6 @@
 import { FormBlockConfiguration, FormBlockType } from "../models";
 import { FormHeader } from "./FormHeader";
+import { FormMetadata } from "./FormMetadata";
 import { FormSelectField } from "./FormSelectField";
 import { FormSubheader } from "./FormSubheader";
 import { FormTextAreaField } from "./FormTextAreaField";
@@ -23,15 +24,17 @@ interface RenderableFormBlockProps {
     formBlockConfigurations: FormBlockConfiguration[]
   ) => void;
   popRightFormFieldConfigurationStack: () => void;
+  registerBifrostFormInput: () => Promise<void>;
 }
 
-export function RenderableFormBlock({
+export function RenderedFormBlock({
   renderedFormFieldConfiguration,
   formState,
   handleUpdateFormState,
   handleSubmitForm,
   pushFormFieldConfigurationStack,
   popRightFormFieldConfigurationStack,
+  registerBifrostFormInput,
 }: RenderableFormBlockProps) {
   if (renderedFormFieldConfiguration.formBlockType === FormBlockType.HEADER) {
     return (
@@ -62,6 +65,7 @@ export function RenderableFormBlock({
             keyValue,
           });
         }}
+        registerBifrostFormInput={registerBifrostFormInput}
       />
     );
   } else if (
@@ -78,6 +82,7 @@ export function RenderableFormBlock({
             keyValue,
           });
         }}
+        registerBifrostFormInput={registerBifrostFormInput}
       />
     );
   } else if (
@@ -93,6 +98,7 @@ export function RenderableFormBlock({
             keyValue,
           });
         }}
+        registerBifrostFormInput={registerBifrostFormInput}
       />
     );
   } else if (
@@ -105,6 +111,7 @@ export function RenderableFormBlock({
         handleUpdateFormState={handleUpdateFormState}
         pushFormFieldConfigurationStack={pushFormFieldConfigurationStack}
         handleSubmitForm={handleSubmitForm}
+        registerBifrostFormInput={registerBifrostFormInput}
       />
     );
   } else if (
@@ -129,6 +136,15 @@ export function RenderableFormBlock({
       <SmartGreetingSubheader
         configuration={renderedFormFieldConfiguration}
         formState={formState}
+      />
+    );
+  } else if (
+    renderedFormFieldConfiguration.formBlockType === FormBlockType.METADATA
+  ) {
+    return (
+      <FormMetadata
+        configuration={renderedFormFieldConfiguration}
+        handleUpdateFormState={handleUpdateFormState}
       />
     );
   }

@@ -25,6 +25,7 @@ interface RenderableBranchingNodeProps {
     formBlockConfigurations: FormBlockConfiguration[]
   ) => void;
   handleSubmitForm: () => void;
+  registerBifrostFormInput: () => Promise<void>;
 }
 
 export function RenderableBrancingNode({
@@ -32,6 +33,7 @@ export function RenderableBrancingNode({
   handleUpdateFormState,
   pushFormFieldConfigurationStack,
   handleSubmitForm,
+  registerBifrostFormInput,
 }: RenderableBranchingNodeProps) {
   const handleButtonClick =
     ({
@@ -54,6 +56,8 @@ export function RenderableBrancingNode({
       if (branchingNodeButtonConfiguration.submitsForm) {
         handleSubmitForm();
       }
+
+      registerBifrostFormInput();
     };
 
   return (

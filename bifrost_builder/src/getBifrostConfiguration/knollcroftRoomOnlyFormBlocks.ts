@@ -1,4 +1,7 @@
-import { FormBlockConfiguration, FormBlockType } from "../models";
+import {
+  FormBlockConfiguration,
+  FormBlockType,
+} from "@/components/KismetForm/models";
 
 export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
   {
@@ -32,7 +35,7 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
     keyName: "next",
     buttons: [
       {
-        label: "Next",
+        label: "next",
         keyValue: "next",
         submitsForm: false,
         branchFormBlocks: [
@@ -80,7 +83,7 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
           },
           {
             formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-            label: "Back",
+            label: "back",
           },
         ],
       },
@@ -88,9 +91,89 @@ export const knollcroftDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] = [
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "Back",
+    label: "back",
   },
 ];
+
+export const knollcroftFlexibleSocialDatesFormBlocks: FormBlockConfiguration[] =
+  [
+    {
+      formBlockType: FormBlockType.HEADER,
+      backupText: "",
+      templateText: "Hi {{firstName}}",
+    },
+    {
+      formBlockType: FormBlockType.TEXT_AREA_INPUT,
+      label:
+        "Can you share your thoughts on potential dates and length of stay?",
+      keyName: "additionalDetailsOnPotentialDatesAndLengthOfStay",
+      placeholder: "",
+    },
+
+    {
+      formBlockType: FormBlockType.BRANCHING_NODE,
+      keyName: "next",
+      buttons: [
+        {
+          label: "next",
+          keyValue: "next",
+          submitsForm: false,
+          branchFormBlocks: [
+            {
+              formBlockType: FormBlockType.SUBHEADER,
+              backupText: "How do you want us to split up the check?",
+            },
+            {
+              formBlockType: FormBlockType.BRANCHING_NODE,
+              keyName: "split_check",
+              buttons: [
+                {
+                  label: "I'm booking for the whole group",
+                  keyValue: "booking_for_the_whole_group",
+                  submitsForm: true,
+                  branchFormBlocks: [
+                    {
+                      formBlockType: FormBlockType.HEADER,
+                      backupText: "Thank you!",
+                    },
+
+                    {
+                      formBlockType: FormBlockType.SUBHEADER,
+                      backupText: "We'll be in touch soon, watch your email!",
+                    },
+                  ],
+                },
+                {
+                  label: "Guests will book on their own",
+                  keyValue: "guest_book_separately",
+                  submitsForm: true,
+                  branchFormBlocks: [
+                    {
+                      formBlockType: FormBlockType.HEADER,
+                      backupText: "Thank you!",
+                    },
+
+                    {
+                      formBlockType: FormBlockType.SUBHEADER,
+                      backupText: "We'll be in touch soon, watch your email!",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
+              label: "back",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
+      label: "back",
+    },
+  ];
 
 export const knollcroftRoomOnlyFormBlocks: FormBlockConfiguration[] = [
   // {
@@ -119,12 +202,12 @@ export const knollcroftRoomOnlyFormBlocks: FormBlockConfiguration[] = [
         label: "I'm flexible or still planning",
         keyValue: "flexible_dates",
         submitsForm: false,
-        branchFormBlocks: knollcroftDatesPeopleRoomsFormBlocks,
+        branchFormBlocks: knollcroftFlexibleSocialDatesFormBlocks,
       },
     ],
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "Back",
+    label: "back",
   },
 ];

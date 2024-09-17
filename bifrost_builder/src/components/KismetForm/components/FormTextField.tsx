@@ -16,12 +16,14 @@ export interface FormTextFieldProps {
   configuration: TextInputFormBlockConfiguration;
   formState: Record<string, string>;
   onChange?: (value: string) => void;
+  registerBifrostFormInput: () => Promise<void>;
 }
 
 export function FormTextField({
   configuration,
   formState,
   onChange,
+  registerBifrostFormInput,
 }: FormTextFieldProps) {
   const [localValue, updateLocalValue] = useState<string>("");
 
@@ -41,6 +43,7 @@ export function FormTextField({
     }
 
     updateLocalValue(value);
+    registerBifrostFormInput();
   };
 
   return (

@@ -1,8 +1,11 @@
-import { FormBlockConfiguration, FormBlockType } from "../models";
+import {
+  BifrostConfiguration,
+  FormBlockType,
+} from "@/components/KismetForm/models";
 import { knollcroftBusinessFormBlocks } from "./knollcroftBusinessFormBlocks";
 import { knollcroftRoomOnlyFormBlocks } from "./knollcroftRoomOnlyFormBlocks";
 
-export function getBifrostConfigurationFormBlocks(): FormBlockConfiguration[] {
+export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
   //   console.log(`currentUrl: ${currentUrl}`); // e.g., 'http://example.com/page?name=value'
 
@@ -20,112 +23,135 @@ export function getBifrostConfigurationFormBlocks(): FormBlockConfiguration[] {
       (knollcroftPathname) => knollcroftPathname === urlPathname
     )
   ) {
-    return [
-      {
-        formBlockType: FormBlockType.HEADER,
-        backupText: "Group stays",
-      },
-      {
-        formBlockType: FormBlockType.SUBHEADER,
-        backupText:
-          "If it’s a group trip (whether large or small) we’ve got you covered",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "First name",
-        keyName: "firstName",
-        placeholder: "",
-        autocomplete: "given-name",
-        inputType: "text",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Last name",
-        keyName: "lastName",
-        placeholder: "",
-        autocomplete: "family-name",
-        inputType: "text",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Email",
-        keyName: "email",
-        placeholder: "",
-        autocomplete: "email",
-        inputType: "email",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Phone",
-        keyName: "phoneNumber",
-        placeholder: "",
-        autocomplete: "tel",
-        inputType: "tel",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_AREA_INPUT,
-        label: "Trip details",
-        keyName: "additionalDetails",
-        placeholder: "Tell us about your plans...",
-      },
-      {
-        formBlockType: FormBlockType.BRANCHING_NODE,
-        keyName: "booking_category",
-        buttons: [
-          {
-            label: "Business",
-            keyValue: "business",
-            submitsForm: false,
-            branchFormBlocks: knollcroftBusinessFormBlocks,
-          },
-          {
-            label: "Social",
-            keyValue: "social",
-            submitsForm: false,
-            branchFormBlocks: knollcroftRoomOnlyFormBlocks,
-          },
-          {
-            label: "Other",
-            keyValue: "other",
-            submitsForm: false,
-            branchFormBlocks: knollcroftRoomOnlyFormBlocks,
-          },
-        ],
-      },
-    ];
+    return {
+      hotelId: "knollcroft",
+      bifrostFormId: "1",
+      formBlocks: [
+        {
+          formBlockType: FormBlockType.METADATA,
+          keyName: "inquiryCategory",
+          keyValue: "Group Booking",
+        },
+        {
+          formBlockType: FormBlockType.HEADER,
+          backupText: "Group stays",
+        },
+        {
+          formBlockType: FormBlockType.SUBHEADER,
+          backupText:
+            "If it’s a group trip (whether large or small) we’ve got you covered",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "First name",
+          keyName: "firstName",
+          placeholder: "",
+          autocomplete: "given-name",
+          inputType: "text",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Last name",
+          keyName: "lastName",
+          placeholder: "",
+          autocomplete: "family-name",
+          inputType: "text",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Email",
+          keyName: "email",
+          placeholder: "",
+          autocomplete: "email",
+          inputType: "email",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Phone",
+          keyName: "phoneNumber",
+          placeholder: "",
+          autocomplete: "tel",
+          inputType: "tel",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_AREA_INPUT,
+          label: "Trip details",
+          keyName: "additionalDetails",
+          placeholder: "Tell us about your plans...",
+        },
+        {
+          formBlockType: FormBlockType.BRANCHING_NODE,
+          keyName: "booking_category",
+          buttons: [
+            {
+              label: "Business",
+              keyValue: "business",
+              submitsForm: false,
+              branchFormBlocks: knollcroftBusinessFormBlocks,
+            },
+            {
+              label: "Social",
+              keyValue: "social",
+              submitsForm: false,
+              branchFormBlocks: knollcroftRoomOnlyFormBlocks,
+            },
+            {
+              label: "Other",
+              keyValue: "other",
+              submitsForm: false,
+              branchFormBlocks: knollcroftRoomOnlyFormBlocks,
+            },
+          ],
+        },
+      ],
+    };
   } else if (hostname === "theknollcroft.com" && urlPathname === "/") {
-    return [
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Full name",
-        keyName: "fullName",
-        placeholder: "Your full name",
-        inputType: "text",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Email",
-        keyName: "email",
-        placeholder: "",
-        inputType: "email",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Phone",
-        keyName: "phoneNumber",
-        placeholder: "Your phone number",
-        inputType: "tel",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_AREA_INPUT,
-        label: "The details",
-        keyName: "additionalDetails",
-        placeholder: "Tell us about your plans...",
-      },
-    ];
+    return {
+      hotelId: "knollcroft",
+      bifrostFormId: "2",
+      formBlocks: [
+        {
+          formBlockType: FormBlockType.METADATA,
+          keyName: "inquiryCategory",
+          keyValue: "Group Booking",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Full name",
+          keyName: "fullName",
+          placeholder: "Your full name",
+          inputType: "text",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Email",
+          keyName: "email",
+          placeholder: "",
+          inputType: "email",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_INPUT,
+          label: "Phone",
+          keyName: "phoneNumber",
+          placeholder: "Your phone number",
+          inputType: "tel",
+        },
+        {
+          formBlockType: FormBlockType.TEXT_AREA_INPUT,
+          label: "The details",
+          keyName: "additionalDetails",
+          placeholder: "Tell us about your plans...",
+        },
+      ],
+    };
   } else if (urlPathname.includes("/group-bookings")) {
-    return [];
+    return { hotelId: "nbhd", bifrostFormId: "3", formBlocks: [] };
     // return [
+    // {
+    //   formBlockType: FormBlockType.METADATA,
+    //   keyName: "inquiryCategory",
+    //   keyValue: "Group Booking",
+    // },
     //   {
     //     formFieldType: FormFieldType.TEXT,
     //     label: "Full Name",
@@ -173,8 +199,13 @@ export function getBifrostConfigurationFormBlocks(): FormBlockConfiguration[] {
     //   },
     // ];
   } else if (urlPathname.includes("/extended-stays")) {
-    return [];
+    return { hotelId: "nbhd", bifrostFormId: "4", formBlocks: [] };
     // return [
+    // {
+    //   formBlockType: FormBlockType.METADATA,
+    //   keyName: "inquiryCategory",
+    //   keyValue: "Extended Stay Booking",
+    // },
     //   {
     //     formFieldType: FormFieldType.TEXT,
     //     label: "Full Name",
@@ -234,5 +265,5 @@ export function getBifrostConfigurationFormBlocks(): FormBlockConfiguration[] {
     // ];
   }
 
-  return [];
+  return { hotelId: "", bifrostFormId: "5", formBlocks: [] };
 }

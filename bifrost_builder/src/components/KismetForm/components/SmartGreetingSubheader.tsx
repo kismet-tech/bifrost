@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { SmartGreetingSubheaderBlockConfiguration } from "../models";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getSmartGreetingUrl } from "@/config";
 
 export const SmartGreetingSubheaderWrapper = styled.div`
   font-size: 1.3rem; /* Equivalent to text-3xl */
@@ -20,10 +21,8 @@ export function SmartGreetingSubheader({
 
   useEffect(() => {
     async function setSmartingGreetingText() {
-      const apiBaseUrl = "https://api.makekismet.com";
-
       const response = await axios.post(
-        `${apiBaseUrl}/Bifrost/GetGreeting`,
+        getSmartGreetingUrl,
         {
           additionalDetails: formState.additionalDetails,
           hotelName: "Knollcroft",
