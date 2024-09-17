@@ -1,10 +1,7 @@
 import "@/styles/index.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
-import { getBifrostConfiguration } from "./getBifrostConfiguration";
 import { BifrostConfiguration } from "./components/KismetForm/models";
-import { sentryScope } from "./instrument";
-// import { time } from "console";
-
+import { getBifrostConfiguration } from "./getBifrostConfiguration";
 
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 console.log("🧊  Placing the Bifrost 🧊");

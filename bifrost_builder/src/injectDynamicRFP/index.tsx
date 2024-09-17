@@ -21,7 +21,7 @@ export const injectDynamicRFP = ({
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
-      formBlocks: bifrostConfiguration.formBlocks,
+      bifrostConfiguration,
     });
   }
 
@@ -31,7 +31,7 @@ export const injectDynamicRFP = ({
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
-      formBlocks: bifrostConfiguration.formBlocks,
+      bifrostConfiguration,
     });
   }
 

@@ -1,4 +1,7 @@
-import { FormBlockConfiguration, FormBlockType } from "../models";
+import {
+  FormBlockConfiguration,
+  FormBlockType,
+} from "@/components/KismetForm/models";
 
 export const knollcroftBusinessDatesPeopleRoomsFormBlocks: FormBlockConfiguration[] =
   [

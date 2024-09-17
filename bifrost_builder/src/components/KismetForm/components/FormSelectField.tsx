@@ -16,18 +16,22 @@ export interface FormSelectFieldProps {
   configuration: SelectInputFormBlockConfiguration;
   formState: Record<string, string>;
   onChange?: (value: string) => void;
+  registerBifrostFormInput: () => Promise<void>;
 }
 
 export function FormSelectField({
   configuration: { label, keyName, options },
   formState,
   onChange,
+  registerBifrostFormInput,
 }: FormSelectFieldProps) {
   const handleOnChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const value = event.target.value;
     if (onChange) {
       onChange(value);
     }
+
+    registerBifrostFormInput();
   };
 
   const selectedValue = formState[keyName] || options[0].keyValue;
