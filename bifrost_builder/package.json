@@ -1,7 +1,7 @@
 {
   "name": "bifrost_builder",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "yarn build && gsutil cp dist/bifrost.iife.js gs://kismet_bifrost/bifrost.js",
+    "deploy": "yarn version --minor && yarn build && gsutil cp dist/bifrost.iife.js gs://kismet_bifrost/bifrost.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
