@@ -1,4 +1,4 @@
-import "@/styles/index.css";
+import "@/globals.css";
 import { KismetForm } from "./components/KismetForm";
 
 function App() {

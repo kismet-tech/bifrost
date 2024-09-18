@@ -1,9 +1,8 @@
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import autoprefixer from "autoprefixer";
-import postcssNested from "postcss-nested";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import { version } from "./package.json"; // Import version from package.json
 
 // eslint-disable-next-line no-empty-pattern
 export default defineConfig(({}) => {
@@ -11,11 +10,6 @@ export default defineConfig(({}) => {
 
   return {
     plugins: [react(), cssInjectedByJsPlugin()],
-    css: {
-      postcss: {
-        plugins: [autoprefixer, postcssNested],
-      },
-    },
     build: {
       lib: {
         entry: entryFile,
@@ -34,6 +28,7 @@ export default defineConfig(({}) => {
     },
     define: {
       "process.env": {},
+      __APP_VERSION__: JSON.stringify(version), // Define the version globally
     },
     resolve: {
       alias: {

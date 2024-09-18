@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { ReturnToPreviousBranchButtonConfiguration } from "../models";
-import { FormButton } from "./FormButton";
 
 interface ReturnToPreviousBranchButtonProps {
   returnToPreviousBranchButtonConfiguration: ReturnToPreviousBranchButtonConfiguration;
@@ -18,8 +18,8 @@ export function ReturnToPreviousBranchButton({
   };
 
   return (
-    <FormButton onClick={onClick}>
+    <Button onClick={onClick}>
       {returnToPreviousBranchButtonConfiguration.label}
-    </FormButton>
+    </Button>
   );
 }

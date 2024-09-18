@@ -56,6 +56,12 @@ interface KismetFormProps {
 export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
+  const queryParams: URLSearchParams = new URLSearchParams(
+    window.location.search
+  );
+  const maybeBifrostTravelerId: string | undefined =
+    queryParams.get("bifrostTravelerId") || undefined;
+
   const getInitialFormState = (): Record<string, string> => {
     return bifrostConfiguration.formBlocks.reduce(
       (formState, formFieldConfiguration) => {
@@ -80,10 +86,6 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
     );
   };
 
-  // const [
-  //   renderedFormFieldConfigurations,
-  //   updateRenderedFormFieldConfigurations,
-  // ] = useState<FormBlockConfiguration[]>([...formFieldConfigurations]);
   const [formFieldConfigurationsStack, updateFormFieldConfigurationsStack] =
     useState<FormBlockConfiguration[][]>([bifrostConfiguration.formBlocks]);
 
@@ -96,6 +98,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
       registerBifrostFormInputUrl,
       {
         hotelId: bifrostConfiguration.hotelId,
+        bifrostTravelerId: maybeBifrostTravelerId,
         bifrostFormId: bifrostConfiguration.bifrostFormId,
         localFormUserSessionId,
         formData: formState,
@@ -176,6 +179,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
       submitGroupBookingFormUrl,
       {
         hotelId: bifrostConfiguration.hotelId,
+        bifrostTravelerId: maybeBifrostTravelerId,
         bifrostFormId: bifrostConfiguration.bifrostFormId,
         formData: formState,
       },
@@ -200,6 +204,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
             <RenderedFormBlock
               key={index}
               renderedFormFieldConfiguration={renderedFormFieldConfiguration}
+              maybeBifrostTravelerId={maybeBifrostTravelerId}
               formState={formState}
               handleUpdateFormState={handleUpdateFormState}
               handleSubmitForm={handleSubmitForm}

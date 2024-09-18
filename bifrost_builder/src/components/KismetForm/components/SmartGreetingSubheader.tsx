@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { SmartGreetingSubheaderBlockConfiguration } from "../models";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getSmartGreetingUrl } from "@/config";
+import { getBifrostFormGreetingUrl } from "@/config";
 
 export const SmartGreetingSubheaderWrapper = styled.div`
   font-size: 1.3rem; /* Equivalent to text-3xl */
@@ -11,20 +11,22 @@ export const SmartGreetingSubheaderWrapper = styled.div`
 interface SmartGreetingSubheaderProps {
   configuration: SmartGreetingSubheaderBlockConfiguration;
   formState: Record<string, string>;
+  maybeBifrostTravelerId?: string;
 }
 
 export function SmartGreetingSubheader({
-  //   configuration,
   formState,
+  maybeBifrostTravelerId,
 }: SmartGreetingSubheaderProps) {
   const [text, updateText] = useState<string>("");
 
   useEffect(() => {
     async function setSmartingGreetingText() {
       const response = await axios.post(
-        getSmartGreetingUrl,
+        getBifrostFormGreetingUrl,
         {
           additionalDetails: formState.additionalDetails,
+          bifrostTravelerId: maybeBifrostTravelerId,
           hotelName: "Knollcroft",
         },
         {}
@@ -39,7 +41,7 @@ export function SmartGreetingSubheader({
     }
 
     setSmartingGreetingText();
-  }, [formState.additionalDetails]);
+  }, [maybeBifrostTravelerId, formState.additionalDetails]);
 
   return <SmartGreetingSubheaderWrapper>{text}</SmartGreetingSubheaderWrapper>;
 }

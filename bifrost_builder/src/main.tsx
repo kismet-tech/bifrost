@@ -1,10 +1,11 @@
-import "@/styles/index.css";
+import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
 import { BifrostConfiguration } from "./components/KismetForm/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
 
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 console.log("🧊  Placing the Bifrost 🧊");
+console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 
 export const main = () => {
