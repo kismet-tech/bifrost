@@ -11,12 +11,12 @@ declare global {
 
 export const main = () => {
   if (!window.hasBifrostLoaded) {
+    window.hasBifrostLoaded = true;
+
     console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
     console.log("🧊  Placing the Bifrost 🧊");
     console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
     console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-
-    window.hasBifrostLoaded = true;
 
     const bifrostConfiguration: BifrostConfiguration =
       getBifrostConfiguration();
