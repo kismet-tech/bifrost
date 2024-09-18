@@ -4,7 +4,7 @@ import {
   BranchingNodeButtonConfiguration,
   BranchingNodeFormBlockConfiguration,
 } from "../../models/BranchingNodeFormBlockConfiguration";
-import { FormButton } from "../FormButton";
+import { Button } from "@/components/ui/button";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -63,14 +63,14 @@ export function RenderableBrancingNode({
   return (
     <ButtonWrapper>
       {branchingNodeFormBlockConfiguration.buttons.map((button, index) => (
-        <FormButton
+        <Button
           onClick={handleButtonClick({
             branchingNodeButtonConfiguration: button,
           })}
           key={index}
         >
           {button.label}
-        </FormButton>
+        </Button>
       ))}
     </ButtonWrapper>
   );
