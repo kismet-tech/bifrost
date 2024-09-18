@@ -3,11 +3,6 @@ import { injectDynamicRFP } from "./injectDynamicRFP";
 import { BifrostConfiguration } from "./components/KismetForm/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
 
-console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-console.log("🧊  Placing the Bifrost 🧊");
-console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
-console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-
 declare global {
   interface Window {
     hasBifrostLoaded?: boolean;
@@ -15,10 +10,14 @@ declare global {
 }
 
 export const main = () => {
-  //   if (  (window as unknown as Window & { hasBifrostLoaded: boolean }).hasBifrostLoaded) {}
-  // )
-
   if (!window.hasBifrostLoaded) {
+    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+    console.log("🧊  Placing the Bifrost 🧊");
+    console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
+    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+
+    window.hasBifrostLoaded = true;
+
     const bifrostConfiguration: BifrostConfiguration =
       getBifrostConfiguration();
 
@@ -34,8 +33,6 @@ export const main = () => {
         injectDynamicRFP({ bifrostConfiguration });
       });
     }
-
-    window.hasBifrostLoaded = true;
   }
 };
 
