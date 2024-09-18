@@ -8,20 +8,34 @@ console.log("🧊  Placing the Bifrost 🧊");
 console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
 console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 
-export const main = () => {
-  const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
+declare global {
+  interface Window {
+    hasBifrostLoaded?: boolean;
+  }
+}
 
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    // If the DOM is already loaded, replace the form immediately
-    injectDynamicRFP({ bifrostConfiguration });
-  } else {
-    // Otherwise, set an event listener
-    document.addEventListener("DOMContentLoaded", () => {
+export const main = () => {
+  //   if (  (window as unknown as Window & { hasBifrostLoaded: boolean }).hasBifrostLoaded) {}
+  // )
+
+  if (!window.hasBifrostLoaded) {
+    const bifrostConfiguration: BifrostConfiguration =
+      getBifrostConfiguration();
+
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      // If the DOM is already loaded, replace the form immediately
       injectDynamicRFP({ bifrostConfiguration });
-    });
+    } else {
+      // Otherwise, set an event listener
+      document.addEventListener("DOMContentLoaded", () => {
+        injectDynamicRFP({ bifrostConfiguration });
+      });
+    }
+
+    window.hasBifrostLoaded = true;
   }
 };
 
