@@ -154,7 +154,10 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
 
             poppedFormFieldConfigurations.forEach(
               (poppedFormFieldConfiguration) => {
-                if ("keyName" in poppedFormFieldConfiguration) {
+                if (
+                  "keyName" in poppedFormFieldConfiguration &&
+                  poppedFormFieldConfiguration.keyName
+                ) {
                   delete updatedFormState[poppedFormFieldConfiguration.keyName];
                 }
               }
