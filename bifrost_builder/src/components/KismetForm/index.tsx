@@ -15,6 +15,7 @@ import {
 } from "@/config";
 import { v4 as uuidv4 } from "uuid";
 import { getBifrostTravelerId } from "@/utilities";
+import { sentryScope } from "@/instrument";
 
 const Form = styled.form`
   display: flex;
@@ -175,18 +176,42 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   };
 
   const handleSubmitForm = async () => {
-    await axios.post(
-      submitGroupBookingFormUrl,
-      {
-        hotelId: bifrostConfiguration.hotelId,
-        bifrostTravelerId: maybeBifrostTravelerId,
-        bifrostFormId: bifrostConfiguration.bifrostFormId,
-        formData: formState,
-      },
-      {}
-    );
+    try {
+      const response = await axios.post(
+        submitGroupBookingFormUrl,
+        {
+          hotelId: bifrostConfiguration.hotelId,
+          bifrostTravelerId: maybeBifrostTravelerId,
+          bifrostFormId: bifrostConfiguration.bifrostFormId,
+          formData: formState,
+        },
+        {}
+      );
 
-    console.log("COMPLETED");
+      if (response.data && response.data.error) {
+        const serverError = new Error(`BIFROST_SERVER_ERROR: ${response.data.error}`);
+        serverError.name = 'BIFROST_SERVER_ERROR';
+        sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+        sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
+        sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+        sentryScope.setExtra("formData", formState);
+        sentryScope.setExtra("version", __APP_VERSION__);
+        sentryScope.setExtra("serverResponse", response.data);
+        sentryScope.captureException(serverError);
+        console.error("Error submitting form:", serverError);
+      }
+      console.log("COMPLETED");
+    } catch (error) {
+      const updatedError = new Error(`BIFROST_FORM_SUBMISSION_ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      updatedError.name = 'BIFROST_FORM_SUBMISSION_ERROR';
+      sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+      sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
+      sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+      sentryScope.setExtra("formData", formState);
+      sentryScope.setExtra("version", __APP_VERSION__);
+      sentryScope.captureException(updatedError);
+      console.error("Error submitting form:", error);
+    }
   };
 
   const renderedFormFieldConfigurations =
