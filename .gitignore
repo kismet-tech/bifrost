@@ -1,2 +1,2 @@
 .idea
-bifrost_builder/.env.sentry-build-plugin
+.env*
