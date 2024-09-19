@@ -35,25 +35,31 @@ export function RenderableBrancingNode({
   handleSubmitForm,
   registerBifrostFormInput,
 }: RenderableBranchingNodeProps) {
+  const { keyName } = branchingNodeFormBlockConfiguration;
+
   const handleButtonClick =
     ({
-      branchingNodeButtonConfiguration,
+      branchingNodeButtonConfiguration: {
+        keyValue,
+        branchFormBlocks,
+        submitsForm,
+      },
     }: {
       branchingNodeButtonConfiguration: BranchingNodeButtonConfiguration;
     }): React.MouseEventHandler<HTMLButtonElement> =>
     (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault();
 
-      pushFormFieldConfigurationStack(
-        branchingNodeButtonConfiguration.branchFormBlocks
-      );
+      pushFormFieldConfigurationStack(branchFormBlocks);
 
-      handleUpdateFormState({
-        keyName: branchingNodeFormBlockConfiguration.keyName,
-        keyValue: branchingNodeButtonConfiguration.keyValue,
-      });
+      if (keyName && keyValue) {
+        handleUpdateFormState({
+          keyName,
+          keyValue,
+        });
+      }
 
-      if (branchingNodeButtonConfiguration.submitsForm) {
+      if (submitsForm) {
         handleSubmitForm();
       }
 
