@@ -42,8 +42,6 @@ export const handleBifrostTraveler = async (url: URL) => {
             if (receivedBifrostTravelerId) {
                 setBifrostTravelerId(receivedBifrostTravelerId);
             }
-
-            throw new Error("Error TESTING BETA");
         } catch (error: unknown) {
             console.error("Error recording website visit:", error);
 
