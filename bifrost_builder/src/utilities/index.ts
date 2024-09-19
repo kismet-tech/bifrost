@@ -26,7 +26,7 @@ export const handleBifrostTraveler = async (url: URL) => {
 
     if (maybeTemporaryBifrostTravelerId) {
         const bifrostTravelerId = getBifrostTravelerId();
-        console.log("bifrostTravelerId", bifrostTravelerId);
+        console.log("Saved bifrostTravelerId", bifrostTravelerId);
 
         try {
             const response = await axios.post(recordWebsiteVisitFromAdLinkUrl, {
@@ -34,10 +34,8 @@ export const handleBifrostTraveler = async (url: URL) => {
                 bifrostTravelerId: bifrostTravelerId
             });
 
-            console.log("response", response);
-
             const receivedBifrostTravelerId = response.data.success.bifrostTravelerId;
-            console.log("Received visitorId:", receivedBifrostTravelerId);
+            console.log("Received receivedBifrostTravelerId:", receivedBifrostTravelerId);
 
             if (receivedBifrostTravelerId) {
                 setBifrostTravelerId(receivedBifrostTravelerId);
