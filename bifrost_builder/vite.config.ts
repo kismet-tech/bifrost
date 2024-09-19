@@ -10,13 +10,16 @@ export default defineConfig(({ }) => {
   const entryFile = "src/main.tsx";
 
   return {
-    plugins: [react(), cssInjectedByJsPlugin(), sentryVitePlugin({
+    plugins: [react(),
+    cssInjectedByJsPlugin(),
+    sentryVitePlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "tourii",
       project: "bifrost_builder",
-      authToken: JSON.stringify(process.env.SENTRY_AUTH_TOKEN),
-    }),],
+    }),
+    ],
     build: {
-      sourcemap: true, // Generate source map
+      // sourcemap: true, // Generate source map
       lib: {
         entry: entryFile,
         name: "bifrost",
@@ -29,6 +32,7 @@ export default defineConfig(({ }) => {
           globals: {
             react: "React",
           },
+          sourcemap: true,
         },
       },
     },
