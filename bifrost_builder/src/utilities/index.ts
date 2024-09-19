@@ -1,11 +1,23 @@
 import { recordWebsiteVisitFromAdLinkUrl } from "@/config";
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 export const getBifrostTravelerId = (): string | undefined => {
-    return document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("bifrostTravelerId="))
-        ?.split("=")[1];
+    return Cookies.get('bifrostTravelerId');
+};
+
+export const setBifrostTravelerId = (bifrostTravelerId: string): void => {
+    const domain = window.location.hostname;
+    const secure = window.location.protocol === "https:";
+    const expirationDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    Cookies.set('bifrostTravelerId', bifrostTravelerId, {
+        expires: expirationDate,
+        path: '/',
+        domain: domain,
+        secure: secure,
+        sameSite: 'strict'
+    });
 };
 
 export const handleBifrostTraveler = async (url: URL) => {
@@ -27,12 +39,7 @@ export const handleBifrostTraveler = async (url: URL) => {
             console.log("Received visitorId:", receivedBifrostTravelerId);
 
             if (receivedBifrostTravelerId) {
-
-                const domain = window.location.hostname;
-                const secure = window.location.protocol === "https:" ? "; secure" : "";
-                const expirationDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
-
-                document.cookie = `bifrostTravelerId=${receivedBifrostTravelerId}; path=/; domain=${domain}${secure}; SameSite=Strict; expires=${expirationDate}`;
+                setBifrostTravelerId(receivedBifrostTravelerId);
             }
         } catch (error) {
             console.error("Error recording website visit:", error);
