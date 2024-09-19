@@ -19,7 +19,8 @@ export const main = () => {
     console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
     console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 
-    const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
+    const bifrostConfiguration: BifrostConfiguration =
+      getBifrostConfiguration();
 
     const url = new URL(window.location.href);
     handleBifrostTraveler(url);

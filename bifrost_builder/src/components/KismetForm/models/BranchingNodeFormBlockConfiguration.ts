@@ -6,7 +6,7 @@ import {
 
 export interface BranchingNodeButtonConfiguration {
   label: string;
-  keyValue: string;
+  keyValue?: string;
 
   submitsForm: boolean;
   branchFormBlocks: FormBlockConfiguration[];
@@ -16,7 +16,7 @@ export interface BranchingNodeFormBlockConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.BRANCHING_NODE;
 
-  keyName: string;
+  keyName?: string;
 
   buttons: BranchingNodeButtonConfiguration[];
 }
