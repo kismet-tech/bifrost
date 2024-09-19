@@ -2,6 +2,7 @@ import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
 import { BifrostConfiguration } from "./components/KismetForm/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
+import { handleBifrostTraveler } from "./utilities";
 
 declare global {
   interface Window {
@@ -20,6 +21,9 @@ export const main = () => {
 
     const bifrostConfiguration: BifrostConfiguration =
       getBifrostConfiguration();
+
+    const url = new URL(window.location.href);
+    handleBifrostTraveler(url);
 
     if (
       document.readyState === "complete" ||

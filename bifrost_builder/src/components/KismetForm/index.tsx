@@ -14,6 +14,7 @@ import {
   submitGroupBookingFormUrl,
 } from "@/config";
 import { v4 as uuidv4 } from "uuid";
+import { getBifrostTravelerId } from "@/utilities";
 
 const Form = styled.form`
   display: flex;
@@ -56,11 +57,7 @@ interface KismetFormProps {
 export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
-  const queryParams: URLSearchParams = new URLSearchParams(
-    window.location.search
-  );
-  const maybeBifrostTravelerId: string | undefined =
-    queryParams.get("bifrostTravelerId") || undefined;
+  const maybeBifrostTravelerId: string | undefined = getBifrostTravelerId();
 
   const getInitialFormState = (): Record<string, string> => {
     return bifrostConfiguration.formBlocks.reduce(
@@ -144,7 +141,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
         if (previousFormFieldConfigurationsStack.length > 0) {
           const poppedFormFieldConfigurations =
             previousFormFieldConfigurationsStack[
-              previousFormFieldConfigurationsStack.length - 1
+            previousFormFieldConfigurationsStack.length - 1
             ];
 
           updateFormState((previousFormState): Record<string, string> => {
