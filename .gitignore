@@ -1,4 +1,2 @@
 .idea
-# NOT REAL OPEN AI KEY JUST A TEST FOR DEEPSOURCE BOT
-OPENAI_API_KEY=sk-5S72F09vo5xIkBk7f2w7cBC4eKo50x6mBo8H23i84vdJ53Vm
 bifrost_builder/.env.sentry-build-plugin
