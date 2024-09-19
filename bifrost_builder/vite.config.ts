@@ -13,9 +13,10 @@ export default defineConfig(({ }) => {
     plugins: [react(), cssInjectedByJsPlugin(), sentryVitePlugin({
       org: "tourii",
       project: "bifrost_builder",
-      authToken: process.env.SENTRY_AUTH_TOKEN,
+      authToken: JSON.stringify(process.env.SENTRY_AUTH_TOKEN),
     }),],
     build: {
+      sourcemap: true, // Generate source map
       lib: {
         entry: entryFile,
         name: "bifrost",
@@ -30,7 +31,6 @@ export default defineConfig(({ }) => {
           },
         },
       },
-      sourcemap: true, // Generate source map
     },
     define: {
       "process.env": {},
