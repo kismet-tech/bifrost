@@ -21,6 +21,7 @@ const client = new BrowserClient({
     transport: makeFetchTransport,
     stackParser: defaultStackParser,
     integrations: integrations,
+    environment: __SENTRY_ENV__, // Cast to string to ensure type safety
 });
 
 // Initialize the scope once
