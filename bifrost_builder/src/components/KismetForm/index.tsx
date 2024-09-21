@@ -14,6 +14,8 @@ import {
   submitGroupBookingFormUrl,
 } from "@/config";
 import { v4 as uuidv4 } from "uuid";
+import { getBifrostTravelerId } from "@/utilities";
+import { sentryScope } from "@/instrument";
 
 const Form = styled.form`
   display: flex;
@@ -56,11 +58,7 @@ interface KismetFormProps {
 export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
-  const queryParams: URLSearchParams = new URLSearchParams(
-    window.location.search
-  );
-  const maybeBifrostTravelerId: string | undefined =
-    queryParams.get("bifrostTravelerId") || undefined;
+  const maybeBifrostTravelerId: string | undefined = getBifrostTravelerId();
 
   const getInitialFormState = (): Record<string, string> => {
     return bifrostConfiguration.formBlocks.reduce(
@@ -144,7 +142,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
         if (previousFormFieldConfigurationsStack.length > 0) {
           const poppedFormFieldConfigurations =
             previousFormFieldConfigurationsStack[
-              previousFormFieldConfigurationsStack.length - 1
+            previousFormFieldConfigurationsStack.length - 1
             ];
 
           updateFormState((previousFormState): Record<string, string> => {
@@ -154,7 +152,10 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
 
             poppedFormFieldConfigurations.forEach(
               (poppedFormFieldConfiguration) => {
-                if ("keyName" in poppedFormFieldConfiguration) {
+                if (
+                  "keyName" in poppedFormFieldConfiguration &&
+                  poppedFormFieldConfiguration.keyName
+                ) {
                   delete updatedFormState[poppedFormFieldConfiguration.keyName];
                 }
               }
@@ -175,18 +176,42 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   };
 
   const handleSubmitForm = async () => {
-    await axios.post(
-      submitGroupBookingFormUrl,
-      {
-        hotelId: bifrostConfiguration.hotelId,
-        bifrostTravelerId: maybeBifrostTravelerId,
-        bifrostFormId: bifrostConfiguration.bifrostFormId,
-        formData: formState,
-      },
-      {}
-    );
+    try {
+      const response = await axios.post(
+        submitGroupBookingFormUrl,
+        {
+          hotelId: bifrostConfiguration.hotelId,
+          bifrostTravelerId: maybeBifrostTravelerId,
+          bifrostFormId: bifrostConfiguration.bifrostFormId,
+          formData: formState,
+        },
+        {}
+      );
 
-    console.log("COMPLETED");
+      if (response.data && response.data.error) {
+        const serverError = new Error(`BIFROST_SERVER_ERROR: ${response.data.error}`);
+        serverError.name = 'BIFROST_SERVER_ERROR';
+        sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+        sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
+        sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+        sentryScope.setExtra("formData", formState);
+        sentryScope.setExtra("version", __APP_VERSION__);
+        sentryScope.setExtra("serverResponse", response.data);
+        sentryScope.captureException(serverError);
+        console.error("Error submitting form:", serverError);
+      }
+      console.log("COMPLETED");
+    } catch (error) {
+      const updatedError = new Error(`BIFROST_FORM_SUBMISSION_ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      updatedError.name = 'BIFROST_FORM_SUBMISSION_ERROR';
+      sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+      sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
+      sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+      sentryScope.setExtra("formData", formState);
+      sentryScope.setExtra("version", __APP_VERSION__);
+      sentryScope.captureException(updatedError);
+      console.error("Error submitting form:", error);
+    }
   };
 
   const renderedFormFieldConfigurations =

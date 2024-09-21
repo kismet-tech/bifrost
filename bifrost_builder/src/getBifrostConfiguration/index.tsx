@@ -2,8 +2,10 @@ import {
   BifrostConfiguration,
   FormBlockType,
 } from "@/components/KismetForm/models";
-import { knollcroftBusinessFormBlocks } from "./knollcroftBusinessFormBlocks";
-import { knollcroftRoomOnlyFormBlocks } from "./knollcroftRoomOnlyFormBlocks";
+import { knollcroftRoomOnlyFormBlocks } from "./knollcroftFormBlocks/knollcroftRoomOnlyFormBlocks";
+import { knollcroftBusinessFormBlocks } from "./knollcroftFormBlocks/knollcroftBusinessFormBlocks";
+import { nbhdGroupBookingsFormBlocks } from "./nbhdFormBlocks/nbhdGroupBookings";
+import { nbhdExtendedStayBlocks } from "./nbhdFormBlocks/nbhdExtendedStays";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -152,16 +154,14 @@ export function getBifrostConfiguration(): BifrostConfiguration {
       return {
         hotelId: "nbhd",
         bifrostFormId: "3",
-        formBlocks: [],
-        // formBlocks: nbhdGroupBookingsFormBlocks,
+        formBlocks: nbhdGroupBookingsFormBlocks,
       };
     } else if (urlPathname.includes("/extended-stays")) {
-      return { hotelId: "nbhd", bifrostFormId: "4", formBlocks: [] };
-      // return {
-      //   hotelId: "nbhd",
-      //   bifrostFormId: "4",
-      //   formBlocks: nbhdExtendedStayBlocks,
-      // };
+      return {
+        hotelId: "nbhd",
+        bifrostFormId: "4",
+        formBlocks: nbhdExtendedStayBlocks,
+      };
     }
   }
 

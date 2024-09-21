@@ -2,26 +2,41 @@ import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
 import { BifrostConfiguration } from "./components/KismetForm/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
+import { handleBifrostTraveler } from "./utilities";
 
-console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-console.log("🧊  Placing the Bifrost 🧊");
-console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
-console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+declare global {
+  interface Window {
+    hasBifrostLoaded?: boolean;
+  }
+}
 
 export const main = () => {
-  const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
+  if (!window.hasBifrostLoaded) {
+    window.hasBifrostLoaded = true;
 
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    // If the DOM is already loaded, replace the form immediately
-    injectDynamicRFP({ bifrostConfiguration });
-  } else {
-    // Otherwise, set an event listener
-    document.addEventListener("DOMContentLoaded", () => {
+    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+    console.log("🧊  Placing the Bifrost 🧊");
+    console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
+    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+
+    const bifrostConfiguration: BifrostConfiguration =
+      getBifrostConfiguration();
+
+    const url = new URL(window.location.href);
+    handleBifrostTraveler(url);
+
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      // If the DOM is already loaded, replace the form immediately
       injectDynamicRFP({ bifrostConfiguration });
-    });
+    } else {
+      // Otherwise, set an event listener
+      document.addEventListener("DOMContentLoaded", () => {
+        injectDynamicRFP({ bifrostConfiguration });
+      });
+    }
   }
 };
 

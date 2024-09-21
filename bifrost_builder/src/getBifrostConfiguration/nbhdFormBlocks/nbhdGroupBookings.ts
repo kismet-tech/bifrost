@@ -54,4 +54,24 @@ export const nbhdGroupBookingsFormBlocks: FormBlockConfiguration[] = [
     keyName: "additionalDetails",
     placeholder: "",
   },
+  {
+    formBlockType: FormBlockType.BRANCHING_NODE,
+    buttons: [
+      {
+        label: "Submit",
+        submitsForm: true,
+        branchFormBlocks: [
+          {
+            formBlockType: FormBlockType.HEADER,
+            backupText: "Thank you!",
+          },
+
+          {
+            formBlockType: FormBlockType.SUBHEADER,
+            backupText: "We'll be in touch soon, watch your email!",
+          },
+        ],
+      },
+    ],
+  },
 ];
