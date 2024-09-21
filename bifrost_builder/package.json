@@ -11,7 +11,9 @@
     "deploy-beta": "yarn version --minor --no-git-tag-version && SENTRY_ENV=beta yarn build && gsutil -h 'Cache-Control:no-cache, no-store, max-age=0' cp dist/bifrost.iife.js gs://beta_kismet_bifrost/bifrost.iife.js",
     "deploy-prod": "yarn version --minor && SENTRY_ENV=prod yarn build && gsutil cp dist/bifrost.iife.js gs://kismet_bifrost/bifrost.js",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "cloud_build_storybook": "gcloud builds submit --config '.storybook/cloudbuild.yaml' --project playgroundist",
+    "deploy_storybook": "yarn cloud_build_storybook && gcloud run deploy kismet-bifrost-storybook --region us-central1 --image us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
