@@ -4,11 +4,13 @@ import { createRoot } from "react-dom/client";
 
 interface ReplaceFormProps {
   dynamicRfpWidgetContainer: HTMLElement;
+  bifrostTravelerId: string;
   bifrostConfiguration: BifrostConfiguration;
 }
 
 export const replaceForm = async ({
   dynamicRfpWidgetContainer,
+  bifrostTravelerId,
   bifrostConfiguration,
 }: ReplaceFormProps) => {
   // console.log("Existing form found. Replacing the form now.");
@@ -17,7 +19,12 @@ export const replaceForm = async ({
   dynamicRfpWidgetContainer.replaceWith(newFormContainer);
 
   const root = createRoot(newFormContainer);
-  root.render(<KismetForm bifrostConfiguration={bifrostConfiguration} />);
+  root.render(
+    <KismetForm
+      bifrostTravelerId={bifrostTravelerId}
+      bifrostConfiguration={bifrostConfiguration}
+    />
+  );
 
   console.log("☃️ The Bifrost is ready ☃️");
   console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
