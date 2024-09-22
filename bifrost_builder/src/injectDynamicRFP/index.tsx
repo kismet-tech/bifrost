@@ -2,10 +2,12 @@ import { replaceForm } from "./replaceForm";
 import { BifrostConfiguration } from "@/components/KismetForm/models";
 
 interface InjectDynamicRFPProps {
+  bifrostTravelerId: string;
   bifrostConfiguration: BifrostConfiguration;
 }
 
 export const injectDynamicRFP = ({
+  bifrostTravelerId,
   bifrostConfiguration,
 }: InjectDynamicRFPProps) => {
   if (bifrostConfiguration.formBlocks.length === 0) {
@@ -21,6 +23,7 @@ export const injectDynamicRFP = ({
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
+      bifrostTravelerId,
       bifrostConfiguration,
     });
   }
@@ -28,9 +31,11 @@ export const injectDynamicRFP = ({
   // Wordpress Contact Form 7
   // https://wordpress.org/plugins/contact-form-7/
   dynamicRfpWidgetContainer = document.querySelector("form.wpcf7-form");
+
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
+      bifrostTravelerId,
       bifrostConfiguration,
     });
   }

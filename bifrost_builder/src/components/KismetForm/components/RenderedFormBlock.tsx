@@ -11,7 +11,8 @@ import { SmartGreetingSubheader } from "./SmartGreetingSubheader";
 
 interface RenderableFormBlockProps {
   renderedFormFieldConfiguration: FormBlockConfiguration;
-  maybeBifrostTravelerId?: string;
+  bifrostTravelerId: string;
+  hotelId: string;
   formState: Record<string, string>;
   handleUpdateFormState: ({
     keyName,
@@ -30,7 +31,8 @@ interface RenderableFormBlockProps {
 
 export function RenderedFormBlock({
   renderedFormFieldConfiguration,
-  maybeBifrostTravelerId,
+  bifrostTravelerId,
+  hotelId,
   formState,
   handleUpdateFormState,
   handleSubmitForm,
@@ -137,7 +139,8 @@ export function RenderedFormBlock({
     return (
       <SmartGreetingSubheader
         configuration={renderedFormFieldConfiguration}
-        maybeBifrostTravelerId={maybeBifrostTravelerId}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
         formState={formState}
       />
     );

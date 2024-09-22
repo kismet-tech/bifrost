@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { SmartGreetingSubheaderBlockConfiguration } from "../models";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { getBifrostFormGreetingUrl } from "@/config";
+import { getBifrostFormGreeting } from "@/api/getBifrostFormGreeting";
 
 export const SmartGreetingSubheaderWrapper = styled.div`
   font-size: 1.3rem; /* Equivalent to text-3xl */
@@ -10,27 +9,25 @@ export const SmartGreetingSubheaderWrapper = styled.div`
 
 interface SmartGreetingSubheaderProps {
   configuration: SmartGreetingSubheaderBlockConfiguration;
+  hotelId: string;
   formState: Record<string, string>;
-  maybeBifrostTravelerId?: string;
+  bifrostTravelerId: string;
 }
 
 export function SmartGreetingSubheader({
+  hotelId,
   formState,
-  maybeBifrostTravelerId,
+  bifrostTravelerId,
 }: SmartGreetingSubheaderProps) {
   const [text, updateText] = useState<string>("");
 
   useEffect(() => {
     async function setSmartingGreetingText() {
-      const response = await axios.post(
-        getBifrostFormGreetingUrl,
-        {
-          additionalDetails: formState.additionalDetails,
-          bifrostTravelerId: maybeBifrostTravelerId,
-          hotelName: "Knollcroft",
-        },
-        {}
-      );
+      const response = await getBifrostFormGreeting({
+        hotelId,
+        bifrostTravelerId,
+        additionalDetails: formState.additionalDetails,
+      });
 
       if ("error" in response.data) {
         console.error(response.data.error.reason);
@@ -41,7 +38,7 @@ export function SmartGreetingSubheader({
     }
 
     setSmartingGreetingText();
-  }, [maybeBifrostTravelerId, formState.additionalDetails]);
+  }, [hotelId, bifrostTravelerId, formState.additionalDetails]);
 
   return <SmartGreetingSubheaderWrapper>{text}</SmartGreetingSubheaderWrapper>;
 }
