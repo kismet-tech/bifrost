@@ -1,6 +1,6 @@
 {
   "name": "bifrost_builder",
-  "version": "1.112.0",
+  "version": "1.113.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
