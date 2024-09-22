@@ -2,7 +2,9 @@ import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
 import { BifrostConfiguration } from "./components/KismetForm/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
-import { handleBifrostTraveler } from "./utilities";
+import { registerBifrostPageVisit } from "./api/registerBifrostPageVisit";
+import { getBifrostTravelerId } from "./utilities/getBifrostTravelerId";
+import { maybeJoinTravelerWithKismetCampaign } from "./utilities/maybeJoinTravelerWithKismetCampaign";
 
 declare global {
   interface Window {
@@ -10,31 +12,43 @@ declare global {
   }
 }
 
+const loadBifrost = async () => {
+  console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+  console.log("🧊  Placing the Bifrost 🧊");
+  console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
+  console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+
+  const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
+
+  const { bifrostTravelerId } = await getBifrostTravelerId();
+
+  registerBifrostPageVisit({
+    hotelId: bifrostConfiguration.hotelId,
+    url: window.location.href,
+    referrerUrl: document.referrer,
+    bifrostTravelerId,
+  });
+
+  maybeJoinTravelerWithKismetCampaign({
+    bifrostTravelerId,
+  });
+
+  injectDynamicRFP({ bifrostTravelerId, bifrostConfiguration });
+};
+
 export const main = () => {
   if (!window.hasBifrostLoaded) {
     window.hasBifrostLoaded = true;
-
-    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-    console.log("🧊  Placing the Bifrost 🧊");
-    console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
-    console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
-
-    const bifrostConfiguration: BifrostConfiguration =
-      getBifrostConfiguration();
-
-    const url = new URL(window.location.href);
-    handleBifrostTraveler(url);
 
     if (
       document.readyState === "complete" ||
       document.readyState === "interactive"
     ) {
-      // If the DOM is already loaded, replace the form immediately
-      injectDynamicRFP({ bifrostConfiguration });
+      loadBifrost();
     } else {
       // Otherwise, set an event listener
       document.addEventListener("DOMContentLoaded", () => {
-        injectDynamicRFP({ bifrostConfiguration });
+        loadBifrost();
       });
     }
   }

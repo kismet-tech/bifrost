@@ -5,6 +5,7 @@ function App() {
   return (
     <>
       <KismetForm
+        bifrostTravelerId="local_testing"
         bifrostConfiguration={{
           hotelId: "testing",
           bifrostFormId: "testing-1",

@@ -6,16 +6,12 @@ import {
 } from "./models";
 import { useCallback, useState } from "react";
 import { FacebookLoginButton } from "./components/FacebookLoginButton/FacebookLoginButton";
-import axios from "axios";
 import { deepEqual } from "@/utilities/deepEqual";
 import { RenderedFormBlock } from "./components/RenderedFormBlock";
-import {
-  registerBifrostFormInputUrl,
-  submitGroupBookingFormUrl,
-} from "@/config";
 import { v4 as uuidv4 } from "uuid";
-import { getBifrostTravelerId } from "@/utilities";
 import { sentryScope } from "@/instrument";
+import { registerBifrostFormInput } from "../../api/registerBifrostFormInput";
+import { submitBifrostForm } from "../../api/submitBifrostForm";
 
 const Form = styled.form`
   display: flex;
@@ -52,13 +48,15 @@ const FacebookButtonWrapper = styled.div`
 `;
 
 interface KismetFormProps {
+  bifrostTravelerId: string;
   bifrostConfiguration: BifrostConfiguration;
 }
 
-export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
+export function KismetForm({
+  bifrostTravelerId,
+  bifrostConfiguration,
+}: KismetFormProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
-
-  const maybeBifrostTravelerId: string | undefined = getBifrostTravelerId();
 
   const getInitialFormState = (): Record<string, string> => {
     return bifrostConfiguration.formBlocks.reduce(
@@ -90,20 +88,6 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
   const [formState, updateFormState] = useState<Record<string, string>>(
     getInitialFormState()
   );
-
-  const registerBifrostFormInput = async () => {
-    await axios.post(
-      registerBifrostFormInputUrl,
-      {
-        hotelId: bifrostConfiguration.hotelId,
-        bifrostTravelerId: maybeBifrostTravelerId,
-        bifrostFormId: bifrostConfiguration.bifrostFormId,
-        localFormUserSessionId,
-        formData: formState,
-      },
-      {}
-    );
-  };
 
   const handleUpdateFormState = useCallback(
     ({ keyName, keyValue }: { keyName: string; keyValue: string }) => {
@@ -142,7 +126,7 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
         if (previousFormFieldConfigurationsStack.length > 0) {
           const poppedFormFieldConfigurations =
             previousFormFieldConfigurationsStack[
-            previousFormFieldConfigurationsStack.length - 1
+              previousFormFieldConfigurationsStack.length - 1
             ];
 
           updateFormState((previousFormState): Record<string, string> => {
@@ -177,23 +161,25 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
 
   const handleSubmitForm = async () => {
     try {
-      const response = await axios.post(
-        submitGroupBookingFormUrl,
-        {
-          hotelId: bifrostConfiguration.hotelId,
-          bifrostTravelerId: maybeBifrostTravelerId,
-          bifrostFormId: bifrostConfiguration.bifrostFormId,
-          formData: formState,
-        },
-        {}
-      );
+      const response = await submitBifrostForm({
+        hotelId: bifrostConfiguration.hotelId,
+        bifrostTravelerId,
+        bifrostFormId: bifrostConfiguration.bifrostFormId,
+        localFormUserSessionId,
+        formData: formState,
+      });
 
       if (response.data && response.data.error) {
-        const serverError = new Error(`BIFROST_SERVER_ERROR: ${response.data.error}`);
-        serverError.name = 'BIFROST_SERVER_ERROR';
+        const serverError = new Error(
+          `BIFROST_SERVER_ERROR: ${response.data.error}`
+        );
+        serverError.name = "BIFROST_SERVER_ERROR";
         sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
-        sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
-        sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+        sentryScope.setExtra("bifrostTravelerId", bifrostTravelerId);
+        sentryScope.setExtra(
+          "bifrostFormId",
+          bifrostConfiguration.bifrostFormId
+        );
         sentryScope.setExtra("formData", formState);
         sentryScope.setExtra("version", __APP_VERSION__);
         sentryScope.setExtra("serverResponse", response.data);
@@ -202,10 +188,14 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
       }
       console.log("COMPLETED");
     } catch (error) {
-      const updatedError = new Error(`BIFROST_FORM_SUBMISSION_ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      updatedError.name = 'BIFROST_FORM_SUBMISSION_ERROR';
+      const updatedError = new Error(
+        `BIFROST_FORM_SUBMISSION_ERROR: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+      updatedError.name = "BIFROST_FORM_SUBMISSION_ERROR";
       sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
-      sentryScope.setExtra("bifrostTravelerId", maybeBifrostTravelerId);
+      sentryScope.setExtra("bifrostTravelerId", bifrostTravelerId);
       sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
       sentryScope.setExtra("formData", formState);
       sentryScope.setExtra("version", __APP_VERSION__);
@@ -229,7 +219,8 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
             <RenderedFormBlock
               key={index}
               renderedFormFieldConfiguration={renderedFormFieldConfiguration}
-              maybeBifrostTravelerId={maybeBifrostTravelerId}
+              bifrostTravelerId={bifrostTravelerId}
+              hotelId={bifrostConfiguration.hotelId}
               formState={formState}
               handleUpdateFormState={handleUpdateFormState}
               handleSubmitForm={handleSubmitForm}
@@ -237,7 +228,15 @@ export function KismetForm({ bifrostConfiguration }: KismetFormProps) {
               popRightFormFieldConfigurationStack={
                 popRightFormFieldConfigurationStack
               }
-              registerBifrostFormInput={registerBifrostFormInput}
+              registerBifrostFormInput={async () => {
+                await registerBifrostFormInput({
+                  hotelId: bifrostConfiguration.hotelId,
+                  bifrostTravelerId,
+                  bifrostFormId: bifrostConfiguration.bifrostFormId,
+                  localFormUserSessionId,
+                  formData: formState,
+                });
+              }}
             />
           );
         }
