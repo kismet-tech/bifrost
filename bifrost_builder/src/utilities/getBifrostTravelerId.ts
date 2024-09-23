@@ -10,7 +10,14 @@ export const getBifrostTravelerId = async (): Promise<{
     LOCAL_STORAGE_BIFROST_TRAVELER_ID_KEY
   );
 
-  if (maybeExistingBifrostTravelerId) {
+  console.log(
+    `maybeExistingBifrostTravelerId: ${maybeExistingBifrostTravelerId}`
+  );
+
+  if (
+    maybeExistingBifrostTravelerId &&
+    !["", "undefined"].includes(maybeExistingBifrostTravelerId)
+  ) {
     localStorage.removeItem(LOCAL_STORAGE_BIFROST_TRAVELER_ID_KEY);
     localStorage.setItem(
       LOCAL_STORAGE_BIFROST_TRAVELER_ID_KEY,
@@ -24,7 +31,8 @@ export const getBifrostTravelerId = async (): Promise<{
 
   try {
     const { bifrostTravelerId } = await getOrCreateBifrostTravelerId();
-    console.log(`Received bifrostTravelerId: ${bifrostTravelerId}`);
+    console.log(`bifrostTravelerId: ${bifrostTravelerId}`);
+
     localStorage.setItem(
       LOCAL_STORAGE_BIFROST_TRAVELER_ID_KEY,
       bifrostTravelerId

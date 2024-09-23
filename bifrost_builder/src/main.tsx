@@ -22,6 +22,8 @@ const loadBifrost = async () => {
 
   const { bifrostTravelerId } = await getBifrostTravelerId();
 
+  console.log(`bifrostTravelerId: '${bifrostTravelerId}'`);
+
   registerBifrostPageVisit({
     hotelId: bifrostConfiguration.hotelId,
     url: window.location.href,

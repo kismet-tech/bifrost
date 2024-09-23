@@ -1,6 +1,6 @@
 {
   "name": "bifrost_builder",
-  "version": "1.112.0",
+  "version": "1.125.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy-beta": "yarn version --minor --no-git-tag-version && SENTRY_ENV=beta yarn build && gsutil -h 'Cache-Control:no-cache, no-store, max-age=0' cp dist/bifrost.iife.js gs://beta_kismet_bifrost/bifrost.iife.js",
-    "deploy-prod": "yarn version --minor && SENTRY_ENV=prod yarn build && gsutil cp dist/bifrost.iife.js gs://kismet_bifrost/bifrost.js",
+    "deploy_beta": "yarn version --minor --no-git-tag-version && SENTRY_ENV=beta yarn build && gsutil -h 'Cache-Control:no-cache, no-store, max-age=0' cp dist/bifrost.iife.js gs://beta_kismet_bifrost/bifrost.iife.js",
+    "deploy_prod": "yarn version --minor && SENTRY_ENV=prod yarn build && gsutil cp dist/bifrost.iife.js gs://kismet_bifrost/bifrost.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "cloud_build_storybook": "gcloud builds submit --config '.storybook/cloudbuild.yaml' --project playgroundist",
