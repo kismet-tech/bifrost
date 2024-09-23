@@ -1,5 +1,4 @@
-import { joinTravelerWithKismetCampaignUrl } from "@/config";
-import axios from "axios";
+import { Api } from ".";
 
 interface JoinTravelerWithKismetCampaignProps {
   campaignUnitId: string;
@@ -10,8 +9,8 @@ export const joinTravelerWithKismetCampaign = async ({
   campaignUnitId,
   bifrostTravelerId,
 }: JoinTravelerWithKismetCampaignProps) => {
-  return await axios.post(
-    joinTravelerWithKismetCampaignUrl,
+  return await Api.post(
+    `/Bifrost/JoinTravelerWithKismetCampaign`,
     {
       campaignUnitId,
       bifrostTravelerId,

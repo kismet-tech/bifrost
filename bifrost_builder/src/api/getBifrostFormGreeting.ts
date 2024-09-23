@@ -1,5 +1,4 @@
-import { getBifrostFormGreetingUrl } from "@/config";
-import axios from "axios";
+import { Api } from ".";
 
 interface GetBifrostFormGreetingProps {
   hotelId: string;
@@ -12,8 +11,8 @@ export const getBifrostFormGreeting = async ({
   bifrostTravelerId,
   additionalDetails,
 }: GetBifrostFormGreetingProps) => {
-  return await axios.post(
-    getBifrostFormGreetingUrl,
+  return await Api.post(
+    `/Bifrost/GetBifrostFormGreeting`,
     {
       hotelId,
       bifrostTravelerId,

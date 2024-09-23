@@ -1,5 +1,4 @@
-import { registerBifrostPageVisitUrl } from "@/config";
-import axios from "axios";
+import { Api } from ".";
 
 interface RegisterBifrostPageVisitProps {
   hotelId: string;
@@ -14,8 +13,8 @@ export const registerBifrostPageVisit = async ({
   referrerUrl,
   bifrostTravelerId,
 }: RegisterBifrostPageVisitProps) => {
-  await axios.post(
-    registerBifrostPageVisitUrl,
+  await Api.post(
+    `/Bifrost/RegisterBifrostPageVisit`,
     {
       hotelId,
       url,
