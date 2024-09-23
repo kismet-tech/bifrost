@@ -4,11 +4,11 @@ import axios from "axios";
 export const getOrCreateBifrostTravelerId = async (): Promise<{
   bifrostTravelerId: string;
 }> => {
-  const response = await axios.post<{ bifrostTravelerId: string }>(
-    getOrCreateBifrostTravelerIdUrl,
-    {},
-    {}
-  );
+  const response = await axios.post<{
+    success: { bifrostTravelerId: string };
+  }>(getOrCreateBifrostTravelerIdUrl, {}, {});
 
-  return response.data;
+  const bifrostTravelerId: string = response.data.success.bifrostTravelerId;
+
+  return { bifrostTravelerId };
 };
