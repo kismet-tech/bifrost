@@ -116,12 +116,6 @@ export function getBifrostConfiguration(): BifrostConfiguration {
         },
       ];
     }
-
-    return {
-      hotelId,
-      bifrostFormId,
-      formBlocks,
-    };
   } else if (hostname === "theknollcroft.com") {
     hotelId = "knollcroft";
     bifrostFormId = "2";
@@ -171,6 +165,9 @@ export function getBifrostConfiguration(): BifrostConfiguration {
       formBlocks = nbhdExtendedStayBlocks;
     }
   }
+
+  console.log(`hotelId: ${hotelId}`);
+  console.log(`bifrostFormId: ${bifrostFormId}`);
 
   return {
     hotelId,
