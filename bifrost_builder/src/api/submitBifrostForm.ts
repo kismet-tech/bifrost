@@ -1,5 +1,4 @@
-import { submitBifrostFormUrl } from "@/config";
-import axios from "axios";
+import { Api } from ".";
 
 interface SubmitBifrostFormProps {
   hotelId: string;
@@ -16,8 +15,8 @@ export const submitBifrostForm = async ({
   localFormUserSessionId,
   formData,
 }: SubmitBifrostFormProps) => {
-  return await axios.post(
-    submitBifrostFormUrl,
+  return await Api.post(
+    `/Bifrost/SubmitBifrostForm`,
     {
       hotelId,
       bifrostTravelerId,

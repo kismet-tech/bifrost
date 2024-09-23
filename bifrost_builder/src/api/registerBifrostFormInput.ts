@@ -1,5 +1,4 @@
-import { registerBifrostFormInputUrl } from "@/config";
-import axios from "axios";
+import { Api } from ".";
 
 interface RegisterBifrostFormInputProps {
   hotelId: string;
@@ -16,10 +15,10 @@ export const registerBifrostFormInput = async ({
   localFormUserSessionId,
   formData,
 }: RegisterBifrostFormInputProps) => {
-  await axios.post(
-    registerBifrostFormInputUrl,
+  await Api.post(
+    `/Bifrost/RegisterBifrostFormInput`,
     {
-      hotelId: hotelId,
+      hotelId,
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
