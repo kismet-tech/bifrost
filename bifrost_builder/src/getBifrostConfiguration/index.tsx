@@ -1,5 +1,6 @@
 import {
   BifrostConfiguration,
+  FormBlockConfiguration,
   FormBlockType,
 } from "@/components/KismetForm/models";
 import { knollcroftRoomOnlyFormBlocks } from "./knollcroftFormBlocks/knollcroftRoomOnlyFormBlocks";
@@ -21,17 +22,22 @@ export function getBifrostConfiguration(): BifrostConfiguration {
   console.log(`hostname: ${hostname}`);
   console.log(`urlPathname: ${urlPathname}`);
 
+  let hotelId: string = "";
+  let formBlocks: FormBlockConfiguration[] = [];
+  let bifrostFormId: string = "";
+
   // if (hostname === "www.knollcroft.com" && urlPathname === "/contact") {
-  if (
-    hostname === "www.knollcroft.com" &&
-    ["/contact", "/groups"].some((knollcroftPathname) =>
-      urlPathname.includes(knollcroftPathname)
-    )
-  ) {
-    return {
-      hotelId: "knollcroft",
-      bifrostFormId: "1",
-      formBlocks: [
+  if (hostname === "www.knollcroft.com") {
+    hotelId = "knollcroft";
+
+    if (
+      ["/contact", "/groups"].some((knollcroftPathname) =>
+        urlPathname.includes(knollcroftPathname)
+      )
+    ) {
+      bifrostFormId = "1";
+
+      formBlocks = [
         {
           formBlockType: FormBlockType.METADATA,
           keyName: "inquiryCategory",
@@ -108,62 +114,67 @@ export function getBifrostConfiguration(): BifrostConfiguration {
             },
           ],
         },
-      ],
-    };
-  } else if (hostname === "theknollcroft.com" && urlPathname === "/") {
+      ];
+    }
+
     return {
-      hotelId: "knollcroft",
-      bifrostFormId: "2",
-      formBlocks: [
-        {
-          formBlockType: FormBlockType.METADATA,
-          keyName: "inquiryCategory",
-          keyValue: "Group Booking",
-        },
-        {
-          formBlockType: FormBlockType.TEXT_INPUT,
-          label: "Full name",
-          keyName: "fullName",
-          placeholder: "Your full name",
-          inputType: "text",
-        },
-        {
-          formBlockType: FormBlockType.TEXT_INPUT,
-          label: "Email",
-          keyName: "email",
-          placeholder: "",
-          inputType: "email",
-        },
-        {
-          formBlockType: FormBlockType.TEXT_INPUT,
-          label: "Phone",
-          keyName: "phoneNumber",
-          placeholder: "Your phone number",
-          inputType: "tel",
-        },
-        {
-          formBlockType: FormBlockType.TEXT_AREA_INPUT,
-          label: "The details",
-          keyName: "additionalDetails",
-          placeholder: "Tell us about your plans...",
-        },
-      ],
+      hotelId,
+      bifrostFormId,
+      formBlocks,
     };
+  } else if (hostname === "theknollcroft.com") {
+    hotelId = "knollcroft";
+    bifrostFormId = "2";
+
+    formBlocks = [
+      {
+        formBlockType: FormBlockType.METADATA,
+        keyName: "inquiryCategory",
+        keyValue: "Group Booking",
+      },
+      {
+        formBlockType: FormBlockType.TEXT_INPUT,
+        label: "Full name",
+        keyName: "fullName",
+        placeholder: "Your full name",
+        inputType: "text",
+      },
+      {
+        formBlockType: FormBlockType.TEXT_INPUT,
+        label: "Email",
+        keyName: "email",
+        placeholder: "",
+        inputType: "email",
+      },
+      {
+        formBlockType: FormBlockType.TEXT_INPUT,
+        label: "Phone",
+        keyName: "phoneNumber",
+        placeholder: "Your phone number",
+        inputType: "tel",
+      },
+      {
+        formBlockType: FormBlockType.TEXT_AREA_INPUT,
+        label: "The details",
+        keyName: "additionalDetails",
+        placeholder: "Tell us about your plans...",
+      },
+    ];
   } else if (hostname.includes("theneighborhoodhotel.com")) {
+    hotelId = "nbhd";
+
     if (urlPathname.includes("/group-bookings")) {
-      return {
-        hotelId: "nbhd",
-        bifrostFormId: "3",
-        formBlocks: nbhdGroupBookingsFormBlocks,
-      };
+      bifrostFormId = "3";
+      formBlocks = nbhdGroupBookingsFormBlocks;
     } else if (urlPathname.includes("/extended-stays")) {
-      return {
-        hotelId: "nbhd",
-        bifrostFormId: "4",
-        formBlocks: nbhdExtendedStayBlocks,
-      };
+      bifrostFormId = "4";
+      formBlocks = nbhdExtendedStayBlocks;
     }
   }
 
-  return { hotelId: "", bifrostFormId: "5", formBlocks: [] };
+  return {
+    hotelId,
+    bifrostFormId,
+    formBlocks,
+  };
 }
