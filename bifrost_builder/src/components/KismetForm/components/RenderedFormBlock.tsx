@@ -1,4 +1,6 @@
+import { CalendarDate } from "@/models/CalendarDate";
 import { FormBlockConfiguration, FormBlockType } from "../models";
+import { FormDateRangePickerField } from "./FormDateRangePickerField";
 import { FormHeader } from "./FormHeader";
 import { FormMetadata } from "./FormMetadata";
 import { FormSelectField } from "./FormSelectField";
@@ -100,6 +102,32 @@ export function RenderedFormBlock({
           handleUpdateFormState({
             keyName: renderedFormFieldConfiguration.keyName,
             keyValue,
+          });
+        }}
+        registerBifrostFormInput={registerBifrostFormInput}
+      />
+    );
+  } else if (
+    renderedFormFieldConfiguration.formBlockType ===
+    FormBlockType.DATE_RANGE_PICKER
+  ) {
+    return (
+      <FormDateRangePickerField
+        configuration={renderedFormFieldConfiguration}
+        formState={formState}
+        onChange={({
+          startCalendarDate,
+          endCalendarDate,
+        }: {
+          startCalendarDate?: CalendarDate;
+          endCalendarDate?: CalendarDate;
+        }) => {
+          handleUpdateFormState({
+            keyName: renderedFormFieldConfiguration.keyName,
+            keyValue: JSON.stringify({
+              startCalendarDate,
+              endCalendarDate,
+            }),
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
