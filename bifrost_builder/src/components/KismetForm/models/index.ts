@@ -15,6 +15,7 @@ export enum FormBlockType {
   TEXT_INPUT = "TEXT_INPUT",
   SELECT_INPUT = "SELECT_INPUT",
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
+  DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
 
   //////////////////////////////////////////////////
   // Other
@@ -81,6 +82,15 @@ export interface SelectInputFormBlockConfiguration
   options: SelectInputFormBlockConfigurationOption[];
 }
 
+export interface DateRangePickerFormBlockConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.DATE_RANGE_PICKER;
+
+  keyName: string;
+
+  // Todo: Add UI Properties
+}
+
 export interface ReturnToPreviousBranchButtonConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON;
@@ -99,6 +109,7 @@ export type FormBlockConfiguration =
   | TextInputFormBlockConfiguration
   | TextAreaInputFormBlockConfiguration
   | SelectInputFormBlockConfiguration
+  | DateRangePickerFormBlockConfiguration
   | HeaderBlockConfiguration
   | SubheaderBlockConfiguration
   | SmartGreetingSubheaderBlockConfiguration
