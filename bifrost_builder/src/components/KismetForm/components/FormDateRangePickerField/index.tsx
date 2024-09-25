@@ -1,5 +1,15 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { DateRangePickerFormBlockConfiguration } from "../../models";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
+import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
+
+interface LocalCalendarDateRange {
+  startCalendarDate?: CalendarDate;
+  endCalendarDate?: CalendarDate;
+}
 
 export interface FormDateRangePickerFieldProps {
   configuration: DateRangePickerFormBlockConfiguration;
@@ -18,34 +28,57 @@ export function FormDateRangePickerField({
   onChange,
   registerBifrostFormInput,
 }: FormDateRangePickerFieldProps) {
-  const handleOnChangeStartCalendarDate = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const [year, month, day] = event.target.value.split("-").map(Number);
-    const startCalendarDate: CalendarDate = { year, month, day };
-    onChange({ startCalendarDate });
+  const [localCalendarDateRange, setLocalCalendarDateRange] =
+    useState<LocalCalendarDateRange>({
+      startCalendarDate: undefined,
+      endCalendarDate: undefined,
+    });
 
-    registerBifrostFormInput();
-  };
+  const onChangeLocalCalendarDateRange = (dateRange: DateRange | undefined) => {
+    if (!dateRange) return;
 
-  const handleOnChangeEndCalendarDate = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const [year, month, day] = event.target.value.split("-").map(Number);
-    const endCalendarDate: CalendarDate = { year, month, day };
-    onChange({ endCalendarDate });
+    setLocalCalendarDateRange(
+      (previousLocalCalendarDateRange): LocalCalendarDateRange => {
+        const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
+          startCalendarDate: dateRange.from
+            ? convertNativeDateToLocalCalendarDate(dateRange.from)
+            : previousLocalCalendarDateRange.startCalendarDate,
+          endCalendarDate: dateRange.to
+            ? convertNativeDateToLocalCalendarDate(dateRange.to)
+            : previousLocalCalendarDateRange.endCalendarDate,
+        };
 
-    registerBifrostFormInput();
+        if (
+          updatedLocalCalendarDateRange.startCalendarDate &&
+          updatedLocalCalendarDateRange.endCalendarDate
+        ) {
+          onChange({
+            startCalendarDate: updatedLocalCalendarDateRange.startCalendarDate,
+            endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
+          });
+          registerBifrostFormInput();
+        }
+
+        return updatedLocalCalendarDateRange;
+      }
+    );
   };
 
   return (
-    <div>
-      <div>
-        Start:
-        <input onChange={handleOnChangeStartCalendarDate} type="date" />
-        End:
-        <input onChange={handleOnChangeEndCalendarDate} type="date" />
-      </div>
-    </div>
+    <DateRangePicker
+      dateRange={{
+        from: localCalendarDateRange.startCalendarDate
+          ? convertLocalCalendarDateToNativeDate(
+              localCalendarDateRange.startCalendarDate
+            )
+          : undefined,
+        to: localCalendarDateRange.endCalendarDate
+          ? convertLocalCalendarDateToNativeDate(
+              localCalendarDateRange.endCalendarDate
+            )
+          : undefined,
+      }}
+      setDateRange={onChangeLocalCalendarDateRange}
+    />
   );
 }

@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export interface DateRangePickerProps
   extends React.HTMLAttributes<HTMLDivElement> {
   dateRange: DateRange | undefined;
-  setDateRange: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+  setDateRange: (dateRange: DateRange | undefined) => void;
   className?: string;
 }
 
