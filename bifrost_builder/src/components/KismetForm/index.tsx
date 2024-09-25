@@ -28,19 +28,6 @@ const Form = styled.form`
   }
 `;
 
-// const Button = styled.button`
-//   width: 100%;
-//   margin-top: 1.5rem;
-//   background-color: #57c0b2;
-//   color: white;
-//   padding: 0.5rem 1rem;
-//   border-radius: 0.25rem;
-//   border: none;
-//   cursor: pointer;
-//   font-size: 1rem;
-//   font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-// `;
-
 const FacebookButtonWrapper = styled.div`
   width: 50%; /* Make the Facebook button half the size of the form */
   float: left; /* Float the button to the left */
