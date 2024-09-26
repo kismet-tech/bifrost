@@ -15,7 +15,8 @@ export const knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNode
       roomsAreNotAvailableBranchButAlternativesAreAvailableFormBlocks:
         knollcroftSocialAlternateRoomAvailabilityFormBlocks,
       roomsAreNotAvailableBranchAndNoAlternativesAreAvailableFormBlocks: [],
-
+      startCalendarDateKeyName: "start_date",
+      endCalendarDateKeyName: "end_date",
       alternativeStartCalendarDateKeyName: "alternate_start_date",
       alternativeEndCalendarDateKeyName: "alternate_end_date",
     },

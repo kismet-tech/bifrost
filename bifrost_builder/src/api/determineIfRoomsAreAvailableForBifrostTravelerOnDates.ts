@@ -3,11 +3,15 @@ import { Api } from ".";
 
 interface DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps {
   hotelId: string;
+  startCalendarDate: CalendarDate;
+  endCalendarDate: CalendarDate;
   formData: Record<string, string>;
 }
 
 export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({
   hotelId,
+  startCalendarDate,
+  endCalendarDate,
   formData,
 }: DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps): Promise<{
   roomsAreAvailable: boolean;
@@ -18,6 +22,8 @@ export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({
     `/Bifrost/DetermineIfRoomsAreAvailableForBifrostTravelerOnDates`,
     {
       hotelId,
+      startCalendarDate,
+      endCalendarDate,
       formData,
     },
     {}

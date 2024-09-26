@@ -21,6 +21,8 @@ interface AreRoomsAvailableOnDatesSmartBranchingNodeProps {
 
 export function AreRoomsAvailableOnDatesSmartBranchingNode({
   configuration: {
+    startCalendarDateKeyName,
+    endCalendarDateKeyName,
     alternativeStartCalendarDateKeyName,
     alternativeEndCalendarDateKeyName,
     rommsAreAvailableBranchFormBlocks,
@@ -40,6 +42,8 @@ export function AreRoomsAvailableOnDatesSmartBranchingNode({
         alternativeEndCalendarDate,
       } = await determineIfRoomsAreAvailableForBifrostTravelerOnDates({
         hotelId,
+        startCalendarDate: JSON.parse(formState[startCalendarDateKeyName]),
+        endCalendarDate: JSON.parse(formState[endCalendarDateKeyName]),
         formData: formState,
       });
 
