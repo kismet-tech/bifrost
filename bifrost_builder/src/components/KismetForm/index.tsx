@@ -128,10 +128,10 @@ export function KismetForm({
             return updatedFormState;
           });
 
-          const udatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
+          const updatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
             [...previousFormFieldConfigurationsStack.slice(0, -1)];
 
-          return udatedFormFieldConfigurationsStack;
+          return updatedFormFieldConfigurationsStack;
         } else {
           return previousFormFieldConfigurationsStack;
         }

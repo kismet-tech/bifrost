@@ -11,6 +11,7 @@ export const knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks: F
       formBlockType: FormBlockType.IS_EVENT_SPACE_REQUIRED_SMART_BRANCHING_NODE,
       eventSpaceIsRequiredBranchFormBlocks:
         knollcroftSocialHotelRoomRequirementFormBlocks,
+
       eventSpaceIsNotRequiredBranchFormBlocks:
         knollcroftSocialRoomsOnlyAreHotelRoomDatesFlexibleFormBlocks,
     },

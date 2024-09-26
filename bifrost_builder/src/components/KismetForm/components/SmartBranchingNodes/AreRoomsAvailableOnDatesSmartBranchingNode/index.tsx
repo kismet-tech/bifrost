@@ -36,6 +36,22 @@ export function AreRoomsAvailableOnDatesSmartBranchingNode({
 }: AreRoomsAvailableOnDatesSmartBranchingNodeProps) {
   useEffect(() => {
     async function branchAccordingToEventSpaceRequirement() {
+      const startCalendarDate =
+        startCalendarDateKeyName && formState[startCalendarDateKeyName]
+          ? JSON.parse(formState[startCalendarDateKeyName])
+          : undefined;
+      const endCalendarDate =
+        endCalendarDateKeyName && formState[endCalendarDateKeyName]
+          ? JSON.parse(formState[endCalendarDateKeyName])
+          : undefined;
+
+      if (!endCalendarDate || !startCalendarDate) {
+        console.log(
+          "Missing endCalendarDate or startCalendarDate | Pushing roomsAreAvailableBranchFormBlocks"
+        );
+        pushFormFieldConfigurationStack(rommsAreAvailableBranchFormBlocks);
+      }
+
       const {
         roomsAreAvailable,
         alternativeStartCalendarDate,
@@ -48,6 +64,7 @@ export function AreRoomsAvailableOnDatesSmartBranchingNode({
       });
 
       if (roomsAreAvailable) {
+        console.log("Pushing roomsAreAvailableBranchFormBlocks");
         pushFormFieldConfigurationStack(rommsAreAvailableBranchFormBlocks);
       } else {
         if (alternativeStartCalendarDate && alternativeEndCalendarDate) {
@@ -61,10 +78,16 @@ export function AreRoomsAvailableOnDatesSmartBranchingNode({
             keyValue: JSON.stringify(alternativeEndCalendarDate),
           });
 
+          console.log(
+            "Pushing roomsAreNotAvailableBranchButAlternativesAreAvailableFormBlocks"
+          );
           pushFormFieldConfigurationStack(
             roomsAreNotAvailableBranchButAlternativesAreAvailableFormBlocks
           );
         } else {
+          console.log(
+            "Pushing roomsAreNotAvailableBranchAndNoAlternativesAreAvailableFormBlocks"
+          );
           pushFormFieldConfigurationStack(
             roomsAreNotAvailableBranchAndNoAlternativesAreAvailableFormBlocks
           );

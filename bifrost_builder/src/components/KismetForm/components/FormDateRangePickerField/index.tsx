@@ -2,11 +2,15 @@ import { CalendarDate } from "@/models/CalendarDate";
 import { DateRangePickerFormBlockConfiguration } from "../../models";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
 import { FormField } from "../FormField";
 import { FormLabel } from "../FormLabel";
+import {
+  attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
@@ -15,6 +19,7 @@ interface LocalCalendarDateRange {
 
 export interface FormDateRangePickerFieldProps {
   configuration: DateRangePickerFormBlockConfiguration;
+  hotelId: string;
   formState: Record<string, string>;
   onChange: ({
     startCalendarDate,
@@ -27,7 +32,9 @@ export interface FormDateRangePickerFieldProps {
 }
 
 export function FormDateRangePickerField({
-  configuration,
+  configuration: { label, startCalendarDateKeyName, endCalendarDateKeyName },
+  hotelId,
+  formState,
   onChange,
   registerBifrostFormInput,
 }: FormDateRangePickerFieldProps) {
@@ -36,6 +43,71 @@ export function FormDateRangePickerField({
       startCalendarDate: undefined,
       endCalendarDate: undefined,
     });
+
+  // Attempt to Prefill Field Using Prior Responses
+  useEffect(() => {
+    async function prefillKismetStartCalendarDateFieldUsingPriorResponses() {
+      const { targetKeyCalendarDateValue } =
+        await attemptToPrefillKismetFieldUsingPriorResponses({
+          hotelId,
+          formData: formState,
+          targetKeyName: startCalendarDateKeyName,
+          targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
+        });
+
+      if (!formState[startCalendarDateKeyName] && targetKeyCalendarDateValue) {
+        setLocalCalendarDateRange(
+          (previousLocalCalendarDateRange): LocalCalendarDateRange => {
+            const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
+              startCalendarDate: targetKeyCalendarDateValue,
+              endCalendarDate: previousLocalCalendarDateRange.endCalendarDate,
+            };
+
+            onChange({
+              startCalendarDate:
+                updatedLocalCalendarDateRange.startCalendarDate,
+              endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
+            });
+
+            return updatedLocalCalendarDateRange;
+          }
+        );
+      }
+    }
+
+    async function prefillKismetEndCalendarDateFieldUsingPriorResponses() {
+      const { targetKeyCalendarDateValue } =
+        await attemptToPrefillKismetFieldUsingPriorResponses({
+          hotelId,
+          formData: formState,
+          targetKeyName: endCalendarDateKeyName,
+          targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
+        });
+
+      if (!formState[endCalendarDateKeyName] && targetKeyCalendarDateValue) {
+        setLocalCalendarDateRange(
+          (previousLocalCalendarDateRange): LocalCalendarDateRange => {
+            const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
+              startCalendarDate:
+                previousLocalCalendarDateRange.startCalendarDate,
+              endCalendarDate: targetKeyCalendarDateValue,
+            };
+
+            onChange({
+              startCalendarDate:
+                updatedLocalCalendarDateRange.startCalendarDate,
+              endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
+            });
+
+            return updatedLocalCalendarDateRange;
+          }
+        );
+      }
+    }
+
+    prefillKismetStartCalendarDateFieldUsingPriorResponses();
+    prefillKismetEndCalendarDateFieldUsingPriorResponses();
+  }, []);
 
   const onChangeLocalCalendarDateRange = (dateRange: DateRange | undefined) => {
     if (!dateRange) return;
@@ -70,9 +142,9 @@ export function FormDateRangePickerField({
   return (
     <FormField>
       <FormLabel
-        htmlFor={`kismet_${configuration.startCalendarDateKeyName}_${configuration.endCalendarDateKeyName}`}
+        htmlFor={`kismet_${startCalendarDateKeyName}_${endCalendarDateKeyName}`}
       >
-        {configuration.label}
+        {label}
       </FormLabel>
 
       <DateRangePicker

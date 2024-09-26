@@ -69,6 +69,7 @@ export function RenderedFormBlock({
     return (
       <FormTextField
         configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
         formState={formState}
         onChange={(keyValue: string) => {
           handleUpdateFormState({
@@ -86,6 +87,7 @@ export function RenderedFormBlock({
     return (
       <FormTextAreaField
         configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
         formState={formState}
         onChange={(keyValue: string) => {
           handleUpdateFormState({
@@ -102,6 +104,7 @@ export function RenderedFormBlock({
     return (
       <FormSelectField
         configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
         formState={formState}
         onChange={(keyValue: string) => {
           handleUpdateFormState({
@@ -119,6 +122,7 @@ export function RenderedFormBlock({
     return (
       <FormDateRangePickerField
         configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
         formState={formState}
         onChange={({
           startCalendarDate,

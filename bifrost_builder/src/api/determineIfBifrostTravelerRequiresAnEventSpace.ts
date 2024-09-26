@@ -11,14 +11,7 @@ export const determineIfBifrostTravelerRequiresAnEventSpace = async ({
 }: DetermineIfBifrostTravelerRequiresAnEventSpaceProps): Promise<{
   isEventSpaceRequired: boolean;
 }> => {
-  const response = await Api.post<
-    | {
-        success?: { isEventSpaceRequired: boolean };
-      }
-    | {
-        error?: { reason: string };
-      }
-  >(
+  const response = await Api.post(
     `/Bifrost/DetermineIfBifrostTravelerRequiresAnEventSpace`,
     {
       hotelId,
@@ -30,13 +23,8 @@ export const determineIfBifrostTravelerRequiresAnEventSpace = async ({
   if ("error" in response.data) {
     console.error(response.data.error?.reason ?? "Unknown error");
     return { isEventSpaceRequired: false };
-  } else {
-    if (!("success" in response.data)) {
-      return { isEventSpaceRequired: false };
-    }
-    const isEventSpaceRequired: boolean =
-      response.data.success?.isEventSpaceRequired ?? false;
-
-    return { isEventSpaceRequired };
   }
+  const isEventSpaceRequired = response.data.success.isEventSpaceRequired;
+
+  return { isEventSpaceRequired };
 };

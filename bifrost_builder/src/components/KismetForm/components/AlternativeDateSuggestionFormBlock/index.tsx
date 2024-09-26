@@ -3,6 +3,7 @@ import { FormBlockConfiguration } from "../../models";
 import { Button } from "@/components/ui/button";
 import { AlternativeDateSuggestionFormBlockConfiguration } from "../../models/AlternativeDateSuggestionFormBlockConfiguration";
 import { CalendarDate } from "@/models/CalendarDate";
+import { renderCalendarDate } from "@/utilities/dates/renderCalendarDate";
 
 const Wrapper = styled.div`
   display: flex;
@@ -100,6 +101,13 @@ export function AlternativeDateSuggestionFormBlock({
 
   return (
     <Wrapper>
+      <div>Sorry, but have no availability on those dates.</div>
+      <div>
+        However, we do have availability from $
+        {renderCalendarDate({ calendarDate: alternativeStartCalendarDate })} to{" "}
+        {renderCalendarDate({ calendarDate: alternativeEndCalendarDate })}
+      </div>
+
       <Button onClick={onClickAcceptAlternativeDates}>
         {acceptAlternativeDatesLabel}
       </Button>
