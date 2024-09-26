@@ -5,6 +5,8 @@ import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertL
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
+import { FormField } from "../FormField";
+import { FormLabel } from "../FormLabel";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
@@ -25,6 +27,7 @@ export interface FormDateRangePickerFieldProps {
 }
 
 export function FormDateRangePickerField({
+  configuration,
   onChange,
   registerBifrostFormInput,
 }: FormDateRangePickerFieldProps) {
@@ -65,20 +68,28 @@ export function FormDateRangePickerField({
   };
 
   return (
-    <DateRangePicker
-      dateRange={{
-        from: localCalendarDateRange.startCalendarDate
-          ? convertLocalCalendarDateToNativeDate(
-              localCalendarDateRange.startCalendarDate
-            )
-          : undefined,
-        to: localCalendarDateRange.endCalendarDate
-          ? convertLocalCalendarDateToNativeDate(
-              localCalendarDateRange.endCalendarDate
-            )
-          : undefined,
-      }}
-      setDateRange={onChangeLocalCalendarDateRange}
-    />
+    <FormField>
+      <FormLabel
+        htmlFor={`kismet_${configuration.startCalendarDateKeyName}_${configuration.endCalendarDateKeyName}`}
+      >
+        {configuration.label}
+      </FormLabel>
+
+      <DateRangePicker
+        dateRange={{
+          from: localCalendarDateRange.startCalendarDate
+            ? convertLocalCalendarDateToNativeDate(
+                localCalendarDateRange.startCalendarDate
+              )
+            : undefined,
+          to: localCalendarDateRange.endCalendarDate
+            ? convertLocalCalendarDateToNativeDate(
+                localCalendarDateRange.endCalendarDate
+              )
+            : undefined,
+        }}
+        setDateRange={onChangeLocalCalendarDateRange}
+      />
+    </FormField>
   );
 }

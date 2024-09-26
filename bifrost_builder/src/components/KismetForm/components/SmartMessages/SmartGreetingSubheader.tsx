@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { SmartGreetingSubheaderBlockConfiguration } from "../models";
 import { useEffect, useState } from "react";
 import { getBifrostFormGreeting } from "@/api/getBifrostFormGreeting";
+import { SmartGreetingSubheaderBlockConfiguration } from "../../models";
 
 export const SmartGreetingSubheaderWrapper = styled.div`
   font-size: 1.3rem; /* Equivalent to text-3xl */

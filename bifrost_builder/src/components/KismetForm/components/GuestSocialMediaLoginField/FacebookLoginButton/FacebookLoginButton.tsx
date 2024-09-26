@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
+const FacebookButtonWrapper = styled.div`
+  width: 50%; /* Make the Facebook button half the size of the form */
+  float: left; /* Float the button to the left */
+  margin-bottom: 1.5rem; /* Add some spacing below the button */
+`;
+
 const Button = styled.button`
   width: 100%;
-  background-color: #4267b2; /* Facebook blue */
+  background-color: #3578e5;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem; /* Increase the border-radius for more rounded corners */
@@ -30,17 +36,23 @@ export function FacebookLoginButton() {
   };
 
   return (
-    <Button onClick={handleFacebookLogin} aria-label="Login with Facebook">
-      <SvgIcon
-        fill="#FFFFFF" /* Set the SVG color to white */
-        role="img"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="Facebook"
+    <FacebookButtonWrapper>
+      <Button
+        onClick={handleFacebookLogin}
+        aria-label="Login with Facebook"
+        style={{ color: "white", backgroundColor: "#3578e5" }}
       >
-        <path d={facebookSvgPath} />
-      </SvgIcon>
-      Login with Facebook
-    </Button>
+        <SvgIcon
+          fill="#FFFFFF" /* Set the SVG color to white */
+          role="img"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="Facebook"
+        >
+          <path d={facebookSvgPath} />
+        </SvgIcon>
+        Login with Facebook
+      </Button>
+    </FacebookButtonWrapper>
   );
 }
