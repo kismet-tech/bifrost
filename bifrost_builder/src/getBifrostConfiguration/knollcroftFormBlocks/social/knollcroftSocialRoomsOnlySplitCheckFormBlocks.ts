@@ -24,7 +24,7 @@ export const knollcroftSocialRoomsOnlySplitCheckFormBlocks: FormBlockConfigurati
         {
           label: "Guests will book on their own",
           keyValue: "guest_will_book_separately",
-          submitsForm: false,
+          submitsForm: true,
           branchFormBlocks: knollcroftCompletedFormBlocks,
         },
       ],
