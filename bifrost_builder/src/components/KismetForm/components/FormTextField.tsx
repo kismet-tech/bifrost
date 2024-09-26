@@ -3,6 +3,10 @@ import { TextInputFormBlockConfiguration } from "../models";
 import { FormLabel } from "./FormLabel";
 import { FormField } from "./FormField";
 import { ChangeEventHandler, useEffect, useState } from "react";
+import {
+  attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 
 const Input = styled.input`
   width: 100%;
@@ -14,18 +18,40 @@ const Input = styled.input`
 
 export interface FormTextFieldProps {
   configuration: TextInputFormBlockConfiguration;
+  hotelId: string;
   formState: Record<string, string>;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function FormTextField({
   configuration,
+  hotelId,
   formState,
   onChange,
   registerBifrostFormInput,
 }: FormTextFieldProps) {
   const [localValue, updateLocalValue] = useState<string>("");
+
+  // Attempt to Prefill Field Using Prior Responses
+  useEffect(() => {
+    async function prefillKismetFieldUsingPriorResponses() {
+      const { targetKeyStringValue } =
+        await attemptToPrefillKismetFieldUsingPriorResponses({
+          hotelId,
+          formData: formState,
+          targetKeyName: configuration.keyName,
+          targetValueType: PrefilledBifrostFormValueType.STRING,
+        });
+
+      if (!formState[configuration.keyName] && targetKeyStringValue) {
+        updateLocalValue(targetKeyStringValue);
+        onChange(targetKeyStringValue);
+      }
+    }
+
+    prefillKismetFieldUsingPriorResponses();
+  }, []);
 
   useEffect(() => {
     if (configuration.keyName in formState) {
