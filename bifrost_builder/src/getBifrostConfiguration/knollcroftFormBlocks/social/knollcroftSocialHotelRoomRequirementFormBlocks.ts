@@ -21,10 +21,16 @@ export const knollcroftSocialHotelRoomRequirementFormBlocks: FormBlockConfigurat
           keyValue: "true",
           submitsForm: false,
           branchFormBlocks: getDateSequenceFormBlockSequence({
-            fixedDatesPathFormBlocks:
-              knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
-            flexibleDatesPathFormBlocks:
-              knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+            fixedDatesPath: {
+              formBlocks:
+                knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+              submitsForm: false,
+            },
+            flexibleDatesPath: {
+              formBlocks:
+                knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+              submitsForm: false,
+            },
           }),
         },
         {

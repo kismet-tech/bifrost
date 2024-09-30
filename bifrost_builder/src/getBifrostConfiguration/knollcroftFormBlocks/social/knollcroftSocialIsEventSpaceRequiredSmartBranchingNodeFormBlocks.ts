@@ -15,10 +15,16 @@ export const knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks: F
 
       eventSpaceIsNotRequiredBranchFormBlocks: getDateSequenceFormBlockSequence(
         {
-          fixedDatesPathFormBlocks:
-            knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
-          flexibleDatesPathFormBlocks:
-            knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+          fixedDatesPath: {
+            formBlocks:
+              knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+            submitsForm: false,
+          },
+          flexibleDatesPath: {
+            formBlocks:
+              knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+            submitsForm: false,
+          },
         }
       ),
     },
