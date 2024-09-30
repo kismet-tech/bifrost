@@ -45,6 +45,6 @@ export const knollcroftTripDetailFormBlocks: FormBlockConfiguration[] = [
   },
   {
     formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON,
-    label: "back",
+    label: "Back",
   },
 ];

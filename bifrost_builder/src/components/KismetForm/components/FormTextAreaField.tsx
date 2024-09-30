@@ -1,20 +1,12 @@
-import styled from "styled-components";
-import { TextAreaInputFormBlockConfiguration } from "../models";
-import { FormLabel } from "./FormLabel";
-import { FormField } from "./FormField";
-import { ChangeEventHandler, useEffect, useState } from "react";
 import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
   PrefilledBifrostFormValueType,
+  attemptToPrefillKismetFieldUsingPriorResponses,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-`;
+import { ChangeEventHandler, useEffect, useState } from "react";
+import { TextAreaInputFormBlockConfiguration } from "../models";
+import { FormField } from "./FormField";
+import { FormLabel } from "./FormLabel";
+import { Textarea } from "@/components/ui/textarea";
 
 export interface FormTextAreaFieldProps {
   configuration: TextAreaInputFormBlockConfiguration;
@@ -76,7 +68,7 @@ export function FormTextAreaField({
       <FormLabel htmlFor={`form_${configuration.keyName}`}>
         {configuration.label}
       </FormLabel>
-      <TextArea
+      <Textarea
         onChange={handleOnChange}
         id={`form_${configuration.keyName}`}
         placeholder={configuration.placeholder}

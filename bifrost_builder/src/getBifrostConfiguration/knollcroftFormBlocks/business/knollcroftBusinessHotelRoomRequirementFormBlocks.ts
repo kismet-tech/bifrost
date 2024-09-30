@@ -3,7 +3,7 @@ import {
   FormBlockType,
 } from "@/components/KismetForm/models";
 import { knollcroftCompletedFormBlocks } from "../knollcroftCompletedFormBlocks";
-import { knollcroftBusinessAreHotelRoomDatesFlexibleFormBlocks } from "./knollcroftBusinessAreHotelRoomDatesFlexibleFormBlocks";
+import { getDateSequenceFormBlockSequence } from "../formBlockSequences/getDateSequenceFormBlockSequence";
 
 export const knollcroftBusinessHotelRoomRequirementFormBlocks: FormBlockConfiguration[] =
   [
@@ -19,8 +19,10 @@ export const knollcroftBusinessHotelRoomRequirementFormBlocks: FormBlockConfigur
           label: "Yes",
           keyValue: "true",
           submitsForm: false,
-          branchFormBlocks:
-            knollcroftBusinessAreHotelRoomDatesFlexibleFormBlocks,
+          branchFormBlocks: getDateSequenceFormBlockSequence({
+            fixedDatesPathFormBlocks: knollcroftCompletedFormBlocks,
+            flexibleDatesPathFormBlocks: knollcroftCompletedFormBlocks,
+          }),
         },
         {
           label: "No",

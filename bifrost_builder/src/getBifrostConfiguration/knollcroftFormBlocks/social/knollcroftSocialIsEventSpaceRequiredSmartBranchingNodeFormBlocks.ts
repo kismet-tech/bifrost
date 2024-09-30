@@ -2,8 +2,9 @@ import {
   FormBlockConfiguration,
   FormBlockType,
 } from "@/components/KismetForm/models";
-import { knollcroftSocialRoomsOnlyAreHotelRoomDatesFlexibleFormBlocks } from "./knollcroftSocialRoomsOnlyAreHotelRoomDatesFlexibleFormBlocks";
 import { knollcroftSocialHotelRoomRequirementFormBlocks } from "./knollcroftSocialHotelRoomRequirementFormBlocks";
+import { getDateSequenceFormBlockSequence } from "../formBlockSequences/getDateSequenceFormBlockSequence";
+import { knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks } from "./knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks";
 
 export const knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks: FormBlockConfiguration[] =
   [
@@ -12,7 +13,13 @@ export const knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks: F
       eventSpaceIsRequiredBranchFormBlocks:
         knollcroftSocialHotelRoomRequirementFormBlocks,
 
-      eventSpaceIsNotRequiredBranchFormBlocks:
-        knollcroftSocialRoomsOnlyAreHotelRoomDatesFlexibleFormBlocks,
+      eventSpaceIsNotRequiredBranchFormBlocks: getDateSequenceFormBlockSequence(
+        {
+          fixedDatesPathFormBlocks:
+            knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+          flexibleDatesPathFormBlocks:
+            knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks,
+        }
+      ),
     },
   ];

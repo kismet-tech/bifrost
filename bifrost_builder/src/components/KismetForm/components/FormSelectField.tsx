@@ -1,20 +1,18 @@
-import styled from "styled-components";
+import {
+  PrefilledBifrostFormValueType,
+  attemptToPrefillKismetFieldUsingPriorResponses,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect } from "react";
 import { SelectInputFormBlockConfiguration } from "../models";
 import { FormField } from "./FormField";
 import { FormLabel } from "./FormLabel";
-import { ChangeEventHandler, useEffect } from "react";
-import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
-  PrefilledBifrostFormValueType,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
-
-const Select = styled.select`
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-`;
 
 export interface FormSelectFieldProps {
   configuration: SelectInputFormBlockConfiguration;
@@ -52,10 +50,8 @@ export function FormSelectField({
     prefillKismetFieldUsingPriorResponses();
   }, []);
 
-  const handleOnChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    const value = event.target.value;
+  const handleOnChange = (value: string) => {
     onChange(value);
-
     registerBifrostFormInput();
   };
 
@@ -64,15 +60,19 @@ export function FormSelectField({
       <FormLabel htmlFor={`form_${keyName}`}>{label}</FormLabel>
       <Select
         value={selectedValue}
-        onChange={handleOnChange}
+        onValueChange={handleOnChange}
         name={keyName}
-        id={`form_${keyName}`}
       >
-        {options.map(({ label, keyValue: name }) => (
-          <option key={name} value={name}>
-            {label}
-          </option>
-        ))}
+        <SelectTrigger id={`form_${keyName}`}>
+          <SelectValue placeholder="Contact me by..." />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map(({ label, keyValue: name }) => (
+            <SelectItem key={name} value={name}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
     </FormField>
   );
