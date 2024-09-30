@@ -10,5 +10,8 @@ export default meta;
 type Story = StoryObj<typeof Slider>;
 
 export const Example: Story = {
-  args: {},
+  args: {
+    defaultValue: [25, 75],
+    minStepsBetweenThumbs: 1,
+  },
 };

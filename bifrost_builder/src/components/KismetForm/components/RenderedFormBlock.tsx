@@ -1,20 +1,21 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { FormBlockConfiguration, FormBlockType } from "../models";
+import { AlternativeDateSuggestionFormBlock } from "./AlternativeDateSuggestionFormBlock";
 import { FormDateRangePickerField } from "./FormDateRangePickerField";
 import { FormHeader } from "./FormHeader";
 import { FormMetadata } from "./FormMetadata";
+import { FormRangeSlider } from "./FormRangeSlider";
 import { FormSelectField } from "./FormSelectField";
 import { FormSubheader } from "./FormSubheader";
 import { FormTextAreaField } from "./FormTextAreaField";
 import { FormTextField } from "./FormTextField";
+import { GuestSocialMediaLoginField } from "./GuestSocialMediaLoginField";
 import { RenderableBrancingNode } from "./RenderedBranchingNode";
 import { ReturnToPreviousBranchButton } from "./ReturnToPreviousBranchButton";
-import { IsEventSpaceRequiredSmartBranchingNode } from "./SmartBranchingNodes/IsEventSpaceRequiredSmartBranchingNode";
-import { SmartGreetingSubheader } from "./SmartMessages/SmartGreetingSubheader";
-import { SmartFarewellSubheader } from "./SmartMessages/SmartFarewellSubheader";
-import { GuestSocialMediaLoginField } from "./GuestSocialMediaLoginField";
 import { AreRoomsAvailableOnDatesSmartBranchingNode } from "./SmartBranchingNodes/AreRoomsAvailableOnDatesSmartBranchingNode";
-import { AlternativeDateSuggestionFormBlock } from "./AlternativeDateSuggestionFormBlock";
+import { IsEventSpaceRequiredSmartBranchingNode } from "./SmartBranchingNodes/IsEventSpaceRequiredSmartBranchingNode";
+import { SmartFarewellSubheader } from "./SmartMessages/SmartFarewellSubheader";
+import { SmartGreetingSubheader } from "./SmartMessages/SmartGreetingSubheader";
 
 interface RenderableFormBlockProps {
   renderedFormFieldConfiguration: FormBlockConfiguration;
@@ -139,6 +140,27 @@ export function RenderedFormBlock({
           handleUpdateFormState({
             keyName: renderedFormFieldConfiguration.endCalendarDateKeyName,
             keyValue: JSON.stringify(endCalendarDate),
+          });
+        }}
+        registerBifrostFormInput={registerBifrostFormInput}
+      />
+    );
+  } else if (
+    renderedFormFieldConfiguration.formBlockType === FormBlockType.RANGE_SLIDER
+  ) {
+    return (
+      <FormRangeSlider
+        configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
+        formState={formState}
+        onChange={({ min, max }) => {
+          handleUpdateFormState({
+            keyName: renderedFormFieldConfiguration.valueMinKeyName,
+            keyValue: min?.toString() ?? "",
+          });
+          handleUpdateFormState({
+            keyName: renderedFormFieldConfiguration.valueMaxKeyName,
+            keyValue: max?.toString() ?? "",
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
