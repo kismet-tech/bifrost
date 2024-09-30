@@ -20,8 +20,14 @@ export const knollcroftBusinessHotelRoomRequirementFormBlocks: FormBlockConfigur
           keyValue: "true",
           submitsForm: false,
           branchFormBlocks: getDateSequenceFormBlockSequence({
-            fixedDatesPathFormBlocks: knollcroftCompletedFormBlocks,
-            flexibleDatesPathFormBlocks: knollcroftCompletedFormBlocks,
+            fixedDatesPath: {
+              formBlocks: knollcroftCompletedFormBlocks,
+              submitsForm: true,
+            },
+            flexibleDatesPath: {
+              formBlocks: knollcroftCompletedFormBlocks,
+              submitsForm: true,
+            },
           }),
         },
         {

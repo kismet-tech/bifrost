@@ -4,13 +4,25 @@ import {
 } from "@/components/KismetForm/models";
 
 interface GetDateSequenceFormBlockSequenceProps {
-  fixedDatesPathFormBlocks: FormBlockConfiguration[];
-  flexibleDatesPathFormBlocks: FormBlockConfiguration[];
+  fixedDatesPath: {
+    formBlocks: FormBlockConfiguration[];
+    submitsForm: boolean;
+  };
+  flexibleDatesPath: {
+    formBlocks: FormBlockConfiguration[];
+    submitsForm: boolean;
+  };
 }
 
 export const getDateSequenceFormBlockSequence = ({
-  fixedDatesPathFormBlocks,
-  flexibleDatesPathFormBlocks,
+  fixedDatesPath: {
+    formBlocks: fixedDatesPathFormBlocks,
+    submitsForm: fixedDatesPathSubmitsForm,
+  },
+  fixedDatesPath: {
+    formBlocks: flexibleDatesPathFormBlocks,
+    submitsForm: flexibleDatesPathSubmitsForm,
+  },
 }: GetDateSequenceFormBlockSequenceProps): FormBlockConfiguration[] => {
   const dateSequenceHotelRoomDatePickerFormBlocks: FormBlockConfiguration[] = [
     {
@@ -38,7 +50,7 @@ export const getDateSequenceFormBlockSequence = ({
       buttons: [
         {
           label: "Next",
-          submitsForm: false,
+          submitsForm: fixedDatesPathSubmitsForm,
           branchFormBlocks: fixedDatesPathFormBlocks,
         },
       ],
@@ -63,7 +75,7 @@ export const getDateSequenceFormBlockSequence = ({
         buttons: [
           {
             label: "Next",
-            submitsForm: false,
+            submitsForm: flexibleDatesPathSubmitsForm,
             branchFormBlocks: flexibleDatesPathFormBlocks,
           },
         ],
