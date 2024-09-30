@@ -1,6 +1,6 @@
 {
   "name": "bifrost_builder",
-  "version": "1.127.0",
+  "version": "1.177.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
@@ -16,15 +16,24 @@
     "deploy_storybook": "yarn cloud_build_storybook && gcloud run deploy kismet-bifrost-storybook --region us-central1 --image us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-slider": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/react-toggle-group": "^1.1.0",
     "@sentry/browser": "^8.30.0",
     "axios": "^1.7.7",
     "axios-retry": "^4.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.441.0",
     "react": "^18.3.1",
+    "react-day-picker": "8.10.1",
     "react-dom": "^18.3.1",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.2",
@@ -32,12 +41,10 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.9.0",
     "@eslint/js": "^9.9.0",
     "@storybook/addon-essentials": "^8.3.0",
     "@storybook/addon-interactions": "^8.3.0",
     "@storybook/addon-links": "^8.3.0",
-    "@storybook/addon-onboarding": "^8.3.0",
     "@storybook/blocks": "^8.3.0",
     "@storybook/react": "^8.3.0",
     "@storybook/react-vite": "^8.3.0",

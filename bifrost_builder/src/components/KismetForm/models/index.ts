@@ -1,4 +1,7 @@
+import { AlternativeDateSuggestionFormBlockConfiguration } from "./AlternativeDateSuggestionFormBlockConfiguration";
+import { AreRoomsAvailableOnDatesSmartBranchingNodeFormBlockConfiguration } from "./AreRoomsAvailableOnDatesBranchingNodeFormBlockConfiguration";
 import { BranchingNodeFormBlockConfiguration } from "./BranchingNodeFormBlockConfiguration";
+import { IsEventSpaceRequiredSmartBranchingNodeFormBlockConfiguration } from "./IsEventSpaceRequiredSmartBranchingNodeFormBlockConfiguration";
 
 export enum FormBlockType {
   //////////////////////////////////////////////////
@@ -8,6 +11,7 @@ export enum FormBlockType {
   SUBHEADER = "SUBHEADER",
 
   SMART_GREETING_SUBHEADER = "SMART_GREETING_SUBHEADER",
+  SMART_FAREWELL_SUBHEADER = "SMART_FAREWELL_SUBHEADER",
 
   //////////////////////////////////////////////////
   // Inputs
@@ -15,13 +19,25 @@ export enum FormBlockType {
   TEXT_INPUT = "TEXT_INPUT",
   SELECT_INPUT = "SELECT_INPUT",
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
+  DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
+  RANGE_SLIDER = "RANGE_SLIDER",
 
   //////////////////////////////////////////////////
-  // Other
+  // Branching Nodes
   //////////////////////////////////////////////////
   BRANCHING_NODE = "BRANCHING_NODE",
   RETURN_TO_PREVIOUS_BRANCH_BUTTON = "RETURN_TO_PREVIOUS_BRANCH_BUTTON",
 
+  IS_EVENT_SPACE_REQUIRED_SMART_BRANCHING_NODE = "IS_EVENT_SPACE_REQUIRED_SMART_BRANCHING_NODE",
+  ARE_ROOMS_AVAILABLE_ON_DATES_SMART_BRANCHING_NODE = "ARE_ROOMS_AVAILABLE_ON_DATES_SMART_BRANCHING_NODE",
+
+  ALTERNATIVE_DATE_SUGGESTION_FORM_BLOCK = "ALTERNATIVE_DATE_SUGGESTION_FORM_BLOCK",
+
+  //////////////////////////////////////////////////
+  // Other
+  //////////////////////////////////////////////////
+
+  GUEST_SOCIAL_MEDIA_LOGIN = "GUEST_SOCIAL_MEDIA_LOGIN",
   METADATA = "METADATA",
 }
 
@@ -41,6 +57,11 @@ export interface SubheaderBlockConfiguration
 export interface SmartGreetingSubheaderBlockConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.SMART_GREETING_SUBHEADER;
+}
+
+export interface SmartFarewellSubheaderBlockConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.SMART_FAREWELL_SUBHEADER;
 }
 
 export interface BaseFormFieldConfiguration {
@@ -81,11 +102,44 @@ export interface SelectInputFormBlockConfiguration
   options: SelectInputFormBlockConfigurationOption[];
 }
 
+export interface DateRangePickerFormBlockConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.DATE_RANGE_PICKER;
+  label: string;
+
+  startCalendarDateKeyName: string;
+  endCalendarDateKeyName: string;
+}
+
+export interface RangeSliderInputConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.RANGE_SLIDER;
+
+  label: string;
+  rangeMin: number;
+  rangeMax: number;
+  valueMinKeyName: string;
+  valueMaxKeyName: string;
+}
+
 export interface ReturnToPreviousBranchButtonConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON;
 
   label: string;
+}
+
+export interface HeaderBlockConfiguration extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.HEADER;
+  templateText?: string;
+  backupText: string;
+}
+
+export interface GuestSocialMediaLoginFieldConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.GUEST_SOCIAL_MEDIA_LOGIN;
+
+  includeFacebook?: boolean;
 }
 
 export interface MetadataBlockConfiguration extends BaseFormFieldConfiguration {
@@ -99,11 +153,18 @@ export type FormBlockConfiguration =
   | TextInputFormBlockConfiguration
   | TextAreaInputFormBlockConfiguration
   | SelectInputFormBlockConfiguration
+  | DateRangePickerFormBlockConfiguration
+  | RangeSliderInputConfiguration
   | HeaderBlockConfiguration
   | SubheaderBlockConfiguration
   | SmartGreetingSubheaderBlockConfiguration
+  | SmartFarewellSubheaderBlockConfiguration
   | BranchingNodeFormBlockConfiguration
   | ReturnToPreviousBranchButtonConfiguration
+  | IsEventSpaceRequiredSmartBranchingNodeFormBlockConfiguration
+  | AreRoomsAvailableOnDatesSmartBranchingNodeFormBlockConfiguration
+  | AlternativeDateSuggestionFormBlockConfiguration
+  | GuestSocialMediaLoginFieldConfiguration
   | MetadataBlockConfiguration;
 
 export interface BifrostConfiguration {

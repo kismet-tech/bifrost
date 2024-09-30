@@ -5,7 +5,6 @@ import {
   FormBlockType,
 } from "./models";
 import { useCallback, useState } from "react";
-import { FacebookLoginButton } from "./components/FacebookLoginButton/FacebookLoginButton";
 import { deepEqual } from "@/utilities/deepEqual";
 import { RenderedFormBlock } from "./components/RenderedFormBlock";
 import { v4 as uuidv4 } from "uuid";
@@ -26,25 +25,6 @@ const Form = styled.form`
     width: 100%;
     padding: 1rem; /* Adjust padding for smaller screens */
   }
-`;
-
-// const Button = styled.button`
-//   width: 100%;
-//   margin-top: 1.5rem;
-//   background-color: #57c0b2;
-//   color: white;
-//   padding: 0.5rem 1rem;
-//   border-radius: 0.25rem;
-//   border: none;
-//   cursor: pointer;
-//   font-size: 1rem;
-//   font-family: barlow-regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-// `;
-
-const FacebookButtonWrapper = styled.div`
-  width: 50%; /* Make the Facebook button half the size of the form */
-  float: left; /* Float the button to the left */
-  margin-bottom: 1.5rem; /* Add some spacing below the button */
 `;
 
 interface KismetFormProps {
@@ -148,10 +128,10 @@ export function KismetForm({
             return updatedFormState;
           });
 
-          const udatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
+          const updatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
             [...previousFormFieldConfigurationsStack.slice(0, -1)];
 
-          return udatedFormFieldConfigurationsStack;
+          return updatedFormFieldConfigurationsStack;
         } else {
           return previousFormFieldConfigurationsStack;
         }
@@ -209,10 +189,6 @@ export function KismetForm({
 
   return (
     <Form>
-      <FacebookButtonWrapper hidden={true}>
-        <FacebookLoginButton />
-      </FacebookButtonWrapper>
-
       {renderedFormFieldConfigurations.map(
         (renderedFormFieldConfiguration, index) => {
           return (

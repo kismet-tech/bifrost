@@ -1,31 +1,49 @@
-import styled from "styled-components";
-import { TextInputFormBlockConfiguration } from "../models";
-import { FormLabel } from "./FormLabel";
-import { FormField } from "./FormField";
+import {
+  PrefilledBifrostFormValueType,
+  attemptToPrefillKismetFieldUsingPriorResponses,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ChangeEventHandler, useEffect, useState } from "react";
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.5rem; /* Equivalent to p-2 */
-  border: 1px solid #d1d5db; /* Equivalent to border-gray-300 */
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-`;
+import { TextInputFormBlockConfiguration } from "../models";
+import { FormField } from "./FormField";
+import { FormLabel } from "./FormLabel";
+import { Input } from "@/components/ui/input";
 
 export interface FormTextFieldProps {
   configuration: TextInputFormBlockConfiguration;
+  hotelId: string;
   formState: Record<string, string>;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function FormTextField({
   configuration,
+  hotelId,
   formState,
   onChange,
   registerBifrostFormInput,
 }: FormTextFieldProps) {
   const [localValue, updateLocalValue] = useState<string>("");
+
+  // Attempt to Prefill Field Using Prior Responses
+  useEffect(() => {
+    async function prefillKismetFieldUsingPriorResponses() {
+      const { targetKeyStringValue } =
+        await attemptToPrefillKismetFieldUsingPriorResponses({
+          hotelId,
+          formData: formState,
+          targetKeyName: configuration.keyName,
+          targetValueType: PrefilledBifrostFormValueType.STRING,
+        });
+
+      if (!formState[configuration.keyName] && targetKeyStringValue) {
+        updateLocalValue(targetKeyStringValue);
+        onChange(targetKeyStringValue);
+      }
+    }
+
+    prefillKismetFieldUsingPriorResponses();
+  }, []);
 
   useEffect(() => {
     if (configuration.keyName in formState) {

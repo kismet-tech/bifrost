@@ -1,31 +1,49 @@
-import styled from "styled-components";
-import { TextAreaInputFormBlockConfiguration } from "../models";
-import { FormLabel } from "./FormLabel";
-import { FormField } from "./FormField";
+import {
+  PrefilledBifrostFormValueType,
+  attemptToPrefillKismetFieldUsingPriorResponses,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ChangeEventHandler, useEffect, useState } from "react";
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-`;
+import { TextAreaInputFormBlockConfiguration } from "../models";
+import { FormField } from "./FormField";
+import { FormLabel } from "./FormLabel";
+import { Textarea } from "@/components/ui/textarea";
 
 export interface FormTextAreaFieldProps {
   configuration: TextAreaInputFormBlockConfiguration;
+  hotelId: string;
   formState: Record<string, string>;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function FormTextAreaField({
   configuration,
+  hotelId,
   formState,
   onChange,
   registerBifrostFormInput,
 }: FormTextAreaFieldProps) {
   const [localValue, updateLocalValue] = useState<string>("");
+
+  // Attempt to Prefill Field Using Prior Responses
+  useEffect(() => {
+    async function prefillKismetFieldUsingPriorResponses() {
+      const { targetKeyStringValue } =
+        await attemptToPrefillKismetFieldUsingPriorResponses({
+          hotelId,
+          formData: formState,
+          targetKeyName: configuration.keyName,
+          targetValueType: PrefilledBifrostFormValueType.STRING,
+        });
+
+      if (!formState[configuration.keyName] && targetKeyStringValue) {
+        updateLocalValue(targetKeyStringValue);
+        onChange(targetKeyStringValue);
+      }
+    }
+
+    prefillKismetFieldUsingPriorResponses();
+  }, []);
 
   useEffect(() => {
     if (configuration.keyName in formState) {
@@ -50,7 +68,7 @@ export function FormTextAreaField({
       <FormLabel htmlFor={`form_${configuration.keyName}`}>
         {configuration.label}
       </FormLabel>
-      <TextArea
+      <Textarea
         onChange={handleOnChange}
         id={`form_${configuration.keyName}`}
         placeholder={configuration.placeholder}
