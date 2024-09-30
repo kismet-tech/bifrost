@@ -20,6 +20,7 @@ export enum FormBlockType {
   SELECT_INPUT = "SELECT_INPUT",
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
+  RANGE_SLIDER = "RANGE_SLIDER",
 
   //////////////////////////////////////////////////
   // Branching Nodes
@@ -110,6 +111,17 @@ export interface DateRangePickerFormBlockConfiguration
   endCalendarDateKeyName: string;
 }
 
+export interface RangeSliderInputConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.RANGE_SLIDER;
+
+  label: string;
+  rangeMin: number;
+  rangeMax: number;
+  valueMinKeyName: string;
+  valueMaxKeyName: string;
+}
+
 export interface ReturnToPreviousBranchButtonConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON;
@@ -142,6 +154,7 @@ export type FormBlockConfiguration =
   | TextAreaInputFormBlockConfiguration
   | SelectInputFormBlockConfiguration
   | DateRangePickerFormBlockConfiguration
+  | RangeSliderInputConfiguration
   | HeaderBlockConfiguration
   | SubheaderBlockConfiguration
   | SmartGreetingSubheaderBlockConfiguration
