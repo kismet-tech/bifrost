@@ -66,8 +66,7 @@ export const attemptToPrefillKismetFieldUsingPriorResponses = async ({
   const targetKeyCalendarDateValue: CalendarDate | undefined =
     response.data.success.targetKeyCalendarDateValue;
 
-  console.log("response.data.success");
-  console.log(response.data.success);
+  console.log("response.data.success", response.data.success);
 
   return {
     targetKeyNumberValue,

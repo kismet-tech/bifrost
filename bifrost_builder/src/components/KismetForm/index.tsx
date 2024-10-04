@@ -55,6 +55,16 @@ export function KismetForm({
             [formFieldConfiguration.keyName]:
               formFieldConfiguration.options[0].keyValue,
           };
+        } else if (
+          formFieldConfiguration.formBlockType === FormBlockType.RANGE_SLIDER
+        ) {
+          return {
+            ...formState,
+            [formFieldConfiguration.valueMinKeyName]:
+              formFieldConfiguration.rangeMin.toString(),
+            [formFieldConfiguration.valueMaxKeyName]:
+              formFieldConfiguration.rangeMin.toString(),
+          };
         } else {
           return { ...formState };
         }

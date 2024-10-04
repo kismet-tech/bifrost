@@ -2,6 +2,7 @@ import { CalendarDate } from "@/models/CalendarDate";
 import { FormBlockConfiguration, FormBlockType } from "../models";
 import { AlternativeDateSuggestionFormBlock } from "./AlternativeDateSuggestionFormBlock";
 import { FormDateRangePickerField } from "./FormDateRangePickerField";
+import { FormExpandableSelectionCards } from "./FormExpandableSelectionCards";
 import { FormHeader } from "./FormHeader";
 import { FormMetadata } from "./FormMetadata";
 import { FormRangeSlider } from "./FormRangeSlider";
@@ -161,6 +162,24 @@ export function RenderedFormBlock({
           handleUpdateFormState({
             keyName: renderedFormFieldConfiguration.valueMaxKeyName,
             keyValue: max?.toString() ?? "",
+          });
+        }}
+        registerBifrostFormInput={registerBifrostFormInput}
+      />
+    );
+  } else if (
+    renderedFormFieldConfiguration.formBlockType ===
+    FormBlockType.EXPANDABLE_SELECTION_CARDS
+  ) {
+    return (
+      <FormExpandableSelectionCards
+        configuration={renderedFormFieldConfiguration}
+        hotelId={hotelId}
+        formState={formState}
+        onChange={(selectedCardName) => {
+          handleUpdateFormState({
+            keyName: renderedFormFieldConfiguration.keyName,
+            keyValue: selectedCardName,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
