@@ -3,6 +3,7 @@ import {
   BifrostConfiguration,
   FormBlockConfiguration,
   FormBlockType,
+  unrenderableFormBlockTypes,
 } from "./models";
 import { useCallback, useState } from "react";
 import { deepEqual } from "@/utilities/deepEqual";
@@ -40,7 +41,7 @@ export function KismetForm({
 
   const getInitialFormState = (): Record<string, string> => {
     return bifrostConfiguration.formBlocks.reduce(
-      (formState, formFieldConfiguration) => {
+      (formState, formFieldConfiguration): Record<string, string> => {
         if (
           formFieldConfiguration.formBlockType === FormBlockType.TEXT_INPUT ||
           formFieldConfiguration.formBlockType === FormBlockType.TEXT_AREA_INPUT
@@ -62,7 +63,7 @@ export function KismetForm({
     );
   };
 
-  const [formFieldConfigurationsStack, updateFormFieldConfigurationsStack] =
+  const [formBlockConfigurationsStack, updateFormBlockConfigurationsStack] =
     useState<FormBlockConfiguration[][]>([bifrostConfiguration.formBlocks]);
 
   const [formState, updateFormState] = useState<Record<string, string>>(
@@ -87,7 +88,7 @@ export function KismetForm({
   const pushFormFieldConfigurationStack: (
     formBlockConfigurations: FormBlockConfiguration[]
   ) => void = (formBlockConfigurations: FormBlockConfiguration[]) => {
-    updateFormFieldConfigurationsStack(
+    updateFormBlockConfigurationsStack(
       (previousFormFieldConfigurationsStack: FormBlockConfiguration[][]) => {
         return [
           ...previousFormFieldConfigurationsStack,
@@ -97,44 +98,68 @@ export function KismetForm({
     );
   };
 
-  const popRightFormFieldConfigurationStack = () => {
-    updateFormFieldConfigurationsStack(
-      (previousFormFieldConfigurationsStack) => {
+  const popRightFormBlockConfigurationsStack = () => {
+    updateFormBlockConfigurationsStack(
+      (previousBlockFieldConfigurationsStack) => {
         console.log(
-          `previousFormFieldConfigurationsStack.length: ${previousFormFieldConfigurationsStack.length}`
+          `previousBlockFieldConfigurationsStack.length: ${previousBlockFieldConfigurationsStack.length}`
         );
-        if (previousFormFieldConfigurationsStack.length > 0) {
-          const poppedFormFieldConfigurations =
-            previousFormFieldConfigurationsStack[
-              previousFormFieldConfigurationsStack.length - 1
+
+        let updatedFormFieldConfigurationsStack: FormBlockConfiguration[][] = [
+          ...previousBlockFieldConfigurationsStack,
+        ];
+        const deletedFormStateKeyNames: string[] = [];
+
+        while (
+          updatedFormFieldConfigurationsStack.length > 0 &&
+          // Stack has not been popped yet
+          (previousBlockFieldConfigurationsStack.length ===
+            updatedFormFieldConfigurationsStack.length ||
+            // Every form block at the top of the stack is unrenderable
+            updatedFormFieldConfigurationsStack[
+              updatedFormFieldConfigurationsStack.length - 1
+            ].some(({ formBlockType: poppedFormBlockType }) =>
+              unrenderableFormBlockTypes.includes(poppedFormBlockType)
+            ))
+        ) {
+          // Pop stack
+          const poppedFormBlockConfigurations: FormBlockConfiguration[] =
+            updatedFormFieldConfigurationsStack[
+              updatedFormFieldConfigurationsStack.length - 1
             ];
 
-          updateFormState((previousFormState): Record<string, string> => {
-            const updatedFormState: Record<string, string> = {
-              ...previousFormState,
-            };
+          updatedFormFieldConfigurationsStack = [
+            ...updatedFormFieldConfigurationsStack.slice(0, -1),
+          ];
 
-            poppedFormFieldConfigurations.forEach(
-              (poppedFormFieldConfiguration) => {
-                if (
-                  "keyName" in poppedFormFieldConfiguration &&
-                  poppedFormFieldConfiguration.keyName
-                ) {
-                  delete updatedFormState[poppedFormFieldConfiguration.keyName];
-                }
-              }
-            );
+          poppedFormBlockConfigurations
+            .filter(
+              (formBlockConfiguration: FormBlockConfiguration) =>
+                "keyName" in formBlockConfiguration &&
+                formBlockConfiguration.keyName
+            )
+            .map(
+              (formBlockConfiguration: FormBlockConfiguration) =>
+                (formBlockConfiguration as { keyName: string }).keyName
+            )
+            .forEach((keyName: string) => {
+              deletedFormStateKeyNames.push(keyName);
+            });
+        }
 
-            return updatedFormState;
+        updateFormState((previousFormState): Record<string, string> => {
+          const updatedFormState: Record<string, string> = {
+            ...previousFormState,
+          };
+
+          deletedFormStateKeyNames.forEach((deletedKeyName) => {
+            delete updatedFormState[deletedKeyName];
           });
 
-          const updatedFormFieldConfigurationsStack: FormBlockConfiguration[][] =
-            [...previousFormFieldConfigurationsStack.slice(0, -1)];
+          return updatedFormState;
+        });
 
-          return updatedFormFieldConfigurationsStack;
-        } else {
-          return previousFormFieldConfigurationsStack;
-        }
+        return updatedFormFieldConfigurationsStack;
       }
     );
   };
@@ -185,7 +210,7 @@ export function KismetForm({
   };
 
   const renderedFormFieldConfigurations =
-    formFieldConfigurationsStack[formFieldConfigurationsStack.length - 1];
+    formBlockConfigurationsStack[formBlockConfigurationsStack.length - 1];
 
   return (
     <Form>
@@ -202,7 +227,7 @@ export function KismetForm({
               handleSubmitForm={handleSubmitForm}
               pushFormFieldConfigurationStack={pushFormFieldConfigurationStack}
               popRightFormFieldConfigurationStack={
-                popRightFormFieldConfigurationStack
+                popRightFormBlockConfigurationsStack
               }
               registerBifrostFormInput={async () => {
                 await registerBifrostFormInput({
