@@ -21,6 +21,7 @@ export enum FormBlockType {
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
   RANGE_SLIDER = "RANGE_SLIDER",
+  EXPANDABLE_SELECTION_CARDS = "EXPANDABLE_SELECTION_CARDS",
 
   //////////////////////////////////////////////////
   // Branching Nodes
@@ -122,6 +123,21 @@ export interface RangeSliderInputConfiguration
   valueMaxKeyName: string;
 }
 
+export interface ExpandableSelectionCardOption {
+  imageSrc: string;
+  name: string;
+  description: string;
+}
+
+export interface ExpandableSelectionCardsConfiguration
+  extends BaseFormFieldConfiguration {
+  formBlockType: FormBlockType.EXPANDABLE_SELECTION_CARDS;
+
+  label: string;
+  keyName: string;
+  options: ExpandableSelectionCardOption[];
+}
+
 export interface ReturnToPreviousBranchButtonConfiguration
   extends BaseFormFieldConfiguration {
   formBlockType: FormBlockType.RETURN_TO_PREVIOUS_BRANCH_BUTTON;
@@ -155,6 +171,7 @@ export type FormBlockConfiguration =
   | SelectInputFormBlockConfiguration
   | DateRangePickerFormBlockConfiguration
   | RangeSliderInputConfiguration
+  | ExpandableSelectionCardsConfiguration
   | HeaderBlockConfiguration
   | SubheaderBlockConfiguration
   | SmartGreetingSubheaderBlockConfiguration
