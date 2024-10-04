@@ -6,6 +6,7 @@ import {
 import { nbhdGroupBookingsFormBlocks } from "./nbhdFormBlocks/nbhdGroupBookings";
 import { nbhdExtendedStayBlocks } from "./nbhdFormBlocks/nbhdExtendedStays";
 import { knollcroftFormBlocks } from "./knollcroftFormBlocks";
+import { nbhdRetreatBlocks } from "./nbhdFormBlocks/nbhdRetreat";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -91,6 +92,9 @@ export function getBifrostConfiguration(): BifrostConfiguration {
     } else if (urlPathname.includes("/extended-stays")) {
       bifrostFormId = "4";
       formBlocks = nbhdExtendedStayBlocks;
+    } else if (urlPathname.includes("/host-a-retreat")) {
+      bifrostFormId = "5";
+      formBlocks = nbhdRetreatBlocks;
     }
   }
 
