@@ -1,6 +1,6 @@
 import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
-import { BifrostConfiguration } from "./components/KismetForm/models";
+import { BifrostConfiguration } from "./components/RootComponent/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
 import { registerBifrostPageVisit } from "./api/registerBifrostPageVisit";
 import { getBifrostTravelerId } from "./utilities/getBifrostTravelerId";

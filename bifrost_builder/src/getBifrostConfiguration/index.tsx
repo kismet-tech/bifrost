@@ -2,7 +2,7 @@ import {
   BifrostConfiguration,
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { nbhdGroupBookingsFormBlocks } from "./nbhdFormBlocks/nbhdGroupBookings";
 import { nbhdExtendedStayBlocks } from "./nbhdFormBlocks/nbhdExtendedStays";
 import { knollcroftFormBlocks } from "./knollcroftFormBlocks";

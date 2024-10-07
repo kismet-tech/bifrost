@@ -1,7 +1,7 @@
 import {
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { knollcroftBusinessHotelRoomRequirementFormBlocks } from "./knollcroftBusinessHotelRoomRequirementFormBlocks";
 import { knollcroftBusinessEventSpaceFormBlocks } from "./knollcroftBusinessEventSpaceFormBlocks";
 

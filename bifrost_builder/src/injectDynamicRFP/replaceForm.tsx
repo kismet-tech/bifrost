@@ -1,6 +1,6 @@
-import { KismetForm } from "@/components/KismetForm";
-import { BifrostConfiguration } from "@/components/KismetForm/models";
-import { ThemeVariables } from "@/components/KismetForm/models/themes";
+import { KismetRootComponent } from "@/components/RootComponent/RootComponent";
+import { BifrostConfiguration } from "@/components/RootComponent/models";
+import { ThemeVariables } from "@/components/RootComponent/models/themes";
 import { createRoot } from "react-dom/client";
 
 interface ReplaceFormProps {
@@ -25,7 +25,7 @@ export const replaceForm = async ({
 
   const root = createRoot(newFormContainer);
   root.render(
-    <KismetForm
+    <KismetRootComponent
       bifrostTravelerId={bifrostTravelerId}
       bifrostConfiguration={bifrostConfiguration}
     />

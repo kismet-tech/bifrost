@@ -1,7 +1,7 @@
 import {
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { knollcroftBusinessIsEventSpaceRequiredSmartBranchingNodeFormBlocks } from "./knollcroftBusinessIsEventSpaceRequiredSmartBranchingNodeFormBlocks";
 
 export const knollcroftBusinessBudgetRangeFormBlocks: FormBlockConfiguration[] =

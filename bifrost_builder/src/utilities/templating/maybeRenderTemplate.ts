@@ -1,13 +1,14 @@
+import { BifrostFormData } from "@/models/configuration/formData";
 import { getTemplateVariablesFromTemplate } from "@/utilities/templating/getTemplateVariablesFromTemplate";
 
 interface MaybeRenderTemplateProps {
   template: string;
-  templateData: Record<string, string>;
+  formData: BifrostFormData;
 }
 
 export const maybeRenderTemplate = ({
   template,
-  templateData,
+  formData,
 }: MaybeRenderTemplateProps): string | null => {
   const templateVariables: string[] = getTemplateVariablesFromTemplate({
     template,
@@ -19,15 +20,14 @@ export const maybeRenderTemplate = ({
 
   const allTemplateVariableValuesAreAvailable: boolean =
     templateVariables.every((templateVariable: string): boolean => {
-      return !!templateData[templateVariable];
+      return !!formData[templateVariable];
     });
 
   if (!allTemplateVariableValuesAreAvailable) {
     return null;
   }
 
-  return template.replace(
-    /\{\{(\w+)\}\}/g,
-    (match, key) => templateData[key] || match
+  return template.replace(/\{\{(\w+)\}\}/g, (match, key) =>
+    typeof formData[key] === "string" ? formData[key] : match
   );
 };

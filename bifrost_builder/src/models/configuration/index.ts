@@ -1,0 +1,200 @@
+//////////////////////////////////////////////////
+// Base
+//////////////////////////////////////////////////
+
+import { ScreenPointer } from "./ScreenPointer";
+
+export enum BlockType {
+  LAYOUT_BLOCK = "LAYOUT_BLOCK",
+  UI_BLOCK = "UI_BLOCK",
+}
+
+export interface BaseUIBlockConfiguration {
+  blockType: BlockType.UI_BLOCK;
+}
+
+export interface BaseLayoutBlockConfiguration {
+  blockType: BlockType.LAYOUT_BLOCK;
+}
+
+//////////////////////////////////////////////////
+// UI Components
+//////////////////////////////////////////////////
+export enum UIBlockType {
+  // Text
+  HEADER = "HEADER",
+  SUBHEADER = "SUBHEADER",
+
+  SMART_GREETING_SUBHEADER = "SMART_GREETING_SUBHEADER",
+  SMART_FAREWELL_SUBHEADER = "SMART_FAREWELL_SUBHEADER",
+
+  // Inputs
+  TEXT_INPUT = "TEXT_INPUT",
+  SELECT_INPUT = "SELECT_INPUT",
+  TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
+  DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
+  RANGE_SLIDER = "RANGE_SLIDER",
+  EXPANDABLE_SELECTION_CARDS = "EXPANDABLE_SELECTION_CARDS",
+
+  // Buttons
+  BUTTON = "BUTTON",
+}
+
+export interface HeaderUIBlockConfiguration extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.HEADER;
+  templateText?: string;
+  backupText: string;
+}
+
+export interface SubheaderUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.SUBHEADER;
+  templateText?: string;
+  backupText: string;
+}
+
+export interface SmartGreetingSubheaderUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.SMART_GREETING_SUBHEADER;
+}
+
+export interface SmartFarewellUISubheaderUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.SMART_FAREWELL_SUBHEADER;
+}
+
+export interface TextInputUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.TEXT_INPUT;
+
+  label: string;
+  keyName: string;
+  placeholder?: string;
+  autocomplete?: string;
+  inputType: React.HTMLInputTypeAttribute;
+}
+
+export interface TextAreaInputUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.TEXT_AREA_INPUT;
+
+  label: string;
+  keyName: string;
+  placeholder: string;
+}
+
+export interface SelectInputUIBlockConfigurationOption {
+  label: string;
+  keyValue: string;
+}
+
+export interface SelectInputUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.SELECT_INPUT;
+
+  label: string;
+  keyName: string;
+  options: SelectInputUIBlockConfigurationOption[];
+}
+
+export interface DateRangePickerUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.DATE_RANGE_PICKER;
+  label: string;
+
+  startCalendarDateKeyName: string;
+  endCalendarDateKeyName: string;
+}
+
+export interface RangeSliderInputUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.RANGE_SLIDER;
+
+  label: string;
+  rangeMin: number;
+  rangeMax: number;
+  valueMinKeyName: string;
+  valueMaxKeyName: string;
+}
+
+export interface ExpandableSelectionCardUIBlockConfigurationOption {
+  imageSrc: string;
+  name: string;
+  description: string;
+}
+
+export interface ExpandableSelectionCardsUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.EXPANDABLE_SELECTION_CARDS;
+
+  label: string;
+  keyName: string;
+  options: ExpandableSelectionCardUIBlockConfigurationOption[];
+}
+
+export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.BUTTON;
+
+  label: string;
+
+  keyName?: string;
+  keyValue?: string;
+
+  submitsForm: boolean;
+
+  pointer?: ScreenPointer;
+}
+
+export type UIBlockConfiguration =
+  | HeaderUIBlockConfiguration
+  | SubheaderUIBlockConfiguration
+  | SmartGreetingSubheaderUIBlockConfiguration
+  | SmartFarewellUISubheaderUIBlockConfiguration
+  | TextInputUIBlockConfiguration
+  | TextAreaInputUIBlockConfiguration
+  | SelectInputUIBlockConfiguration
+  | DateRangePickerUIBlockConfiguration
+  | RangeSliderInputUIBlockConfiguration
+  | ExpandableSelectionCardsUIBlockConfiguration;
+
+//////////////////////////////////////////////////
+// Layout Components
+//////////////////////////////////////////////////
+export enum LayoutBlockType {
+  ROWS = "ROWS",
+  COLUMNS = "COLUMNS",
+}
+
+export interface RowsLayoutBlockConfiguration
+  extends BaseLayoutBlockConfiguration {
+  layoutBlockType: LayoutBlockType.ROWS;
+  childConfigurations: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+}
+
+export interface ColumnsLayoutBlockConfiguration
+  extends BaseLayoutBlockConfiguration {
+  layoutBlockType: LayoutBlockType.COLUMNS;
+  childConfigurations: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+}
+
+export type LayoutBlockConfiguration =
+  | RowsLayoutBlockConfiguration
+  | ColumnsLayoutBlockConfiguration;
+
+//////////////////////////////////////////////////
+// Screen
+//////////////////////////////////////////////////
+
+export interface ScreenConfiguration {
+  layout: LayoutBlockConfiguration;
+}
+
+//////////////////////////////////////////////////
+// Application
+//////////////////////////////////////////////////
+
+export interface BifrostConfiguration {
+  hotelId: string;
+  bifrostFormId: string;
+  rootScreenConfiguration: ScreenConfiguration;
+}

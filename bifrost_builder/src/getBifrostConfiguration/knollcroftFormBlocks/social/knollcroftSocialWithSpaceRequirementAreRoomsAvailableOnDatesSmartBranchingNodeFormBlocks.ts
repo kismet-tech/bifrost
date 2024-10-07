@@ -1,7 +1,7 @@
 import {
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { knollcroftSocialWithSpaceRequirementSplitCheckFormBlocks } from "./knollcroftSocialWithSpaceRequirementSplitCheckFormBlocks";
 import { knollcroftSocialAlternateRoomAvailabilityFormBlocks } from "./knollcroftSocialAlternateRoomAvailabilityFormBlocks";
 

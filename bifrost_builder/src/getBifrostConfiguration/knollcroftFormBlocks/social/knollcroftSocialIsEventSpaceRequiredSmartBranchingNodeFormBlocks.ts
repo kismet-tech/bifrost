@@ -1,7 +1,7 @@
 import {
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { knollcroftSocialHotelRoomRequirementFormBlocks } from "./knollcroftSocialHotelRoomRequirementFormBlocks";
 import { getDateSequenceFormBlockSequence } from "../formBlockSequences/getDateSequenceFormBlockSequence";
 import { knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks } from "./knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesSmartBranchingNodeFormBlocks";

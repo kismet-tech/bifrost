@@ -1,10 +1,10 @@
 import "@/globals.css";
-import { KismetForm } from "./components/KismetForm";
+import { KismetRootComponent } from "./components/RootComponent/RootComponent";
 
 function App() {
   return (
     <>
-      <KismetForm
+      <KismetRootComponent
         bifrostTravelerId="local_testing"
         bifrostConfiguration={{
           hotelId: "testing",

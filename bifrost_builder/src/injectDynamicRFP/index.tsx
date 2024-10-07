@@ -1,5 +1,5 @@
 import { replaceForm } from "./replaceForm";
-import { BifrostConfiguration } from "@/components/KismetForm/models";
+import { BifrostConfiguration } from "@/components/RootComponent/models";
 
 interface InjectDynamicRFPProps {
   bifrostTravelerId: string;

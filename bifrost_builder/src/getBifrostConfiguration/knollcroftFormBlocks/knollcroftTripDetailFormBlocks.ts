@@ -1,7 +1,7 @@
 import {
   FormBlockConfiguration,
   FormBlockType,
-} from "@/components/KismetForm/models";
+} from "@/components/RootComponent/models";
 import { knollcroftBusinessFormBlocks } from "./business/knollcroftBusinessFormBlocks";
 import { knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks } from "./social/knollcroftSocialIsEventSpaceRequiredSmartBranchingNodeFormBlocks";
 
