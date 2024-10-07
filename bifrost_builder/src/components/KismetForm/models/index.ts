@@ -185,6 +185,11 @@ export type FormBlockConfiguration =
   | GuestSocialMediaLoginFieldConfiguration
   | MetadataBlockConfiguration;
 
+export const unrenderableFormBlockTypes: FormBlockType[] = [
+  FormBlockType.IS_EVENT_SPACE_REQUIRED_SMART_BRANCHING_NODE,
+  FormBlockType.ARE_ROOMS_AVAILABLE_ON_DATES_SMART_BRANCHING_NODE,
+];
+
 export interface BifrostConfiguration {
   hotelId: string;
   bifrostFormId: string;
