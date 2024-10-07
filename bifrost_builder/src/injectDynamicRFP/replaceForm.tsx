@@ -1,5 +1,6 @@
 import { KismetForm } from "@/components/KismetForm";
 import { BifrostConfiguration } from "@/components/KismetForm/models";
+import { ThemeVariables } from "@/components/KismetForm/models/themes";
 import { createRoot } from "react-dom/client";
 
 interface ReplaceFormProps {
@@ -18,6 +19,10 @@ export const replaceForm = async ({
   newFormContainer.classList.add("kismet-dynamic-rfp-widget");
   dynamicRfpWidgetContainer.replaceWith(newFormContainer);
 
+  if (bifrostConfiguration.themeVariables) {
+    injectTheme(newFormContainer, bifrostConfiguration.themeVariables);
+  }
+
   const root = createRoot(newFormContainer);
   root.render(
     <KismetForm
@@ -28,4 +33,14 @@ export const replaceForm = async ({
 
   console.log("☃️ The Bifrost is ready ☃️");
   console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
+};
+
+export const injectTheme = (
+  formContainer: HTMLDivElement,
+  themeVariables: ThemeVariables
+) => {
+  for (const themeVariable of Object.entries(themeVariables)) {
+    const [varName, varValue] = themeVariable;
+    formContainer.style.setProperty("--" + varName, varValue);
+  }
 };
