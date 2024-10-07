@@ -2,6 +2,7 @@ import { AlternativeDateSuggestionFormBlockConfiguration } from "./AlternativeDa
 import { AreRoomsAvailableOnDatesSmartBranchingNodeFormBlockConfiguration } from "./AreRoomsAvailableOnDatesBranchingNodeFormBlockConfiguration";
 import { BranchingNodeFormBlockConfiguration } from "./BranchingNodeFormBlockConfiguration";
 import { IsEventSpaceRequiredSmartBranchingNodeFormBlockConfiguration } from "./IsEventSpaceRequiredSmartBranchingNodeFormBlockConfiguration";
+import { ThemeVariables } from "./themes";
 
 export enum FormBlockType {
   //////////////////////////////////////////////////
@@ -193,4 +194,6 @@ export interface BifrostConfiguration {
   hotelId: string;
   bifrostFormId: string;
   formBlocks: FormBlockConfiguration[];
+  themeVariables?: ThemeVariables;
+  // TODO: Add darkThemeVariables when we want to support dark mode
 }
