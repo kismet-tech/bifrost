@@ -2,7 +2,7 @@ import "@/globals.css";
 import { KismetRootComponent } from "../components/RootComponent/RootComponent";
 import { localTestingConfiguration } from "./localTestingConfiguration";
 
-function App() {
+function SelfContainedApp() {
   return (
     <>
       <KismetRootComponent
@@ -13,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default SelfContainedApp;

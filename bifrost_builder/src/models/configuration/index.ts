@@ -2,7 +2,7 @@
 // Base
 //////////////////////////////////////////////////
 
-import { ThemeVariables } from "@/components/RootComponent/models/themes";
+import { ThemeVariables } from "@/models/configuration/themes";
 import { ScreenPointer } from "./ScreenPointer";
 
 export enum BlockType {
@@ -69,7 +69,7 @@ export interface TextInputUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.TEXT_INPUT;
 
-  label: string;
+  label?: string;
   keyName: string;
   placeholder?: string;
   autocomplete?: string;
@@ -80,9 +80,10 @@ export interface TextAreaInputUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.TEXT_AREA_INPUT;
 
-  label: string;
+  label?: string;
   keyName: string;
   placeholder: string;
+  autocomplete?: string;
 }
 
 export interface SelectInputUIBlockConfigurationOption {
@@ -97,15 +98,18 @@ export interface SelectInputUIBlockConfiguration
   label: string;
   keyName: string;
   options: SelectInputUIBlockConfigurationOption[];
+  autocomplete?: string;
 }
 
 export interface DateRangePickerUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.DATE_RANGE_PICKER;
-  label: string;
+  label?: string;
 
   startCalendarDateKeyName: string;
   endCalendarDateKeyName: string;
+
+  autocomplete?: string;
 }
 
 export interface RangeSliderInputUIBlockConfiguration
@@ -117,6 +121,8 @@ export interface RangeSliderInputUIBlockConfiguration
   rangeMax: number;
   valueMinKeyName: string;
   valueMaxKeyName: string;
+
+  autocomplete?: string;
 }
 
 export interface ExpandableSelectionCardUIBlockConfigurationOption {
@@ -166,29 +172,47 @@ export type UIBlockConfiguration =
 export enum LayoutBlockType {
   ROWS = "ROWS",
   COLUMNS = "COLUMNS",
+  INPUT_TABLE = "INPUT_TABLE",
 }
 
 export interface RowsLayoutBlockConfiguration
   extends BaseLayoutBlockConfiguration {
   layoutBlockType: LayoutBlockType.ROWS;
-  childConfigurations: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+  rows: (UIBlockConfiguration | LayoutBlockConfiguration)[];
 }
 
 export interface ColumnsLayoutBlockConfiguration
   extends BaseLayoutBlockConfiguration {
   layoutBlockType: LayoutBlockType.COLUMNS;
-  childConfigurations: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+  columns: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+}
+
+export interface InputTableLayoutBlockColumnConfiguration {
+  columnHeader: {
+    columnHeaderText: string;
+  };
+  inputCell: UIBlockConfiguration;
+}
+
+export interface InputTableLayoutBlockConfiguration
+  extends BaseLayoutBlockConfiguration {
+  layoutBlockType: LayoutBlockType.INPUT_TABLE;
+
+  keyPath: string;
+  columns: InputTableLayoutBlockColumnConfiguration[];
 }
 
 export type LayoutBlockConfiguration =
   | RowsLayoutBlockConfiguration
-  | ColumnsLayoutBlockConfiguration;
+  | ColumnsLayoutBlockConfiguration
+  | InputTableLayoutBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Screen
 //////////////////////////////////////////////////
 
 export interface ScreenConfiguration {
+  metadata?: Record<string, string>;
   layout: LayoutBlockConfiguration;
 }
 

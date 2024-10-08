@@ -1,10 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useLayoutEffect } from "react";
 import { KismetRootComponent } from "./components/RootComponent/RootComponent";
-import {
-  blueTheme,
-  radiusPresets,
-} from "./components/RootComponent/models/themes";
+import { blueTheme, radiusPresets } from "./models/configuration/themes";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
 import { knollcroftRootScreenConfiguration } from "./getBifrostConfiguration/knollcroftScreens/knollcroftRootScreenConfiguration";
 

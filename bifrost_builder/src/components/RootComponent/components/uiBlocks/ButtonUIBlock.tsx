@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { ButtonUIBlockConfiguration } from "@/models/configuration";
+import {
+  ButtonUIBlockConfiguration,
+  ScreenConfiguration,
+} from "@/models/configuration";
+import {
+  BifrostFormDataValue,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
+import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -10,21 +18,29 @@ const Wrapper = styled.div`
 
 interface ButtonUIBlockProps {
   configuration: ButtonUIBlockConfiguration;
+  keyPath: BifrostKeyPath;
   handleSetFormData: ({
-    keyName,
+    keyPath,
     keyValue,
   }: {
-    keyName: string;
-    keyValue: string;
+    keyPath: BifrostKeyPath;
+    keyValue: BifrostFormDataValue;
   }) => void;
   handleSubmitFormData: () => void;
+  pushScreenConfigurationStack: (
+    screenConfiguration: ScreenConfiguration
+  ) => void;
+  popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function ButtonUIBlock({
-  configuration: { keyName, keyValue, label, submitsForm },
+  configuration: { keyName, keyValue, label, submitsForm, pointer },
+  keyPath,
   handleSetFormData,
   handleSubmitFormData,
+  pushScreenConfigurationStack,
+  popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: ButtonUIBlockProps) {
   const handleButtonClick = (
@@ -34,13 +50,21 @@ export function ButtonUIBlock({
 
     if (keyName && keyValue) {
       handleSetFormData({
-        keyName,
+        keyPath: [...keyPath, keyName],
         keyValue,
       });
     }
 
     if (submitsForm) {
       handleSubmitFormData();
+    }
+
+    if (pointer) {
+      if (pointer.type === ScreenPointerType.DIRECT) {
+        pushScreenConfigurationStack(pointer.screenConfiguration);
+      } else if (pointer.type === ScreenPointerType.BACK) {
+        popRightscreenConfigurationStack();
+      }
     }
 
     registerBifrostFormInput();

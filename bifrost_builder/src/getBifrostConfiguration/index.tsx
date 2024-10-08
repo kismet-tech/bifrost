@@ -24,7 +24,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
     layout: {
       blockType: BlockType.LAYOUT_BLOCK,
       layoutBlockType: LayoutBlockType.ROWS,
-      childConfigurations: [],
+      rows: [],
     },
   };
   let bifrostFormId: string = "";

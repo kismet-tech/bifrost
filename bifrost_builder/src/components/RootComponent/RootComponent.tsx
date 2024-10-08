@@ -8,10 +8,13 @@ import {
 import {
   BifrostFormData,
   BifrostFormDataValue,
+  BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { BifrostScreen } from "./components/BifrostScreen";
 import { handleSubmitFormData } from "./utilities/handleSubmitFormData";
 import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
+import { deleteKeysPresentOnScreenFromFormData } from "./components/BifrostScreen/deleteKeysPresentOnScreenFromFormData";
+import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 
 interface KismetFormProps {
   bifrostTravelerId: string;
@@ -24,25 +27,26 @@ export function KismetRootComponent({
 }: KismetFormProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
-  const [
-    screenConfigurationStack,
-    // setScreenConfigurationStack
-  ] = useState<ScreenConfiguration[]>([
-    bifrostConfiguration.rootScreenConfiguration as ScreenConfiguration,
-  ]);
+  const [screenConfigurationStack, setScreenConfigurationStack] = useState<
+    ScreenConfiguration[]
+  >([bifrostConfiguration.rootScreenConfiguration as ScreenConfiguration]);
 
   const [formData, setFormData] = useState<BifrostFormData>({});
 
   const handleSetFormData = useCallback(
     ({
-      keyName,
+      keyPath,
       keyValue,
     }: {
-      keyName: string;
+      keyPath: BifrostKeyPath;
       keyValue: BifrostFormDataValue;
     }) => {
       setFormData((previousFormState) => {
-        const updatedFormState = { ...previousFormState, [keyName]: keyValue };
+        const updatedFormState = writeValueToBifrostFormDataByKeyPath({
+          formData: previousFormState,
+          keyPath,
+          updatedKeyValue: keyValue,
+        });
 
         if (!deepEqual(previousFormState, updatedFormState)) {
           return updatedFormState;
@@ -54,41 +58,41 @@ export function KismetRootComponent({
     []
   );
 
-  // const pushScreenConfigurationStack: (
-  //   screenConfiguration: ScreenConfiguration
-  // ) => void = (screenConfiguration: ScreenConfiguration) => {
-  //   setScreenConfigurationStack(
-  //     (previousScreenConfigurationStack: ScreenConfiguration[]) => {
-  //       return [...previousScreenConfigurationStack, screenConfiguration];
-  //     }
-  //   );
-  // };
+  const pushScreenConfigurationStack: (
+    screenConfiguration: ScreenConfiguration
+  ) => void = (screenConfiguration: ScreenConfiguration) => {
+    setScreenConfigurationStack(
+      (previousScreenConfigurationStack: ScreenConfiguration[]) => {
+        return [...previousScreenConfigurationStack, screenConfiguration];
+      }
+    );
+  };
 
-  // const popRightscreenConfigurationStack = () => {
-  //   setScreenConfigurationStack(
-  //     (previousScreenConfigurationStack: ScreenConfiguration[]) => {
-  //       if (previousScreenConfigurationStack.length > 0) {
-  //         const poppedScreenConfiguration: ScreenConfiguration =
-  //           previousScreenConfigurationStack[
-  //             previousScreenConfigurationStack.length - 1
-  //           ];
+  const popRightscreenConfigurationStack = () => {
+    setScreenConfigurationStack(
+      (previousScreenConfigurationStack: ScreenConfiguration[]) => {
+        if (previousScreenConfigurationStack.length > 0) {
+          const poppedScreenConfiguration: ScreenConfiguration =
+            previousScreenConfigurationStack[
+              previousScreenConfigurationStack.length - 1
+            ];
 
-  //         deleteKeysPresentOnScreenFromFormData({
-  //           poppedScreenConfiguration,
-  //           setFormData,
-  //         });
+          deleteKeysPresentOnScreenFromFormData({
+            poppedScreenConfiguration,
+            setFormData,
+          });
 
-  //         const updatedScreenConfigurationStack: ScreenConfiguration[] = [
-  //           ...previousScreenConfigurationStack.slice(0, -1),
-  //         ];
+          const updatedScreenConfigurationStack: ScreenConfiguration[] = [
+            ...previousScreenConfigurationStack.slice(0, -1),
+          ];
 
-  //         return updatedScreenConfigurationStack;
-  //       } else {
-  //         return previousScreenConfigurationStack;
-  //       }
-  //     }
-  //   );
-  // };
+          return updatedScreenConfigurationStack;
+        } else {
+          return previousScreenConfigurationStack;
+        }
+      }
+    );
+  };
 
   const renderedBifrostScreenConfiguration: ScreenConfiguration =
     screenConfigurationStack[screenConfigurationStack.length - 1];
@@ -96,10 +100,13 @@ export function KismetRootComponent({
   return (
     <BifrostScreen
       screenConfiguration={renderedBifrostScreenConfiguration}
+      keyPath={[]}
       formData={formData}
       hotelId={bifrostConfiguration.hotelId}
       bifrostTravelerId={bifrostTravelerId}
       handleSetFormData={handleSetFormData}
+      pushScreenConfigurationStack={pushScreenConfigurationStack}
+      popRightscreenConfigurationStack={popRightscreenConfigurationStack}
       registerBifrostFormInput={async () => {
         await registerBifrostFormInput({
           hotelId: bifrostConfiguration.hotelId,

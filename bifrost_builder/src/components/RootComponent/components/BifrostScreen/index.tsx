@@ -1,7 +1,11 @@
 import { ScreenConfiguration } from "@/models/configuration";
 import styled from "styled-components";
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostFormDataValue,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 
 const Wrapper = styled.form`
   display: flex;
@@ -20,26 +24,34 @@ const Wrapper = styled.form`
 
 interface BifrostScreenProps {
   screenConfiguration: ScreenConfiguration;
+  keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
   handleSetFormData: ({
-    keyName,
+    keyPath,
     keyValue,
   }: {
-    keyName: string;
-    keyValue: string;
+    keyPath: BifrostKeyPath;
+    keyValue: BifrostFormDataValue;
   }) => void;
+  pushScreenConfigurationStack: (
+    screenConfiguration: ScreenConfiguration
+  ) => void;
+  popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
   handleSubmitFormData: () => void;
 }
 
 export function BifrostScreen({
   screenConfiguration: { layout },
+  keyPath,
   formData,
   hotelId,
   bifrostTravelerId,
   handleSetFormData,
+  pushScreenConfigurationStack,
+  popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
 }: BifrostScreenProps) {
@@ -47,10 +59,13 @@ export function BifrostScreen({
     <Wrapper>
       <LayoutBlock
         layoutBlockConfiguration={layout}
+        keyPath={keyPath}
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         handleSetFormData={handleSetFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
         handleSubmitFormData={handleSubmitFormData}
       />

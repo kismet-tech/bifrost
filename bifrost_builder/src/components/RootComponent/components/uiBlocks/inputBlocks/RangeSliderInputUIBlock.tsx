@@ -99,6 +99,10 @@ export function RangeSliderInputUIBlock({
       ? value[0].toLocaleString()
       : `${value[0].toLocaleString()} - ${value[1].toLocaleString()}`;
 
+  console.log(
+    `rangeMin: ${rangeMin}, rangeMax: ${rangeMax}, value: ${value}, valueText: ${valueText}`
+  );
+
   return (
     <FormField>
       <FormLabel htmlFor={inputId}>{label}</FormLabel>

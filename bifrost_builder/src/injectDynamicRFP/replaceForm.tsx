@@ -1,5 +1,5 @@
 import { KismetRootComponent } from "@/components/RootComponent/RootComponent";
-import { ThemeVariables } from "@/components/RootComponent/models/themes";
+import { ThemeVariables } from "@/models/configuration/themes";
 import { BifrostConfiguration } from "@/models/configuration";
 import { createRoot } from "react-dom/client";
 

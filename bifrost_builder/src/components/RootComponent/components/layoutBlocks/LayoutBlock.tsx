@@ -1,80 +1,98 @@
 import {
-  BlockType,
   LayoutBlockConfiguration,
   LayoutBlockType,
-  UIBlockConfiguration,
+  ScreenConfiguration,
 } from "@/models/configuration";
-import { UIBlock } from "../uiBlocks/UIBlock";
 import { RowLayoutBlock } from "./RowLayoutBlock";
 import { ColumnLayoutBlock } from "./ColumnLayoutBlock";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostFormDataValue,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
+import { TableInputBlock } from "../TableInputBlock";
 
 interface LayoutBlockProps {
   layoutBlockConfiguration: LayoutBlockConfiguration;
+  keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
   handleSetFormData: ({
-    keyName,
+    keyPath,
     keyValue,
   }: {
-    keyName: string;
-    keyValue: string;
+    keyPath: BifrostKeyPath;
+    keyValue: BifrostFormDataValue;
   }) => void;
+  pushScreenConfigurationStack: (
+    screenConfiguration: ScreenConfiguration
+  ) => void;
+  popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
   handleSubmitFormData: () => void;
 }
 
 export function LayoutBlock({
-  layoutBlockConfiguration: { childConfigurations },
+  layoutBlockConfiguration,
+  keyPath,
   formData,
   hotelId,
   bifrostTravelerId,
   handleSetFormData,
+  pushScreenConfigurationStack,
+  popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
 }: LayoutBlockProps) {
-  return childConfigurations.map(
-    (
-      childConfiguration: UIBlockConfiguration | LayoutBlockConfiguration,
-      index: number
-    ) => {
-      if (childConfiguration.blockType === BlockType.UI_BLOCK) {
-        return (
-          <UIBlock
-            key={index}
-            configuration={childConfiguration}
-            formData={formData}
-            hotelId={hotelId}
-            bifrostTravelerId={bifrostTravelerId}
-            handleSetFormData={handleSetFormData}
-            registerBifrostFormInput={registerBifrostFormInput}
-            handleSubmitFormData={handleSubmitFormData}
-          />
-        );
-      } else {
-        if (childConfiguration.layoutBlockType === LayoutBlockType.ROWS) {
-          return (
-            <RowLayoutBlock
-              key={index}
-              rowsLayoutBlockConfiguration={childConfiguration}
-              formData={formData}
-              hotelId={hotelId}
-              bifrostTravelerId={bifrostTravelerId}
-              handleSetFormData={handleSetFormData}
-              registerBifrostFormInput={registerBifrostFormInput}
-              handleSubmitFormData={handleSubmitFormData}
-            />
-          );
-        } else if (
-          childConfiguration.layoutBlockType === LayoutBlockType.COLUMNS
-        ) {
-          <ColumnLayoutBlock
-            key={index}
-            columnsLayoutBlockConfiguration={childConfiguration}
-          />;
-        }
-      }
-    }
-  );
+  if (layoutBlockConfiguration.layoutBlockType === LayoutBlockType.ROWS) {
+    return (
+      <RowLayoutBlock
+        rowsLayoutBlockConfiguration={layoutBlockConfiguration}
+        keyPath={keyPath}
+        formData={formData}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        handleSetFormData={handleSetFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
+        handleSubmitFormData={handleSubmitFormData}
+      />
+    );
+  } else if (
+    layoutBlockConfiguration.layoutBlockType === LayoutBlockType.COLUMNS
+  ) {
+    return (
+      <ColumnLayoutBlock
+        columnsLayoutBlockConfiguration={layoutBlockConfiguration}
+        keyPath={keyPath}
+        formData={formData}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        handleSetFormData={handleSetFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
+        handleSubmitFormData={handleSubmitFormData}
+      />
+    );
+  } else if (
+    layoutBlockConfiguration.layoutBlockType === LayoutBlockType.INPUT_TABLE
+  ) {
+    return (
+      <TableInputBlock
+        configuration={layoutBlockConfiguration}
+        keyPath={keyPath}
+        formData={formData}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        handleSetFormData={handleSetFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
+        handleSubmitFormData={handleSubmitFormData}
+      />
+    );
+  }
 }

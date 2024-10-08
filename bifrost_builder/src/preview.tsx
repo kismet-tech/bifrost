@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./SelfContainedApp/App";
+import SelfContainedApp from "./SelfContainedApp/SelfContainedApp";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <SelfContainedApp />
   </StrictMode>
 );

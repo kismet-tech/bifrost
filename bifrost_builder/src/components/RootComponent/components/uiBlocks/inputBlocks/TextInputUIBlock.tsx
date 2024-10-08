@@ -1,5 +1,8 @@
 import { TextInputUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 import { FormField } from "../styles/FormField";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import {
@@ -8,23 +11,32 @@ import {
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { FormLabel } from "../styles/FormLabel";
 import { Input } from "@/components/ui/input";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface TextInputUIBlockProps {
   configuration: TextInputUIBlockConfiguration;
   hotelId: string;
   formData: BifrostFormData;
+  keyPath: BifrostKeyPath;
   onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function TextInputUIBlock({
-  configuration,
+  configuration: { keyName, label, inputType, placeholder, autocomplete },
   hotelId,
   formData,
+  keyPath,
   onChange,
   registerBifrostFormInput,
 }: TextInputUIBlockProps) {
   const [localValue, updateLocalValue] = useState<string>("");
+
+  const accumulatedKeyPath: BifrostKeyPath = [...keyPath, keyName];
+  const keyValue = getValueFromBifrostFormDataByKeyPath({
+    formData,
+    keyPath: accumulatedKeyPath,
+  });
 
   // Attempt to Prefill Field Using Prior Responses
   useEffect(() => {
@@ -33,12 +45,17 @@ export function TextInputUIBlock({
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
           formData,
-          targetKeyName: configuration.keyName,
+          targetKeyName: keyName,
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formData[configuration.keyName] && targetKeyStringValue) {
-        updateLocalValue(targetKeyStringValue);
+      if (!formData[keyName] && targetKeyStringValue) {
+        updateLocalValue((previousLocalValue) => {
+          if (!previousLocalValue || previousLocalValue.length === 0) {
+            return targetKeyStringValue;
+          }
+          return previousLocalValue;
+        });
         onChange(targetKeyStringValue);
       }
     }
@@ -47,15 +64,12 @@ export function TextInputUIBlock({
   }, []);
 
   useEffect(() => {
-    if (
-      configuration.keyName in formData &&
-      typeof formData[configuration.keyName] === "string"
-    ) {
-      updateLocalValue(formData[configuration.keyName] as string);
+    if (keyValue && typeof keyValue === "string") {
+      updateLocalValue(keyValue as string);
     } else {
       updateLocalValue("");
     }
-  }, [formData, configuration]);
+  }, [keyValue]);
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -72,15 +86,13 @@ export function TextInputUIBlock({
 
   return (
     <FormField>
-      <FormLabel htmlFor={`kismet_${configuration.keyName}`}>
-        {configuration.label}
-      </FormLabel>
+      <FormLabel htmlFor={`kismet_${keyName}`}>{label}</FormLabel>
       <Input
         onChange={handleOnChange}
-        type={configuration.inputType}
-        id={`kismet_${configuration.keyName}`}
-        placeholder={configuration.placeholder}
-        autoComplete={configuration.autocomplete}
+        type={inputType}
+        id={`kismet_${keyName}`}
+        placeholder={placeholder}
+        autoComplete={autocomplete}
         value={localValue}
       />
     </FormField>

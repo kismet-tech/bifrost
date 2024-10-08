@@ -1,6 +1,14 @@
-import { UIBlockConfiguration, UIBlockType } from "@/models/configuration";
+import {
+  ScreenConfiguration,
+  UIBlockConfiguration,
+  UIBlockType,
+} from "@/models/configuration";
 import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostFormDataValue,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
 import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
 import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
@@ -15,28 +23,36 @@ import { ButtonUIBlock } from "./ButtonUIBlock";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
+  keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
   handleSetFormData: ({
-    keyName,
+    keyPath,
     keyValue,
   }: {
-    keyName: string;
-    keyValue: string;
+    keyPath: BifrostKeyPath;
+    keyValue: BifrostFormDataValue;
   }) => void;
-  registerBifrostFormInput: () => Promise<void>;
   handleSubmitFormData: () => void;
+  pushScreenConfigurationStack: (
+    screenConfiguration: ScreenConfiguration
+  ) => void;
+  popRightscreenConfigurationStack: () => void;
+  registerBifrostFormInput: () => Promise<void>;
 }
 
 export function UIBlock({
   configuration,
+  keyPath,
   formData,
   hotelId,
   bifrostTravelerId,
   handleSetFormData,
-  registerBifrostFormInput,
   handleSubmitFormData,
+  pushScreenConfigurationStack,
+  popRightscreenConfigurationStack,
+  registerBifrostFormInput,
 }: UIBlockProps) {
   if (configuration.uiBlockType === UIBlockType.HEADER) {
     return <HeaderUIBlock configuration={configuration} formData={formData} />;
@@ -73,11 +89,12 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           handleSetFormData({
-            keyName: configuration.keyName,
+            keyPath: [...keyPath, configuration.keyName],
             keyValue,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
+        keyPath={keyPath}
       />
     );
   } else if (configuration.uiBlockType === UIBlockType.TEXT_AREA_INPUT) {
@@ -88,7 +105,7 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           handleSetFormData({
-            keyName: configuration.keyName,
+            keyPath: [...keyPath, configuration.keyName],
             keyValue,
           });
         }}
@@ -103,7 +120,7 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           handleSetFormData({
-            keyName: configuration.keyName,
+            keyPath: [...keyPath, configuration.keyName],
             keyValue,
           });
         }}
@@ -124,12 +141,12 @@ export function UIBlock({
           endCalendarDate?: CalendarDate;
         }) => {
           handleSetFormData({
-            keyName: configuration.startCalendarDateKeyName,
+            keyPath: [...keyPath, configuration.startCalendarDateKeyName],
             keyValue: JSON.stringify(startCalendarDate),
           });
 
           handleSetFormData({
-            keyName: configuration.endCalendarDateKeyName,
+            keyPath: [...keyPath, configuration.endCalendarDateKeyName],
             keyValue: JSON.stringify(endCalendarDate),
           });
         }}
@@ -144,11 +161,11 @@ export function UIBlock({
         formData={formData}
         onChange={({ min, max }) => {
           handleSetFormData({
-            keyName: configuration.valueMinKeyName,
+            keyPath: [...keyPath, configuration.valueMinKeyName],
             keyValue: min?.toString() ?? "",
           });
           handleSetFormData({
-            keyName: configuration.valueMaxKeyName,
+            keyPath: [...keyPath, configuration.valueMaxKeyName],
             keyValue: max?.toString() ?? "",
           });
         }}
@@ -165,7 +182,7 @@ export function UIBlock({
         formData={formData}
         onChange={(selectedCardName) => {
           handleSetFormData({
-            keyName: configuration.keyName,
+            keyPath: [...keyPath, configuration.keyName],
             keyValue: selectedCardName,
           });
         }}
@@ -176,8 +193,11 @@ export function UIBlock({
     return (
       <ButtonUIBlock
         configuration={configuration}
+        keyPath={keyPath}
         handleSetFormData={handleSetFormData}
         handleSubmitFormData={handleSubmitFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
       />
     );

@@ -1,6 +1,6 @@
 import { ScreenConfiguration } from ".";
 
-enum ScreenPointerType {
+export enum ScreenPointerType {
   DIRECT = "DIRECT",
   BACK = "BACK",
   BRANCH_BY_EVENT_SPACE_REQUIREMENT = "BRANCH_BY_EVENT_SPACE_REQUIREMENT",
