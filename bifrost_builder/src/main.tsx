@@ -1,10 +1,10 @@
 import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
-import { BifrostConfiguration } from "./components/RootComponent/models";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
 import { registerBifrostPageVisit } from "./api/registerBifrostPageVisit";
 import { getBifrostTravelerId } from "./utilities/getBifrostTravelerId";
 import { maybeJoinTravelerWithKismetCampaign } from "./utilities/maybeJoinTravelerWithKismetCampaign";
+import { BifrostConfiguration } from "./models/configuration";
 
 declare global {
   interface Window {

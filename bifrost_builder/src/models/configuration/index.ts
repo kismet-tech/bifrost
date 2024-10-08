@@ -2,6 +2,7 @@
 // Base
 //////////////////////////////////////////////////
 
+import { ThemeVariables } from "@/components/RootComponent/models/themes";
 import { ScreenPointer } from "./ScreenPointer";
 
 export enum BlockType {
@@ -30,11 +31,11 @@ export enum UIBlockType {
 
   // Inputs
   TEXT_INPUT = "TEXT_INPUT",
-  SELECT_INPUT = "SELECT_INPUT",
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
+  SELECT_INPUT = "SELECT_INPUT",
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
   RANGE_SLIDER = "RANGE_SLIDER",
-  EXPANDABLE_SELECTION_CARDS = "EXPANDABLE_SELECTION_CARDS",
+  EXPANDABLE_CARD_SELECTOR = "EXPANDABLE_CARD_SELECTOR",
 
   // Buttons
   BUTTON = "BUTTON",
@@ -56,6 +57,7 @@ export interface SubheaderUIBlockConfiguration
 export interface SmartGreetingSubheaderUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.SMART_GREETING_SUBHEADER;
+  formGreetingDataKeyPath: string;
 }
 
 export interface SmartFarewellUISubheaderUIBlockConfiguration
@@ -123,9 +125,9 @@ export interface ExpandableSelectionCardUIBlockConfigurationOption {
   description: string;
 }
 
-export interface ExpandableSelectionCardsUIBlockConfiguration
+export interface ExpandableCardSelectorUIBlockConfiguration
   extends BaseUIBlockConfiguration {
-  uiBlockType: UIBlockType.EXPANDABLE_SELECTION_CARDS;
+  uiBlockType: UIBlockType.EXPANDABLE_CARD_SELECTOR;
 
   label: string;
   keyName: string;
@@ -155,7 +157,8 @@ export type UIBlockConfiguration =
   | SelectInputUIBlockConfiguration
   | DateRangePickerUIBlockConfiguration
   | RangeSliderInputUIBlockConfiguration
-  | ExpandableSelectionCardsUIBlockConfiguration;
+  | ExpandableCardSelectorUIBlockConfiguration
+  | ButtonUIBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Layout Components
@@ -196,5 +199,6 @@ export interface ScreenConfiguration {
 export interface BifrostConfiguration {
   hotelId: string;
   bifrostFormId: string;
-  rootScreenConfiguration: ScreenConfiguration;
+  rootScreenConfiguration?: ScreenConfiguration;
+  themeVariables?: ThemeVariables;
 }

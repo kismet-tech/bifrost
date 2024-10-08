@@ -5,8 +5,8 @@ import {
   blueTheme,
   radiusPresets,
 } from "./components/RootComponent/models/themes";
-import { knollcroftFormBlocks } from "./getBifrostConfiguration/knollcroftFormBlocks";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
+import { knollcroftRootScreenConfiguration } from "./getBifrostConfiguration/knollcroftScreens/knollcroftRootScreenConfiguration";
 
 const meta: Meta<typeof KismetRootComponent> = {
   title: "KismetForm",
@@ -22,7 +22,7 @@ export const Example: Story = {
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
+      rootScreenConfiguration: knollcroftRootScreenConfiguration,
     },
   },
 };
@@ -52,7 +52,7 @@ export const WithCustomTheme: Story = {
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
+      rootScreenConfiguration: knollcroftRootScreenConfiguration,
       themeVariables: { ...blueTheme, radius: radiusPresets.xl },
     },
   },

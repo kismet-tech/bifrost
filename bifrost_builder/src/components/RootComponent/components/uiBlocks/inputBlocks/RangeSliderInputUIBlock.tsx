@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
-import { RangeSliderInputConfiguration } from "../../models";
 import {
-  PrefilledBifrostFormValueType,
   attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
-import { FormField } from "./FormField";
-import { FormLabel } from "./FormLabel";
+import { RangeSliderInputUIBlockConfiguration } from "@/models/configuration";
+import { BifrostFormData } from "@/models/configuration/formData";
+import { useEffect, useState } from "react";
+import { FormField } from "../styles/FormField";
+import { FormLabel } from "../styles/FormLabel";
 import { Slider } from "@/components/ui/slider";
 
-export interface FormRangeSliderProps {
-  configuration: RangeSliderInputConfiguration;
+interface RangeSliderInputUIBlockProps {
+  configuration: RangeSliderInputUIBlockConfiguration;
   hotelId: string;
-  formState: Record<string, string>;
+  formData: BifrostFormData;
   onChange: (value: { min?: number; max?: number }) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
-export function FormRangeSlider({
+export function RangeSliderInputUIBlock({
   configuration: {
     label,
     rangeMin,
@@ -25,10 +26,10 @@ export function FormRangeSlider({
     valueMaxKeyName,
   },
   hotelId,
-  formState,
+  formData,
   onChange,
   registerBifrostFormInput,
-}: FormRangeSliderProps) {
+}: RangeSliderInputUIBlockProps) {
   const [localValue, setLocalValue] = useState<{
     min?: number;
     max?: number;
@@ -39,12 +40,12 @@ export function FormRangeSlider({
       const { targetKeyNumberValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData,
           targetKeyName: valueMinKeyName,
           targetValueType: PrefilledBifrostFormValueType.NUMBER,
         });
 
-      if (!formState[valueMinKeyName] && targetKeyNumberValue) {
+      if (!formData[valueMinKeyName] && targetKeyNumberValue) {
         setLocalValue((prev) => {
           const nextValue = { ...prev, min: targetKeyNumberValue };
 
@@ -59,12 +60,12 @@ export function FormRangeSlider({
       const { targetKeyNumberValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData,
           targetKeyName: valueMaxKeyName,
           targetValueType: PrefilledBifrostFormValueType.NUMBER,
         });
 
-      if (!formState[valueMaxKeyName] && targetKeyNumberValue) {
+      if (!formData[valueMaxKeyName] && targetKeyNumberValue) {
         setLocalValue((prev) => {
           const nextValue = { ...prev, max: targetKeyNumberValue };
 

@@ -1,28 +1,29 @@
 import {
-  PrefilledBifrostFormValueType,
   attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
+import { TextAreaInputUIBlockConfiguration } from "@/models/configuration";
+import { BifrostFormData } from "@/models/configuration/formData";
 import { ChangeEventHandler, useEffect, useState } from "react";
-import { TextInputFormBlockConfiguration } from "../../models";
-import { FormField } from "./FormField";
-import { FormLabel } from "./FormLabel";
-import { Input } from "@/components/ui/input";
+import { FormField } from "../styles/FormField";
+import { FormLabel } from "../styles/FormLabel";
+import { Textarea } from "@/components/ui/textarea";
 
-export interface FormTextFieldProps {
-  configuration: TextInputFormBlockConfiguration;
+interface TextAreaInputUIBlockProps {
+  configuration: TextAreaInputUIBlockConfiguration;
   hotelId: string;
-  formState: Record<string, string>;
+  formData: BifrostFormData;
   onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
-export function FormTextField({
+export function TextAreaInputUIBlock({
   configuration,
   hotelId,
-  formState,
+  formData,
   onChange,
   registerBifrostFormInput,
-}: FormTextFieldProps) {
+}: TextAreaInputUIBlockProps) {
   const [localValue, updateLocalValue] = useState<string>("");
 
   // Attempt to Prefill Field Using Prior Responses
@@ -31,12 +32,12 @@ export function FormTextField({
       const { targetKeyStringValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData: formData,
           targetKeyName: configuration.keyName,
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formState[configuration.keyName] && targetKeyStringValue) {
+      if (!formData[configuration.keyName] && targetKeyStringValue) {
         updateLocalValue(targetKeyStringValue);
         onChange(targetKeyStringValue);
       }
@@ -46,16 +47,20 @@ export function FormTextField({
   }, []);
 
   useEffect(() => {
-    if (configuration.keyName in formState) {
-      updateLocalValue(formState[configuration.keyName]);
+    if (
+      configuration.keyName in formData &&
+      typeof formData[configuration.keyName] === "string"
+    ) {
+      updateLocalValue(formData[configuration.keyName] as string);
     } else {
       updateLocalValue("");
     }
-  }, [formState, configuration]);
+  }, [formData, configuration]);
 
-  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const value = event.target.value;
-
     if (onChange) {
       onChange(value);
     }
@@ -66,15 +71,13 @@ export function FormTextField({
 
   return (
     <FormField>
-      <FormLabel htmlFor={`kismet_${configuration.keyName}`}>
+      <FormLabel htmlFor={`form_${configuration.keyName}`}>
         {configuration.label}
       </FormLabel>
-      <Input
+      <Textarea
         onChange={handleOnChange}
-        type={configuration.inputType}
-        id={`kismet_${configuration.keyName}`}
+        id={`form_${configuration.keyName}`}
         placeholder={configuration.placeholder}
-        autoComplete={configuration.autocomplete}
         value={localValue}
       />
     </FormField>

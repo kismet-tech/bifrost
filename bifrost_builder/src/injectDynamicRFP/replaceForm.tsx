@@ -1,6 +1,6 @@
 import { KismetRootComponent } from "@/components/RootComponent/RootComponent";
-import { BifrostConfiguration } from "@/components/RootComponent/models";
 import { ThemeVariables } from "@/components/RootComponent/models/themes";
+import { BifrostConfiguration } from "@/models/configuration";
 import { createRoot } from "react-dom/client";
 
 interface ReplaceFormProps {

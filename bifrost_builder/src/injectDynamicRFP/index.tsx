@@ -1,5 +1,5 @@
+import { BifrostConfiguration } from "@/models/configuration";
 import { replaceForm } from "./replaceForm";
-import { BifrostConfiguration } from "@/components/RootComponent/models";
 
 interface InjectDynamicRFPProps {
   bifrostTravelerId: string;
@@ -10,7 +10,7 @@ export const injectDynamicRFP = ({
   bifrostTravelerId,
   bifrostConfiguration,
 }: InjectDynamicRFPProps) => {
-  if (bifrostConfiguration.formBlocks.length === 0) {
+  if (bifrostConfiguration.rootScreenConfiguration) {
     return;
   }
 

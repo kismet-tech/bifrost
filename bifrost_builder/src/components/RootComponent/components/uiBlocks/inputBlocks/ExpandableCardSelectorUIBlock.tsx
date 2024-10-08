@@ -1,28 +1,29 @@
-import { useEffect, useState } from "react";
-import { ExpandableSelectionCardsConfiguration } from "../../models";
 import {
-  PrefilledBifrostFormValueType,
   attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
-import { FormField } from "./FormField";
-import { FormLabel } from "./FormLabel";
+import { ExpandableCardSelectorUIBlockConfiguration } from "@/models/configuration";
+import { BifrostFormData } from "@/models/configuration/formData";
+import { useEffect, useState } from "react";
+import { FormField } from "../styles/FormField";
+import { FormLabel } from "../styles/FormLabel";
 import { ExpandableSelectionCard } from "@/components/ui/expandable-selection-card";
 
-export interface FormExpandableSelectionCardsProps {
-  configuration: ExpandableSelectionCardsConfiguration;
+interface ExpandableCardSelectorUIBlockProps {
+  configuration: ExpandableCardSelectorUIBlockConfiguration;
   hotelId: string;
-  formState: Record<string, string>;
+  formData: BifrostFormData;
   onChange: (selectedCardName: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
-export function FormExpandableSelectionCards({
+export function ExpandableCardSelectorUIBlock({
   configuration: { label, keyName, options },
   hotelId,
-  formState,
+  formData,
   onChange,
   registerBifrostFormInput,
-}: FormExpandableSelectionCardsProps) {
+}: ExpandableCardSelectorUIBlockProps) {
   const [localSelectedCardName, setLocalSelectedCardName] = useState("");
 
   useEffect(() => {
@@ -30,12 +31,12 @@ export function FormExpandableSelectionCards({
       const { targetKeyStringValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData,
           targetKeyName: keyName,
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formState[keyName] && targetKeyStringValue) {
+      if (!formData[keyName] && targetKeyStringValue) {
         setLocalSelectedCardName(targetKeyStringValue);
         onChange(targetKeyStringValue);
       }

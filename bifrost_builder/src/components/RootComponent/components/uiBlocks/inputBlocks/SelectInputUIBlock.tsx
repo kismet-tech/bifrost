@@ -1,7 +1,7 @@
-import {
-  PrefilledBifrostFormValueType,
-  attemptToPrefillKismetFieldUsingPriorResponses,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
+import { SelectInputUIBlockConfiguration } from "@/models/configuration";
+import { BifrostFormData } from "@/models/configuration/formData";
+import { FormField } from "../styles/FormField";
+import { FormLabel } from "../styles/FormLabel";
 import {
   Select,
   SelectContent,
@@ -9,27 +9,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  attemptToPrefillKismetFieldUsingPriorResponses,
+  PrefilledBifrostFormValueType,
+} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { useEffect } from "react";
-import { SelectInputFormBlockConfiguration } from "../../models";
-import { FormField } from "./FormField";
-import { FormLabel } from "./FormLabel";
 
-export interface FormSelectFieldProps {
-  configuration: SelectInputFormBlockConfiguration;
+interface SelectInputUIBlockProps {
+  configuration: SelectInputUIBlockConfiguration;
   hotelId: string;
-  formState: Record<string, string>;
+  formData: BifrostFormData;
   onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
-export function FormSelectField({
+export function SelectInputUIBlock({
   configuration: { label, keyName, options },
   hotelId,
-  formState,
+  formData,
   onChange,
   registerBifrostFormInput,
-}: FormSelectFieldProps) {
-  const selectedValue = formState[keyName] || options[0].keyValue;
+}: SelectInputUIBlockProps) {
+  const selectedValue: string =
+    formData[keyName] && typeof formData[keyName] === "string"
+      ? (formData[keyName] as string)
+      : (options[0].keyValue as string);
 
   // Attempt to Prefill Field Using Prior Responses
   useEffect(() => {
@@ -37,12 +41,12 @@ export function FormSelectField({
       const { targetKeyStringValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData: formData,
           targetKeyName: keyName,
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formState[keyName] && targetKeyStringValue) {
+      if (!formData[keyName] && targetKeyStringValue) {
         onChange(targetKeyStringValue);
       }
     }

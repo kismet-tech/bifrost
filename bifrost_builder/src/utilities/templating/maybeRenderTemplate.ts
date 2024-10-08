@@ -28,6 +28,8 @@ export const maybeRenderTemplate = ({
   }
 
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) =>
-    typeof formData[key] === "string" ? formData[key] : match
+    typeof formData[key] === "string"
+      ? (formData[key] as string)
+      : (match as string)
   );
 };

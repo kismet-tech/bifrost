@@ -1,26 +1,27 @@
 import { CalendarDate } from "@/models/CalendarDate";
-import { DateRangePickerFormBlockConfiguration } from "../../../models";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
+import { DateRangePickerUIBlockConfiguration } from "@/models/configuration";
+import { BifrostFormData } from "@/models/configuration/formData";
+import { FormField } from "../styles/FormField";
 import { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
-import { FormField } from "../../FormField";
-import { FormLabel } from "../../FormLabel";
 import {
   attemptToPrefillKismetFieldUsingPriorResponses,
   PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
+import { DateRange } from "react-day-picker";
+import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
+import { FormLabel } from "../styles/FormLabel";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
   endCalendarDate?: CalendarDate;
 }
 
-export interface FormDateRangePickerFieldProps {
-  configuration: DateRangePickerFormBlockConfiguration;
+interface DateRangePickerUIBlockProps {
+  configuration: DateRangePickerUIBlockConfiguration;
   hotelId: string;
-  formState: Record<string, string>;
+  formData: BifrostFormData;
   onChange: ({
     startCalendarDate,
     endCalendarDate,
@@ -31,13 +32,13 @@ export interface FormDateRangePickerFieldProps {
   registerBifrostFormInput: () => Promise<void>;
 }
 
-export function FormDateRangePickerField({
+export function DateRangePickerUIBlock({
   configuration: { label, startCalendarDateKeyName, endCalendarDateKeyName },
   hotelId,
-  formState,
+  formData,
   onChange,
   registerBifrostFormInput,
-}: FormDateRangePickerFieldProps) {
+}: DateRangePickerUIBlockProps) {
   const [localCalendarDateRange, setLocalCalendarDateRange] =
     useState<LocalCalendarDateRange>({
       startCalendarDate: undefined,
@@ -50,12 +51,12 @@ export function FormDateRangePickerField({
       const { targetKeyCalendarDateValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData,
           targetKeyName: startCalendarDateKeyName,
           targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
         });
 
-      if (!formState[startCalendarDateKeyName] && targetKeyCalendarDateValue) {
+      if (!formData[startCalendarDateKeyName] && targetKeyCalendarDateValue) {
         setLocalCalendarDateRange(
           (previousLocalCalendarDateRange): LocalCalendarDateRange => {
             const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
@@ -79,12 +80,12 @@ export function FormDateRangePickerField({
       const { targetKeyCalendarDateValue } =
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
-          formData: formState,
+          formData,
           targetKeyName: endCalendarDateKeyName,
           targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
         });
 
-      if (!formState[endCalendarDateKeyName] && targetKeyCalendarDateValue) {
+      if (!formData[endCalendarDateKeyName] && targetKeyCalendarDateValue) {
         setLocalCalendarDateRange(
           (previousLocalCalendarDateRange): LocalCalendarDateRange => {
             const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
