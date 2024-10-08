@@ -17,6 +17,8 @@ import {
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { UIBlock } from "./uiBlocks/UIBlock";
+import { Button } from "@/components/ui/button";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface TableInputBlockProps {
   configuration: InputTableLayoutBlockConfiguration;
@@ -40,7 +42,7 @@ interface TableInputBlockProps {
 }
 
 export function TableInputBlock({
-  configuration: { columns },
+  configuration: { keyName, columns },
   keyPath,
   formData,
   hotelId,
@@ -51,23 +53,43 @@ export function TableInputBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: TableInputBlockProps) {
+  const tableData = getValueFromBifrostFormDataByKeyPath({
+    formData,
+    keyPath: [...keyPath, keyName],
+  }) || [{}];
+
+  const handleAddRow: React.MouseEventHandler<HTMLButtonElement> = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    handleSetFormData({
+      keyPath: [...keyPath, keyName, tableData.length],
+      keyValue: {},
+    });
+  };
+
   const renderedColumnHeaders = columns.map(
-    (column: InputTableLayoutBlockColumnConfiguration) => {
-      return <TableHead>{column.columnHeader.columnHeaderText}</TableHead>;
+    (column: InputTableLayoutBlockColumnConfiguration, columnIndex) => {
+      return (
+        <TableHead key={columnIndex}>
+          {column.columnHeader.columnHeaderText}
+        </TableHead>
+      );
     }
   );
 
-  console.log("formData");
-  console.log(JSON.stringify(formData, null, 4));
-
-  const tableRows = [1].map((_, rowIndex: number) => {
+  const tableRows = tableData.map((_, rowIndex: number) => {
     const renderedTableCells = columns.map(
-      (column: InputTableLayoutBlockColumnConfiguration) => {
+      (
+        column: InputTableLayoutBlockColumnConfiguration,
+        columnIndex: number
+      ) => {
         return (
-          <TableCell>
+          <TableCell key={`${rowIndex}_${columnIndex}`}>
             <UIBlock
               configuration={column.inputCell}
-              keyPath={[...keyPath, rowIndex]}
+              keyPath={[...keyPath, keyName, rowIndex]}
               formData={formData}
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
@@ -84,15 +106,18 @@ export function TableInputBlock({
       }
     );
 
-    return <TableRow>{renderedTableCells}</TableRow>;
+    return <TableRow key={`${rowIndex}`}>{renderedTableCells}</TableRow>;
   });
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>{renderedColumnHeaders}</TableRow>
-      </TableHeader>
-      <TableBody>{tableRows}</TableBody>
-    </Table>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>{renderedColumnHeaders}</TableRow>
+        </TableHeader>
+        <TableBody>{tableRows}</TableBody>
+      </Table>
+      <Button onClick={handleAddRow}>Add Row</Button>
+    </>
   );
 }

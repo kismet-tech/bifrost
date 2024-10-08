@@ -72,6 +72,7 @@ export interface TextInputUIBlockConfiguration
   label?: string;
   keyName: string;
   placeholder?: string;
+  smartFill?: string;
   autocomplete?: string;
   inputType: React.HTMLInputTypeAttribute;
 }
@@ -198,7 +199,7 @@ export interface InputTableLayoutBlockConfiguration
   extends BaseLayoutBlockConfiguration {
   layoutBlockType: LayoutBlockType.INPUT_TABLE;
 
-  keyPath: string;
+  keyName: string;
   columns: InputTableLayoutBlockColumnConfiguration[];
 }
 

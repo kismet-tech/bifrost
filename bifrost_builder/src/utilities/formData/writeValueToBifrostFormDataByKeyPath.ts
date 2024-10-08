@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
+import { deepClone } from "../core/deepClone";
 
 interface WriteValueToBifrostFormDataByKeyPathProps {
   formData: BifrostFormData;
@@ -14,74 +16,39 @@ export const writeValueToBifrostFormDataByKeyPath = ({
   formData,
   keyPath,
   updatedKeyValue,
-}: WriteValueToBifrostFormDataByKeyPathProps): {
-  updatedFormData: BifrostFormData;
-} => {
-  const [currentKey, ...remainingKeys] = keyPath;
+}: WriteValueToBifrostFormDataByKeyPathProps): BifrostFormData => {
+  // Clone the formData deeply to avoid mutating the original object
+  const updatedFormData = deepClone(formData);
 
-  const updatedFormData: BifrostFormData = structuredClone(formData);
+  // Reference to traverse the formData object
+  let currentLevel: any = updatedFormData;
 
-  if (remainingKeys.length === 0) {
-    updatedFormData[currentKey] = updatedKeyValue;
-  } else {
-    const nestedFormData: BifrostFormData | BifrostFormData[] = formData[
-      currentKey as string
-    ] as BifrostFormData | BifrostFormData[];
+  keyPath.forEach((key, index) => {
+    const isLastKey = index === keyPath.length - 1;
 
-    if (Array.isArray(nestedFormData)) {
-      const { updatedFormDataArray: updatedNestedFormDataArray } =
-        writeValueToBifrostFormDataArrayByKeyPath({
-          formDataArray: formData[currentKey as string] as BifrostFormData[],
-          keyPath: remainingKeys,
-          updatedKeyValue: updatedKeyValue,
-        });
-
-      updatedFormData[currentKey] = updatedNestedFormDataArray;
+    // If it's the last key in the path, set the updatedKeyValue
+    if (isLastKey) {
+      currentLevel[key] = updatedKeyValue;
     } else {
-      const { updatedFormData: updatedNestedFormData } =
-        writeValueToBifrostFormDataByKeyPath({
-          formData: formData[currentKey as string] as BifrostFormData,
-          keyPath: remainingKeys,
-          updatedKeyValue: updatedKeyValue,
-        });
+      const nextKey = keyPath[index + 1];
+      const isNextKeyNumber = typeof nextKey === "number";
 
-      updatedFormData[currentKey] = updatedNestedFormData;
+      // If the current key is a number, ensure current level is an array
+      if (typeof key === "number") {
+        if (!Array.isArray(currentLevel)) {
+          currentLevel = [];
+        }
+      }
+
+      // Initialize the next level if it doesn't exist
+      if (currentLevel[key] === undefined) {
+        currentLevel[key] = isNextKeyNumber ? [] : {};
+      }
+
+      // Move to the next level in the path
+      currentLevel = currentLevel[key];
     }
-  }
-
-  return { updatedFormData };
-};
-
-interface WriteValueToBifrostFormDataArrayByKeyPathProps {
-  formDataArray: BifrostFormData[];
-  keyPath: BifrostKeyPath;
-  updatedKeyValue: BifrostFormDataValue;
-}
-
-const writeValueToBifrostFormDataArrayByKeyPath = ({
-  formDataArray,
-  keyPath,
-  updatedKeyValue,
-}: WriteValueToBifrostFormDataArrayByKeyPathProps): {
-  updatedFormDataArray: BifrostFormData[];
-} => {
-  const [currentKey, ...remainingKeys] = keyPath;
-
-  const updatedFormDataArray: BifrostFormData[] = structuredClone([
-    ...formDataArray,
-  ]);
-
-  const nestedFormData: BifrostFormData | BifrostFormData[] = formDataArray[
-    currentKey as number
-  ] as BifrostFormData;
-
-  const { updatedFormData } = writeValueToBifrostFormDataByKeyPath({
-    formData: nestedFormData,
-    keyPath: remainingKeys,
-    updatedKeyValue: updatedKeyValue,
   });
 
-  updatedFormDataArray[currentKey as number] = updatedFormData;
-
-  return { updatedFormDataArray };
+  return updatedFormData;
 };

@@ -14,7 +14,7 @@ export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguratio
         {
           blockType: BlockType.LAYOUT_BLOCK,
           layoutBlockType: LayoutBlockType.INPUT_TABLE,
-          keyPath: "event_space",
+          keyName: "event_space",
           columns: [
             {
               columnHeader: {

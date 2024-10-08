@@ -23,7 +23,14 @@ interface TextInputUIBlockProps {
 }
 
 export function TextInputUIBlock({
-  configuration: { keyName, label, inputType, placeholder, autocomplete },
+  configuration: {
+    keyName,
+    label,
+    inputType,
+    placeholder,
+    autocomplete,
+    smartFill,
+  },
   hotelId,
   formData,
   keyPath,
@@ -60,7 +67,9 @@ export function TextInputUIBlock({
       }
     }
 
-    prefillKismetFieldUsingPriorResponses();
+    if (smartFill) {
+      prefillKismetFieldUsingPriorResponses();
+    }
   }, []);
 
   useEffect(() => {

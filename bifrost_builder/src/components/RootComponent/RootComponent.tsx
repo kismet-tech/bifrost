@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { deepEqual } from "@/utilities/deepEqual";
+import { deepEqual } from "@/utilities/core/deepEqual";
 import { v4 as uuidv4 } from "uuid";
 import {
   BifrostConfiguration,
@@ -41,6 +41,11 @@ export function KismetRootComponent({
       keyPath: BifrostKeyPath;
       keyValue: BifrostFormDataValue;
     }) => {
+      console.log("THIS IS HIT");
+      console.log(keyPath);
+      console.log(keyValue);
+      console.log("=======");
+
       setFormData((previousFormState) => {
         const updatedFormState = writeValueToBifrostFormDataByKeyPath({
           formData: previousFormState,
