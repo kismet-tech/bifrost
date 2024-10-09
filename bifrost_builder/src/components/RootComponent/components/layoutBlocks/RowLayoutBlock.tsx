@@ -46,7 +46,7 @@ export function RowLayoutBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: RowLayoutBlockProps) {
-  return childConfigurations.map(
+  const children = childConfigurations.map(
     (
       childConfiguration: UIBlockConfiguration | LayoutBlockConfiguration,
       index: number
@@ -86,4 +86,6 @@ export function RowLayoutBlock({
       }
     }
   );
+
+  return <div className="flex flex-col gap-4">{children}</div>;
 }

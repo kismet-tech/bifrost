@@ -46,7 +46,7 @@ export function ColumnLayoutBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: ColumnLayoutBlockProps) {
-  return childConfigurations.map(
+  const children = childConfigurations.map(
     (
       childConfiguration: UIBlockConfiguration | LayoutBlockConfiguration,
       index: number
@@ -86,4 +86,6 @@ export function ColumnLayoutBlock({
       }
     }
   );
+
+  return <div className="flex flex-wrap gap-4 [&>*]:flex-1">{children}</div>;
 }

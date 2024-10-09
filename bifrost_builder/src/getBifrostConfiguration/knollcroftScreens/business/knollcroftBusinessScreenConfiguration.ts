@@ -44,23 +44,30 @@ export const knollcroftBusinessScreenConfiguration: ScreenConfiguration = {
         inputType: "number",
       },
       {
-        blockType: BlockType.UI_BLOCK,
-        uiBlockType: UIBlockType.BUTTON,
-        label: "Back",
-        submitsForm: false,
-        pointer: {
-          type: ScreenPointerType.BACK,
-        },
-      },
-      {
-        blockType: BlockType.UI_BLOCK,
-        uiBlockType: UIBlockType.BUTTON,
-        label: "Next",
-        submitsForm: false,
-        pointer: {
-          type: ScreenPointerType.DIRECT,
-          screenConfiguration: knollcroftBusinessBudgetRangeScreenConfiguration,
-        },
+        blockType: BlockType.LAYOUT_BLOCK,
+        layoutBlockType: LayoutBlockType.COLUMNS,
+        columns: [
+          {
+            blockType: BlockType.UI_BLOCK,
+            uiBlockType: UIBlockType.BUTTON,
+            label: "Back",
+            submitsForm: false,
+            pointer: {
+              type: ScreenPointerType.BACK,
+            },
+          },
+          {
+            blockType: BlockType.UI_BLOCK,
+            uiBlockType: UIBlockType.BUTTON,
+            label: "Next",
+            submitsForm: false,
+            pointer: {
+              type: ScreenPointerType.DIRECT,
+              screenConfiguration:
+                knollcroftBusinessBudgetRangeScreenConfiguration,
+            },
+          },
+        ],
       },
     ],
   },
