@@ -16,7 +16,7 @@ import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
 import { deleteKeysPresentOnScreenFromFormData } from "./components/BifrostScreen/deleteKeysPresentOnScreenFromFormData";
 import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 
-interface KismetFormProps {
+interface KismetRootComponentProps {
   bifrostTravelerId: string;
   bifrostConfiguration: BifrostConfiguration;
 }
@@ -24,7 +24,7 @@ interface KismetFormProps {
 export function KismetRootComponent({
   bifrostTravelerId,
   bifrostConfiguration,
-}: KismetFormProps) {
+}: KismetRootComponentProps) {
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
   const [screenConfigurationStack, setScreenConfigurationStack] = useState<
@@ -41,11 +41,6 @@ export function KismetRootComponent({
       keyPath: BifrostKeyPath;
       keyValue: BifrostFormDataValue;
     }) => {
-      console.log("THIS IS HIT");
-      console.log(keyPath);
-      console.log(keyValue);
-      console.log("=======");
-
       setFormData((previousFormState) => {
         const updatedFormState = writeValueToBifrostFormDataByKeyPath({
           formData: previousFormState,

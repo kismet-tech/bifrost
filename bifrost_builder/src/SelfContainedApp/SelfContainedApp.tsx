@@ -4,12 +4,12 @@ import { localTestingConfiguration } from "./localTestingConfiguration";
 
 function SelfContainedApp() {
   return (
-    <>
+    <div className="kismet-dynamic-rfp-widget">
       <KismetRootComponent
         bifrostTravelerId="local_testing"
         bifrostConfiguration={localTestingConfiguration}
       />
-    </>
+    </div>
   );
 }
 
