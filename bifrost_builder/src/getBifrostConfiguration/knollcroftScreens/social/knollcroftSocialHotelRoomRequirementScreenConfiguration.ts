@@ -4,11 +4,32 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import {
+  ScreenPointer,
+  ScreenPointerType,
+} from "@/models/configuration/ScreenPointer";
 import { generateHotelRoomDateScreenSequence } from "../screenSequences/hotelRoomDateScreenSequence/generateHotelRoomDateScreenSequence";
+import { knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration } from "./knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration";
+import { knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration } from "./knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration";
 import { knollcroftCompletedScreenConfiguration } from "../knollcroftCompletedScreenConfiguration";
+import { knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration } from "./knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration";
 
-export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenConfiguration =
+const knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesScreenPointer: ScreenPointer =
+  {
+    type: ScreenPointerType.BRANCH_BY_ROOM_AVAILABILITY_ON_DATES,
+    startCalendarDateKeyPath: ["start_date"],
+    endCalendarDateKeyPath: ["end_date"],
+    alternativeStartCalendarDateKeyPath: ["alternative_start_date"],
+    alternativeEndCalendarDateKeyPath: ["alternative_end_date"],
+    roomsAreAvailableScreenConfiguration:
+      knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration,
+    roomsAreNotAvailableButAlternativesAreAvailableScreenConfiguration:
+      knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration,
+    roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration:
+      knollcroftCompletedScreenConfiguration,
+  };
+
+export const knollcroftSocialHotelRoomRequirementScreenConfiguration: ScreenConfiguration =
   {
     layout: {
       blockType: BlockType.LAYOUT_BLOCK,
@@ -38,19 +59,13 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
                   countOfHotelRoomGuestsKeyName: "count_of_hotel_room_guests",
                   countOfRoomsNeededKeyName: "number_of_rooms_needed",
                   rigidDatesPath: {
-                    screenPointer: {
-                      type: ScreenPointerType.DIRECT,
-                      screenConfiguration:
-                        knollcroftCompletedScreenConfiguration,
-                    },
+                    screenPointer:
+                      knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesScreenPointer,
                     submitsForm: true,
                   },
                   flexibleDatesPath: {
-                    screenPointer: {
-                      type: ScreenPointerType.DIRECT,
-                      screenConfiguration:
-                        knollcroftCompletedScreenConfiguration,
-                    },
+                    screenPointer:
+                      knollcroftSocialWithSpaceRequirementAreRoomsAvailableOnDatesScreenPointer,
                     submitsForm: true,
                   },
                 }),
@@ -65,7 +80,8 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
               submitsForm: false,
               pointer: {
                 type: ScreenPointerType.DIRECT,
-                screenConfiguration: knollcroftCompletedScreenConfiguration,
+                screenConfiguration:
+                  knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration,
               },
             },
           ],
@@ -86,7 +102,8 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
           submitsForm: false,
           pointer: {
             type: ScreenPointerType.DIRECT,
-            screenConfiguration: knollcroftCompletedScreenConfiguration,
+            screenConfiguration:
+              knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration,
           },
         },
       ],

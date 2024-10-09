@@ -4,6 +4,7 @@
 
 import { ThemeVariables } from "@/models/configuration/themes";
 import { ScreenPointer } from "./ScreenPointer";
+import { BifrostKeyPath } from "./formData";
 
 export enum BlockType {
   LAYOUT_BLOCK = "LAYOUT_BLOCK",
@@ -39,6 +40,9 @@ export enum UIBlockType {
 
   // Buttons
   BUTTON = "BUTTON",
+
+  // Complex
+  ALTERNATIVE_DATE_SUGGESTION = "ALTERNATIVE_DATE_SUGGESTION",
 }
 
 export interface HeaderUIBlockConfiguration extends BaseUIBlockConfiguration {
@@ -154,6 +158,23 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
   pointer?: ScreenPointer;
 }
 
+export interface AlternativeDateSuggestionUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.ALTERNATIVE_DATE_SUGGESTION;
+
+  startCalendarDateKeyPath: BifrostKeyPath;
+  endCalendarDateKeyPath: BifrostKeyPath;
+
+  alternativeStartCalendarDateKeyPath: BifrostKeyPath;
+  alternativeEndCalendarDateKeyPath: BifrostKeyPath;
+
+  acceptAlternativeDatesLabel: string;
+  rejectAlternativeDatesLabel: string;
+
+  acceptedAlternativeDatesScreenPointer: ScreenPointer;
+  rejectedAlternativeDatesScreenPointer: ScreenPointer;
+}
+
 export type UIBlockConfiguration =
   | HeaderUIBlockConfiguration
   | SubheaderUIBlockConfiguration
@@ -165,7 +186,8 @@ export type UIBlockConfiguration =
   | DateRangePickerUIBlockConfiguration
   | RangeSliderInputUIBlockConfiguration
   | ExpandableCardSelectorUIBlockConfiguration
-  | ButtonUIBlockConfiguration;
+  | ButtonUIBlockConfiguration
+  | AlternativeDateSuggestionUIBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Layout Components

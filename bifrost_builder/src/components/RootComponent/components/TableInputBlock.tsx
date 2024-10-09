@@ -79,7 +79,8 @@ export function TableInputBlock({
     }
   );
 
-  const tableRows = tableData.map((_, rowIndex: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tableRows = tableData.map((_: any, rowIndex: number) => {
     const renderedTableCells = columns.map(
       (
         column: InputTableLayoutBlockColumnConfiguration,

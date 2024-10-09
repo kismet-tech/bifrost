@@ -4,7 +4,21 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import {
+  ScreenPointer,
+  ScreenPointerType,
+} from "@/models/configuration/ScreenPointer";
+import { knollcroftBusinessEventSpaceScreenConfiguration } from "./knollcroftBusinessEventSpaceScreenConfiguration";
+import { knollcroftBusinessHotelRoomRequirementScreenConfiguration } from "./knollcroftBusinessHotelRoomRequirementScreenConfiguration";
+
+const knollcroftBusinessIsEvenSpaceRequiredPointer: ScreenPointer = {
+  type: ScreenPointerType.BRANCH_BY_EVENT_SPACE_REQUIREMENT,
+
+  eventSpaceIsRequiredScreenConfiguration:
+    knollcroftBusinessEventSpaceScreenConfiguration,
+  eventSpaceIsNotRequiredScreenConfiguration:
+    knollcroftBusinessHotelRoomRequirementScreenConfiguration,
+};
 
 export const knollcroftBusinessBudgetRangeScreenConfiguration: ScreenConfiguration =
   {
@@ -40,20 +54,23 @@ export const knollcroftBusinessBudgetRangeScreenConfiguration: ScreenConfigurati
           uiBlockType: UIBlockType.BUTTON,
           label: "Still figuring it out",
           submitsForm: false,
-          // pointer: {
-          //   type: ScreenPointerType.DIRECT,
-          //   screenConfiguration: knollcroftBusinessScreenConfiguration,
-          // },
+          pointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
         },
         {
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.BUTTON,
           label: "Next",
           submitsForm: false,
-          // pointer: {
-          //   type: ScreenPointerType.DIRECT,
-          //   screenConfiguration: knollcroftBusinessScreenConfiguration,
-          // },
+          pointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
+        },
+        {
+          blockType: BlockType.UI_BLOCK,
+          uiBlockType: UIBlockType.BUTTON,
+          label: "Back",
+          submitsForm: false,
+          pointer: {
+            type: ScreenPointerType.BACK,
+          },
         },
       ],
     },

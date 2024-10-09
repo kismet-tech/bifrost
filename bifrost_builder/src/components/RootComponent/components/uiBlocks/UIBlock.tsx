@@ -20,6 +20,7 @@ import { CalendarDate } from "@/models/CalendarDate";
 import { RangeSliderInputUIBlock } from "./inputBlocks/RangeSliderInputUIBlock";
 import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock";
 import { ButtonUIBlock } from "./ButtonUIBlock";
+import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -199,6 +200,24 @@ export function UIBlock({
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
+        hotelId={hotelId}
+        formData={formData}
+      />
+    );
+  } else if (
+    configuration.uiBlockType === UIBlockType.ALTERNATIVE_DATE_SUGGESTION
+  ) {
+    return (
+      <AlternativeDateSuggestionUIBlock
+        configuration={configuration}
+        keyPath={keyPath}
+        handleSetFormData={handleSetFormData}
+        handleSubmitFormData={handleSubmitFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
+        hotelId={hotelId}
+        formData={formData}
       />
     );
   } else {

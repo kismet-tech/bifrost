@@ -4,11 +4,12 @@ import {
   ScreenConfiguration,
 } from "@/models/configuration";
 import {
+  BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
 import styled from "styled-components";
+import { routeWithPointer } from "../../utilities/routeWithPointer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,9 @@ const Wrapper = styled.div`
 
 interface ButtonUIBlockProps {
   configuration: ButtonUIBlockConfiguration;
+  hotelId: string;
   keyPath: BifrostKeyPath;
+  formData: BifrostFormData;
   handleSetFormData: ({
     keyPath,
     keyValue,
@@ -36,7 +39,9 @@ interface ButtonUIBlockProps {
 
 export function ButtonUIBlock({
   configuration: { keyName, keyValue, label, submitsForm, pointer },
+  hotelId,
   keyPath,
+  formData,
   handleSetFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
@@ -60,11 +65,15 @@ export function ButtonUIBlock({
     }
 
     if (pointer) {
-      if (pointer.type === ScreenPointerType.DIRECT) {
-        pushScreenConfigurationStack(pointer.screenConfiguration);
-      } else if (pointer.type === ScreenPointerType.BACK) {
-        popRightscreenConfigurationStack();
-      }
+      routeWithPointer({
+        pointer,
+        hotelId,
+        formData,
+        handleSetFormData,
+        handleSubmitFormData,
+        pushScreenConfigurationStack,
+        popRightscreenConfigurationStack,
+      });
     }
 
     registerBifrostFormInput();

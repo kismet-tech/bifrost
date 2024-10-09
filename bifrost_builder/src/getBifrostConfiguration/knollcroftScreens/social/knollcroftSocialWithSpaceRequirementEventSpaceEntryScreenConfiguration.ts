@@ -5,14 +5,19 @@ import {
   UIBlockType,
 } from "@/models/configuration";
 import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
-import { knollcroftBusinessHotelRoomRequirementScreenConfiguration } from "./knollcroftBusinessHotelRoomRequirementScreenConfiguration";
+import { knollcroftCompletedScreenConfiguration } from "../knollcroftCompletedScreenConfiguration";
 
-export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguration =
+export const knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration: ScreenConfiguration =
   {
     layout: {
       blockType: BlockType.LAYOUT_BLOCK,
       layoutBlockType: LayoutBlockType.ROWS,
       rows: [
+        {
+          blockType: BlockType.UI_BLOCK,
+          uiBlockType: UIBlockType.SUBHEADER,
+          backupText: "What are we gathering for?",
+        },
         {
           blockType: BlockType.LAYOUT_BLOCK,
           layoutBlockType: LayoutBlockType.INPUT_TABLE,
@@ -68,21 +73,36 @@ export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguratio
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.BUTTON,
           label: "Next",
-          submitsForm: false,
+          submitsForm: true,
           pointer: {
             type: ScreenPointerType.DIRECT,
-            screenConfiguration:
-              knollcroftBusinessHotelRoomRequirementScreenConfiguration,
+            screenConfiguration: knollcroftCompletedScreenConfiguration,
           },
         },
         {
-          blockType: BlockType.UI_BLOCK,
-          uiBlockType: UIBlockType.BUTTON,
-          label: "Back",
-          submitsForm: false,
-          pointer: {
-            type: ScreenPointerType.BACK,
-          },
+          blockType: BlockType.LAYOUT_BLOCK,
+          layoutBlockType: LayoutBlockType.ROWS,
+          rows: [
+            {
+              blockType: BlockType.UI_BLOCK,
+              uiBlockType: UIBlockType.BUTTON,
+              label: "Back",
+              submitsForm: true,
+              pointer: {
+                type: ScreenPointerType.BACK,
+              },
+            },
+            {
+              blockType: BlockType.UI_BLOCK,
+              uiBlockType: UIBlockType.BUTTON,
+              label: "Skip",
+              submitsForm: true,
+              pointer: {
+                type: ScreenPointerType.DIRECT,
+                screenConfiguration: knollcroftCompletedScreenConfiguration,
+              },
+            },
+          ],
         },
       ],
     },

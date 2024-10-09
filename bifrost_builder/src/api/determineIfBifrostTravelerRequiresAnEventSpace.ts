@@ -1,8 +1,9 @@
+import { BifrostFormData } from "@/models/configuration/formData";
 import { Api } from ".";
 
 interface DetermineIfBifrostTravelerRequiresAnEventSpaceProps {
   hotelId: string;
-  formData: Record<string, string>;
+  formData: BifrostFormData;
 }
 
 export const determineIfBifrostTravelerRequiresAnEventSpace = async ({

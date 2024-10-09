@@ -4,8 +4,52 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import {
+  ScreenPointer,
+  ScreenPointerType,
+} from "@/models/configuration/ScreenPointer";
 import { knollcroftBusinessScreenConfiguration } from "./business/knollcroftBusinessScreenConfiguration";
+import { knollcroftSocialHotelRoomRequirementScreenConfiguration } from "./social/knollcroftSocialHotelRoomRequirementScreenConfiguration";
+import { generateHotelRoomDateScreenSequence } from "./screenSequences/hotelRoomDateScreenSequence/generateHotelRoomDateScreenSequence";
+import { knollcroftSocialRoomsOnlySplitCheckScreenConfiguration } from "./social/knollcroftSocialRoomsOnlySplitCheckScreenConfiguration";
+import { knollcroftSocialAlternateRoomAvailabilityWithoutEventSpaceScreenConfiguration } from "./social/knollcroftSocialAlternateRoomAvailabilityWithoutEventSpaceScreenConfiguration";
+import { knollcroftCompletedScreenConfiguration } from "./knollcroftCompletedScreenConfiguration";
+
+const knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesPointer: ScreenPointer =
+  {
+    type: ScreenPointerType.BRANCH_BY_ROOM_AVAILABILITY_ON_DATES,
+    startCalendarDateKeyPath: ["start_date"],
+    endCalendarDateKeyPath: ["end_date"],
+    alternativeStartCalendarDateKeyPath: ["alternative_start_date"],
+    alternativeEndCalendarDateKeyPath: ["alternative_end_date"],
+    roomsAreAvailableScreenConfiguration:
+      knollcroftSocialRoomsOnlySplitCheckScreenConfiguration,
+    roomsAreNotAvailableButAlternativesAreAvailableScreenConfiguration:
+      knollcroftSocialAlternateRoomAvailabilityWithoutEventSpaceScreenConfiguration,
+    roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration:
+      knollcroftCompletedScreenConfiguration,
+  };
+
+const knollcroftSocialIsEventSpaceRequiredPointer: ScreenPointer = {
+  type: ScreenPointerType.BRANCH_BY_EVENT_SPACE_REQUIREMENT,
+  eventSpaceIsRequiredScreenConfiguration:
+    knollcroftSocialHotelRoomRequirementScreenConfiguration,
+  eventSpaceIsNotRequiredScreenConfiguration:
+    generateHotelRoomDateScreenSequence({
+      startCalendarDateKeyName: "start_date",
+      endCalendarDateKeyName: "end_date",
+      countOfHotelRoomGuestsKeyName: "count_of_hotel_room_guests",
+      countOfRoomsNeededKeyName: "number_of_rooms_needed",
+      rigidDatesPath: {
+        screenPointer: knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesPointer,
+        submitsForm: false,
+      },
+      flexibleDatesPath: {
+        screenPointer: knollcroftSocialRoomsOnlyAreRoomsAvailableOnDatesPointer,
+        submitsForm: false,
+      },
+    }),
+};
 
 export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
   layout: {
@@ -48,6 +92,7 @@ export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
             keyName: "booking_category",
             keyValue: "social",
             submitsForm: false,
+            pointer: knollcroftSocialIsEventSpaceRequiredPointer,
           },
           {
             blockType: BlockType.UI_BLOCK,
@@ -56,6 +101,7 @@ export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
             keyName: "booking_category",
             keyValue: "other",
             submitsForm: false,
+            pointer: knollcroftSocialIsEventSpaceRequiredPointer,
           },
           {
             blockType: BlockType.UI_BLOCK,
