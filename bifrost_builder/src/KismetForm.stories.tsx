@@ -1,20 +1,17 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useLayoutEffect } from "react";
-import { KismetForm } from "./components/KismetForm";
-import {
-  blueTheme,
-  radiusPresets,
-} from "./components/KismetForm/models/themes";
-import { knollcroftFormBlocks } from "./getBifrostConfiguration/knollcroftFormBlocks";
+import { KismetRootComponent } from "./components/RootComponent/RootComponent";
+import { blueTheme, radiusPresets } from "./models/configuration/themes";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
+import { knollcroftRootScreenConfiguration } from "./getBifrostConfiguration/knollcroftScreens/knollcroftRootScreenConfiguration";
 
-const meta: Meta<typeof KismetForm> = {
+const meta: Meta<typeof KismetRootComponent> = {
   title: "KismetForm",
-  component: KismetForm,
+  component: KismetRootComponent,
 };
 export default meta;
 
-type Story = StoryObj<typeof KismetForm>;
+type Story = StoryObj<typeof KismetRootComponent>;
 
 export const Example: Story = {
   args: {
@@ -22,7 +19,7 @@ export const Example: Story = {
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
+      rootScreenConfiguration: knollcroftRootScreenConfiguration,
     },
   },
 };
@@ -45,14 +42,14 @@ export const WithCustomTheme: Story = {
       }
     }, []);
 
-    return <KismetForm {...args} />;
+    return <KismetRootComponent {...args} />;
   },
   args: {
     bifrostTravelerId: "local_testing",
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
+      rootScreenConfiguration: knollcroftRootScreenConfiguration,
       themeVariables: { ...blueTheme, radius: radiusPresets.xl },
     },
   },

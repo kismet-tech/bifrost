@@ -1,9 +1,10 @@
+import { BifrostFormData } from "@/models/configuration/formData";
 import { Api } from ".";
 
 interface GetBifrostFormFarewellMessageProps {
   hotelId: string;
   bifrostTravelerId: string;
-  formData: Record<string, string>;
+  formData: BifrostFormData;
 }
 
 export const getBifrostFormFarewellMessage = async ({

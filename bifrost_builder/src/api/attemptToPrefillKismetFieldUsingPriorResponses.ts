@@ -1,5 +1,6 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
+import { BifrostFormData } from "@/models/configuration/formData";
 
 export enum PrefilledBifrostFormValueType {
   NUMBER = "NUMBER",
@@ -10,7 +11,7 @@ export enum PrefilledBifrostFormValueType {
 
 interface AttemptToPrefillKismetFieldUsingPriorResponsesProps {
   hotelId: string;
-  formData: Record<string, string>;
+  formData: BifrostFormData;
 
   targetKeyName: string;
   targetValueType: PrefilledBifrostFormValueType;
