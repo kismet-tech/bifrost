@@ -6,7 +6,6 @@ import {
 } from "@/models/configuration";
 import { knollcroftRootScreenConfiguration } from "./knollcroftScreens/knollcroftRootScreenConfiguration";
 import { neutralTheme, ThemeVariables } from "@/models/configuration/themes";
-import { knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration } from "./knollcroftScreens/social/knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -43,8 +42,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
       )
     ) {
       bifrostFormId = "1";
-      rootScreenConfiguration =
-        knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration;
+      rootScreenConfiguration = knollcroftRootScreenConfiguration;
     }
   } else if (hostname === "theknollcroft.com") {
     hotelId = "knollcroft";
