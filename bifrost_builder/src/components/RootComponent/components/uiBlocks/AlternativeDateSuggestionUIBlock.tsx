@@ -16,6 +16,7 @@ import { routeWithPointer } from "../../utilities/routeWithPointer";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
 `;
@@ -108,11 +109,8 @@ export function AlternativeDateSuggestionUIBlock({
 
     registerBifrostFormInput();
   };
-  const onClickRejectAlternativeDates = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
 
+  const rejectAlternativeDates = () => {
     routeWithPointer({
       pointer: rejectedAlternativeDatesScreenPointer,
       hotelId,
@@ -132,16 +130,40 @@ export function AlternativeDateSuggestionUIBlock({
       keyPath: alternativeEndCalendarDateKeyPath,
       keyValue: "",
     });
+  };
+
+  const onClickRejectAlternativeDates = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    rejectAlternativeDates();
+
     registerBifrostFormInput();
   };
+
+  if (!alternativeStartCalendarDate || !alternativeEndCalendarDate) {
+    rejectAlternativeDates();
+  }
+
+  const renderedAlternativeStartCalendarDate = alternativeStartCalendarDate
+    ? renderCalendarDate({
+        calendarDate: alternativeStartCalendarDate,
+      })
+    : "";
+  const renderedAlternativeEndCalendarDate = alternativeEndCalendarDate
+    ? renderCalendarDate({
+        calendarDate: alternativeEndCalendarDate,
+      })
+    : "";
 
   return (
     <Wrapper>
       <div>Sorry, but have no availability on those dates.</div>
       <div>
-        However, we do have availability from $
-        {renderCalendarDate({ calendarDate: alternativeStartCalendarDate })} to{" "}
-        {renderCalendarDate({ calendarDate: alternativeEndCalendarDate })}
+        However, we do have availability from
+        {renderedAlternativeStartCalendarDate} to{" "}
+        {renderedAlternativeEndCalendarDate}
       </div>
 
       <Button onClick={onClickAcceptAlternativeDates}>
