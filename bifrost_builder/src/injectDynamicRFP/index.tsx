@@ -10,7 +10,7 @@ export const injectDynamicRFP = ({
   bifrostTravelerId,
   bifrostConfiguration,
 }: InjectDynamicRFPProps) => {
-  if (bifrostConfiguration.rootScreenConfiguration) {
+  if (!bifrostConfiguration.rootScreenConfiguration) {
     return;
   }
 

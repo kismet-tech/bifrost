@@ -4,6 +4,8 @@ import {
   LayoutBlockType,
   ScreenConfiguration,
 } from "@/models/configuration";
+import { knollcroftRootScreenConfiguration } from "./knollcroftScreens/knollcroftRootScreenConfiguration";
+import { neutralTheme, ThemeVariables } from "@/models/configuration/themes";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -20,7 +22,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
   console.log(`urlPathname: ${urlPathname}`);
 
   let hotelId: string = "";
-  const rootScreenConfiguration: ScreenConfiguration = {
+  let rootScreenConfiguration: ScreenConfiguration = {
     layout: {
       blockType: BlockType.LAYOUT_BLOCK,
       layoutBlockType: LayoutBlockType.ROWS,
@@ -28,6 +30,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
     },
   };
   let bifrostFormId: string = "";
+  const themeVariables: ThemeVariables = neutralTheme;
 
   // if (hostname === "www.knollcroft.com" && urlPathname === "/contact") {
   if (hostname === "www.knollcroft.com") {
@@ -39,16 +42,12 @@ export function getBifrostConfiguration(): BifrostConfiguration {
       )
     ) {
       bifrostFormId = "1";
+      rootScreenConfiguration = knollcroftRootScreenConfiguration;
     }
-
-    return {
-      hotelId,
-      bifrostFormId,
-      rootScreenConfiguration,
-    };
   } else if (hostname === "theknollcroft.com") {
     hotelId = "knollcroft";
     bifrostFormId = "2";
+    rootScreenConfiguration = knollcroftRootScreenConfiguration;
   } else if (hostname.includes("theneighborhoodhotel.com")) {
     hotelId = "nbhd";
 
@@ -65,5 +64,6 @@ export function getBifrostConfiguration(): BifrostConfiguration {
     hotelId,
     bifrostFormId,
     rootScreenConfiguration,
+    themeVariables,
   };
 }
