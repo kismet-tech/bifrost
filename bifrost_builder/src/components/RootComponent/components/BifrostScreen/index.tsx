@@ -1,26 +1,10 @@
 import { ScreenConfiguration } from "@/models/configuration";
-import styled from "styled-components";
-import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
 import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-
-const Wrapper = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 50vw;
-  margin: 0 auto;
-  padding: 2rem; /* Add padding around the form */
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 1rem; /* Adjust padding for smaller screens */
-  }
-`;
+import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
 
 interface BifrostScreenProps {
   screenConfiguration: ScreenConfiguration;
@@ -56,7 +40,7 @@ export function BifrostScreen({
   handleSubmitFormData,
 }: BifrostScreenProps) {
   return (
-    <Wrapper>
+    <div className="flex flex-col gap-4 m-[0_auto] w-full p-4 md:!w-[50vw] md:!p-8">
       <LayoutBlock
         layoutBlockConfiguration={layout}
         keyPath={keyPath}
@@ -69,6 +53,6 @@ export function BifrostScreen({
         registerBifrostFormInput={registerBifrostFormInput}
         handleSubmitFormData={handleSubmitFormData}
       />
-    </Wrapper>
+    </div>
   );
 }
