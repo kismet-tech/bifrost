@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration } from "./knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration";
 
 export const knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration: ScreenConfiguration =
@@ -29,7 +29,7 @@ export const knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration: 
               keyName: "how_will_the_check_be_split_amongst_guests",
               keyValue: "user_is_booking_for_the_whole_group",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration:
                   knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration,
@@ -42,7 +42,7 @@ export const knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration: 
               keyName: "how_will_the_check_be_split_amongst_guests",
               keyValue: "guest_will_book_separately",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration:
                   knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration,
@@ -59,7 +59,7 @@ export const knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration: 
               uiBlockType: UIBlockType.BUTTON,
               label: "Back",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.BACK,
               },
             },
@@ -68,7 +68,7 @@ export const knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration: 
               uiBlockType: UIBlockType.BUTTON,
               label: "Skip",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration:
                   knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration,

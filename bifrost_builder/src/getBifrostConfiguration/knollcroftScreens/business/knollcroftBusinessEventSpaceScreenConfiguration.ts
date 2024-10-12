@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftBusinessHotelRoomRequirementScreenConfiguration } from "./knollcroftBusinessHotelRoomRequirementScreenConfiguration";
 
 export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguration =
@@ -69,7 +69,7 @@ export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguratio
           uiBlockType: UIBlockType.BUTTON,
           label: "Next",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.DIRECT,
             screenConfiguration:
               knollcroftBusinessHotelRoomRequirementScreenConfiguration,
@@ -80,7 +80,7 @@ export const knollcroftBusinessEventSpaceScreenConfiguration: ScreenConfiguratio
           uiBlockType: UIBlockType.BUTTON,
           label: "Back",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.BACK,
           },
         },

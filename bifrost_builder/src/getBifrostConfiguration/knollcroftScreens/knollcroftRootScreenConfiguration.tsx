@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftTripDetailsScreenConfiguration } from "./knollcroftTripDetailsScreenConfiguration";
 
 export const knollcroftRootScreenConfiguration: ScreenConfiguration = {
@@ -27,22 +27,28 @@ export const knollcroftRootScreenConfiguration: ScreenConfiguration = {
           "If it’s a group trip (whether large or small) we've got you covered",
       },
       {
-        blockType: BlockType.UI_BLOCK,
-        uiBlockType: UIBlockType.TEXT_INPUT,
-        label: "First name",
-        keyName: "firstName",
-        placeholder: "",
-        autocomplete: "given-name",
-        inputType: "text",
-      },
-      {
-        blockType: BlockType.UI_BLOCK,
-        uiBlockType: UIBlockType.TEXT_INPUT,
-        label: "Last name",
-        keyName: "lastName",
-        placeholder: "",
-        autocomplete: "family-name",
-        inputType: "text",
+        blockType: BlockType.LAYOUT_BLOCK,
+        layoutBlockType: LayoutBlockType.COLUMNS,
+        columns: [
+          {
+            blockType: BlockType.UI_BLOCK,
+            uiBlockType: UIBlockType.TEXT_INPUT,
+            label: "First name",
+            keyName: "firstName",
+            placeholder: "",
+            autocomplete: "given-name",
+            inputType: "text",
+          },
+          {
+            blockType: BlockType.UI_BLOCK,
+            uiBlockType: UIBlockType.TEXT_INPUT,
+            label: "Last name",
+            keyName: "lastName",
+            placeholder: "",
+            autocomplete: "family-name",
+            inputType: "text",
+          },
+        ],
       },
       {
         blockType: BlockType.UI_BLOCK,
@@ -67,7 +73,7 @@ export const knollcroftRootScreenConfiguration: ScreenConfiguration = {
         uiBlockType: UIBlockType.BUTTON,
         label: "Next",
         submitsForm: false,
-        pointer: {
+        screenPointer: {
           type: ScreenPointerType.DIRECT,
           screenConfiguration: knollcroftTripDetailsScreenConfiguration,
         },

@@ -7,7 +7,7 @@ import {
 import {
   ScreenPointer,
   ScreenPointerType,
-} from "@/models/configuration/ScreenPointer";
+} from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftBusinessScreenConfiguration } from "./business/knollcroftBusinessScreenConfiguration";
 import { knollcroftSocialHotelRoomRequirementScreenConfiguration } from "./social/knollcroftSocialHotelRoomRequirementScreenConfiguration";
 import { generateHotelRoomDateScreenSequence } from "./screenSequences/hotelRoomDateScreenSequence/generateHotelRoomDateScreenSequence";
@@ -80,7 +80,7 @@ export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
             keyName: "booking_category",
             keyValue: "business",
             submitsForm: false,
-            pointer: {
+            screenPointer: {
               type: ScreenPointerType.DIRECT,
               screenConfiguration: knollcroftBusinessScreenConfiguration,
             },
@@ -92,7 +92,7 @@ export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
             keyName: "booking_category",
             keyValue: "social",
             submitsForm: false,
-            pointer: knollcroftSocialIsEventSpaceRequiredPointer,
+            screenPointer: knollcroftSocialIsEventSpaceRequiredPointer,
           },
           {
             blockType: BlockType.UI_BLOCK,
@@ -101,14 +101,14 @@ export const knollcroftTripDetailsScreenConfiguration: ScreenConfiguration = {
             keyName: "booking_category",
             keyValue: "other",
             submitsForm: false,
-            pointer: knollcroftSocialIsEventSpaceRequiredPointer,
+            screenPointer: knollcroftSocialIsEventSpaceRequiredPointer,
           },
           {
             blockType: BlockType.UI_BLOCK,
             uiBlockType: UIBlockType.BUTTON,
             label: "Back",
             submitsForm: false,
-            pointer: {
+            screenPointer: {
               type: ScreenPointerType.BACK,
             },
           },

@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftCompletedScreenConfiguration } from "../knollcroftCompletedScreenConfiguration";
 
 export const knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfiguration: ScreenConfiguration =
@@ -74,7 +74,7 @@ export const knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfigurat
           uiBlockType: UIBlockType.BUTTON,
           label: "Next",
           submitsForm: true,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.DIRECT,
             screenConfiguration: knollcroftCompletedScreenConfiguration,
           },
@@ -88,7 +88,7 @@ export const knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfigurat
               uiBlockType: UIBlockType.BUTTON,
               label: "Back",
               submitsForm: true,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.BACK,
               },
             },
@@ -97,7 +97,7 @@ export const knollcroftSocialWithSpaceRequirementEventSpaceEntryScreenConfigurat
               uiBlockType: UIBlockType.BUTTON,
               label: "Skip",
               submitsForm: true,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: knollcroftCompletedScreenConfiguration,
               },

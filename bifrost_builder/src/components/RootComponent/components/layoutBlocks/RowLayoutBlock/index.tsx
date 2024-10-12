@@ -1,20 +1,22 @@
 import {
   BlockType,
+  ConditonBlockConfiguration,
   LayoutBlockConfiguration,
   RowsLayoutBlockConfiguration,
   ScreenConfiguration,
   UIBlockConfiguration,
 } from "@/models/configuration";
-import { UIBlock } from "../uiBlocks/UIBlock";
-import { LayoutBlock } from "./LayoutBlock";
 import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
+import { UIBlock } from "../../uiBlocks/UIBlock";
+import { LayoutBlock } from "../LayoutBlock";
+import { ConditionBlock } from "../../ConditionBlock/ConditionBlock";
 
 export interface RowLayoutBlockProps {
-  rowsLayoutBlockConfiguration: RowsLayoutBlockConfiguration;
+  configuration: RowsLayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
@@ -35,7 +37,7 @@ export interface RowLayoutBlockProps {
 }
 
 export function RowLayoutBlock({
-  rowsLayoutBlockConfiguration: { rows: childConfigurations },
+  configuration: { rows: childConfigurations },
   keyPath,
   formData,
   hotelId,
@@ -48,7 +50,10 @@ export function RowLayoutBlock({
 }: RowLayoutBlockProps) {
   const children = childConfigurations.map(
     (
-      childConfiguration: UIBlockConfiguration | LayoutBlockConfiguration,
+      childConfiguration:
+        | UIBlockConfiguration
+        | LayoutBlockConfiguration
+        | ConditonBlockConfiguration,
       index: number
     ) => {
       if (childConfiguration.blockType === BlockType.UI_BLOCK) {
@@ -67,11 +72,11 @@ export function RowLayoutBlock({
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
         );
-      } else {
+      } else if (childConfiguration.blockType === BlockType.LAYOUT_BLOCK) {
         return (
           <LayoutBlock
             key={index}
-            layoutBlockConfiguration={childConfiguration}
+            configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
             hotelId={hotelId}
@@ -82,6 +87,27 @@ export function RowLayoutBlock({
             pushScreenConfigurationStack={pushScreenConfigurationStack}
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
+        );
+      } else if (childConfiguration.blockType === BlockType.CONDITION_BLOCK) {
+        return (
+          <ConditionBlock
+            key={index}
+            configuration={childConfiguration}
+            keyPath={keyPath}
+            formData={formData}
+            hotelId={hotelId}
+            bifrostTravelerId={bifrostTravelerId}
+            handleSetFormData={handleSetFormData}
+            registerBifrostFormInput={registerBifrostFormInput}
+            handleSubmitFormData={handleSubmitFormData}
+            pushScreenConfigurationStack={pushScreenConfigurationStack}
+            popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+          />
+        );
+      } else {
+        throw new Error(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          `Unsupported block type: ${(childConfiguration as any).blockType}`
         );
       }
     }

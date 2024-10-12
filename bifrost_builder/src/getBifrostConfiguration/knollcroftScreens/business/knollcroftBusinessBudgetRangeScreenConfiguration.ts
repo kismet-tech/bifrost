@@ -7,7 +7,7 @@ import {
 import {
   ScreenPointer,
   ScreenPointerType,
-} from "@/models/configuration/ScreenPointer";
+} from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftBusinessEventSpaceScreenConfiguration } from "./knollcroftBusinessEventSpaceScreenConfiguration";
 import { knollcroftBusinessHotelRoomRequirementScreenConfiguration } from "./knollcroftBusinessHotelRoomRequirementScreenConfiguration";
 
@@ -37,15 +37,16 @@ export const knollcroftBusinessBudgetRangeScreenConfiguration: ScreenConfigurati
           label: "Budget",
           valueMinKeyName: "min_budget",
           valueMaxKeyName: "max_budget",
-          rangeMin: 1,
-          rangeMax: 50000,
+          initialRangeMin: 0,
+          initialRangeMax: 50000,
+          initialStepSize: 100,
         },
         {
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.BUTTON,
           label: "Back",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.BACK,
           },
         },
@@ -54,21 +55,21 @@ export const knollcroftBusinessBudgetRangeScreenConfiguration: ScreenConfigurati
           uiBlockType: UIBlockType.BUTTON,
           label: "Still figuring it out",
           submitsForm: false,
-          pointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
+          screenPointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
         },
         {
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.BUTTON,
           label: "Next",
           submitsForm: false,
-          pointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
+          screenPointer: knollcroftBusinessIsEvenSpaceRequiredPointer,
         },
         {
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.BUTTON,
           label: "Back",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.BACK,
           },
         },

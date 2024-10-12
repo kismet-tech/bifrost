@@ -7,7 +7,7 @@ import {
 import {
   ScreenPointer,
   ScreenPointerType,
-} from "@/models/configuration/ScreenPointer";
+} from "@/models/configuration/pointers/ScreenPointer";
 
 interface GenerateHotelRoomDateScreenSequenceProps {
   startCalendarDateKeyName: string;
@@ -71,7 +71,7 @@ export const generateHotelRoomDateScreenSequence = ({
           uiBlockType: UIBlockType.BUTTON,
           submitsForm: rigidDatesPathSubmitsForm,
           label: "Next",
-          pointer: rigidDatesPathScreenPointer,
+          screenPointer: rigidDatesPathScreenPointer,
         },
       ],
     },
@@ -99,7 +99,7 @@ export const generateHotelRoomDateScreenSequence = ({
           uiBlockType: UIBlockType.BUTTON,
           submitsForm: flexibleDatesPathSubmitsForm,
           label: "Next",
-          pointer: flexibleDatesPathScreenPointer,
+          screenPointer: flexibleDatesPathScreenPointer,
         },
       ],
     },
@@ -119,7 +119,7 @@ export const generateHotelRoomDateScreenSequence = ({
               uiBlockType: UIBlockType.BUTTON,
               label: "I know dates",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: hotelRoomRigidDateEntryScreenConfiguration,
               },
@@ -129,7 +129,7 @@ export const generateHotelRoomDateScreenSequence = ({
               uiBlockType: UIBlockType.BUTTON,
               label: "I’m flexible or still planning",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration:
                   hotelRoomFlexibleDateEntryScreenConfiguration,

@@ -3,17 +3,17 @@ import {
   LayoutBlockType,
   ScreenConfiguration,
 } from "@/models/configuration";
-import { RowLayoutBlock } from "./RowLayoutBlock";
 import { ColumnLayoutBlock } from "./ColumnLayoutBlock";
 import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { TableInputBlock } from "../TableInputBlock";
+import { RowLayoutBlock } from "./RowLayoutBlock";
+import { InputTableLayoutBlock } from "./InputTableLayoutBlock";
 
 interface LayoutBlockProps {
-  layoutBlockConfiguration: LayoutBlockConfiguration;
+  configuration: LayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
@@ -34,7 +34,7 @@ interface LayoutBlockProps {
 }
 
 export function LayoutBlock({
-  layoutBlockConfiguration,
+  configuration,
   keyPath,
   formData,
   hotelId,
@@ -45,10 +45,10 @@ export function LayoutBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: LayoutBlockProps) {
-  if (layoutBlockConfiguration.layoutBlockType === LayoutBlockType.ROWS) {
+  if (configuration.layoutBlockType === LayoutBlockType.ROWS) {
     return (
       <RowLayoutBlock
-        rowsLayoutBlockConfiguration={layoutBlockConfiguration}
+        configuration={configuration}
         keyPath={keyPath}
         formData={formData}
         hotelId={hotelId}
@@ -60,12 +60,10 @@ export function LayoutBlock({
         handleSubmitFormData={handleSubmitFormData}
       />
     );
-  } else if (
-    layoutBlockConfiguration.layoutBlockType === LayoutBlockType.COLUMNS
-  ) {
+  } else if (configuration.layoutBlockType === LayoutBlockType.COLUMNS) {
     return (
       <ColumnLayoutBlock
-        columnsLayoutBlockConfiguration={layoutBlockConfiguration}
+        columnsLayoutBlockConfiguration={configuration}
         keyPath={keyPath}
         formData={formData}
         hotelId={hotelId}
@@ -77,12 +75,10 @@ export function LayoutBlock({
         handleSubmitFormData={handleSubmitFormData}
       />
     );
-  } else if (
-    layoutBlockConfiguration.layoutBlockType === LayoutBlockType.INPUT_TABLE
-  ) {
+  } else if (configuration.layoutBlockType === LayoutBlockType.INPUT_TABLE) {
     return (
-      <TableInputBlock
-        configuration={layoutBlockConfiguration}
+      <InputTableLayoutBlock
+        configuration={configuration}
         keyPath={keyPath}
         formData={formData}
         hotelId={hotelId}
@@ -94,5 +90,7 @@ export function LayoutBlock({
         handleSubmitFormData={handleSubmitFormData}
       />
     );
+  } else {
+    throw new Error("Invalid layout block type");
   }
 }

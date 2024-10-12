@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftCompletedScreenConfiguration } from "../knollcroftCompletedScreenConfiguration";
 
 export const knollcroftSocialRoomsOnlySplitCheckScreenConfiguration: ScreenConfiguration =
@@ -29,7 +29,7 @@ export const knollcroftSocialRoomsOnlySplitCheckScreenConfiguration: ScreenConfi
               keyName: "how_will_the_check_be_split_amongst_guests",
               keyValue: "user_is_booking_for_the_whole_group",
               submitsForm: true,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: knollcroftCompletedScreenConfiguration,
               },
@@ -41,7 +41,7 @@ export const knollcroftSocialRoomsOnlySplitCheckScreenConfiguration: ScreenConfi
               keyName: "how_will_the_check_be_split_amongst_guests",
               keyValue: "guest_will_book_separately",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: knollcroftCompletedScreenConfiguration,
               },
@@ -57,7 +57,7 @@ export const knollcroftSocialRoomsOnlySplitCheckScreenConfiguration: ScreenConfi
               uiBlockType: UIBlockType.BUTTON,
               label: "Back",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.BACK,
               },
             },
@@ -66,7 +66,7 @@ export const knollcroftSocialRoomsOnlySplitCheckScreenConfiguration: ScreenConfi
               uiBlockType: UIBlockType.BUTTON,
               label: "Skip",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: knollcroftCompletedScreenConfiguration,
               },

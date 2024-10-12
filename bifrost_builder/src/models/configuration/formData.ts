@@ -1,5 +1,6 @@
 export type BifrostFormDataValue = unknown;
 
-export type BifrostKeyPath = (string | number)[];
+export type BifrostKeyPathElement = string | number;
+export type BifrostKeyPath = BifrostKeyPathElement[];
 
 export type BifrostFormData = Record<string, BifrostFormDataValue>;

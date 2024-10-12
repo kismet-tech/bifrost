@@ -5,9 +5,9 @@ import {
 import { TextAreaInputUIBlockConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
 import { ChangeEventHandler, useEffect, useState } from "react";
-import { FormField } from "../styles/FormField";
-import { FormLabel } from "../styles/FormLabel";
 import { Textarea } from "@/components/ui/textarea";
+import { FormField } from "../../styles/FormField";
+import { FormLabel } from "../../styles/FormLabel";
 
 interface TextAreaInputUIBlockProps {
   configuration: TextAreaInputUIBlockConfiguration;

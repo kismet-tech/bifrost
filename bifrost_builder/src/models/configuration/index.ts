@@ -3,12 +3,13 @@
 //////////////////////////////////////////////////
 
 import { ThemeVariables } from "@/models/configuration/themes";
-import { ScreenPointer } from "./ScreenPointer";
+import { ScreenPointer } from "./pointers/ScreenPointer";
 import { BifrostKeyPath } from "./formData";
 
 export enum BlockType {
   LAYOUT_BLOCK = "LAYOUT_BLOCK",
   UI_BLOCK = "UI_BLOCK",
+  CONDITION_BLOCK = "CONDITION_BLOCK",
 }
 
 export interface BaseUIBlockConfiguration {
@@ -17,6 +18,10 @@ export interface BaseUIBlockConfiguration {
 
 export interface BaseLayoutBlockConfiguration {
   blockType: BlockType.LAYOUT_BLOCK;
+}
+
+export interface BaseConditionBlockConfiguration {
+  blockType: BlockType.CONDITION_BLOCK;
 }
 
 //////////////////////////////////////////////////
@@ -122,10 +127,12 @@ export interface RangeSliderInputUIBlockConfiguration
   uiBlockType: UIBlockType.RANGE_SLIDER;
 
   label: string;
-  rangeMin: number;
-  rangeMax: number;
+  initialRangeMin: number;
+  initialRangeMax: number;
   valueMinKeyName: string;
   valueMaxKeyName: string;
+
+  initialStepSize?: number;
 
   autocomplete?: string;
 }
@@ -155,7 +162,7 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
 
   submitsForm: boolean;
 
-  pointer?: ScreenPointer;
+  screenPointer?: ScreenPointer;
 }
 
 export interface AlternativeDateSuggestionUIBlockConfiguration
@@ -190,6 +197,25 @@ export type UIBlockConfiguration =
   | AlternativeDateSuggestionUIBlockConfiguration;
 
 //////////////////////////////////////////////////
+// Condition Block
+//////////////////////////////////////////////////
+
+export interface ConditionBlockCondition {
+  conditionKeyPath: string[];
+  conditionKeyValue?: string;
+}
+
+export interface ConditionBlockPath {
+  conditions: ConditionBlockCondition[];
+  layout: LayoutBlockConfiguration;
+}
+
+export interface ConditonBlockConfiguration
+  extends BaseConditionBlockConfiguration {
+  paths: ConditionBlockPath[];
+}
+
+//////////////////////////////////////////////////
 // Layout Components
 //////////////////////////////////////////////////
 export enum LayoutBlockType {
@@ -201,13 +227,21 @@ export enum LayoutBlockType {
 export interface RowsLayoutBlockConfiguration
   extends BaseLayoutBlockConfiguration {
   layoutBlockType: LayoutBlockType.ROWS;
-  rows: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+  rows: (
+    | UIBlockConfiguration
+    | LayoutBlockConfiguration
+    | ConditonBlockConfiguration
+  )[];
 }
 
 export interface ColumnsLayoutBlockConfiguration
   extends BaseLayoutBlockConfiguration {
   layoutBlockType: LayoutBlockType.COLUMNS;
-  columns: (UIBlockConfiguration | LayoutBlockConfiguration)[];
+  columns: (
+    | UIBlockConfiguration
+    | LayoutBlockConfiguration
+    | ConditonBlockConfiguration
+  )[];
 }
 
 export interface InputTableLayoutBlockColumnConfiguration {

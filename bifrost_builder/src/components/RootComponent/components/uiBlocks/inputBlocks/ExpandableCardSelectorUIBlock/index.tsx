@@ -5,9 +5,9 @@ import {
 import { ExpandableCardSelectorUIBlockConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
-import { FormField } from "../styles/FormField";
-import { FormLabel } from "../styles/FormLabel";
 import { ExpandableSelectionCard } from "@/components/ui/expandable-selection-card";
+import { FormField } from "../../styles/FormField";
+import { FormLabel } from "../../styles/FormLabel";
 
 interface ExpandableCardSelectorUIBlockProps {
   configuration: ExpandableCardSelectorUIBlockConfiguration;

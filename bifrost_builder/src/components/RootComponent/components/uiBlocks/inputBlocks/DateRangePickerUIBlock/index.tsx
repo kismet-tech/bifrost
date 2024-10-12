@@ -1,7 +1,6 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { DateRangePickerUIBlockConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
-import { FormField } from "../styles/FormField";
 import { useEffect, useState } from "react";
 import {
   attemptToPrefillKismetFieldUsingPriorResponses,
@@ -9,9 +8,10 @@ import {
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { DateRange } from "react-day-picker";
 import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
-import { FormLabel } from "../styles/FormLabel";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
+import { FormField } from "../../styles/FormField";
+import { FormLabel } from "../../styles/FormLabel";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;

@@ -1,7 +1,5 @@
 import { SelectInputUIBlockConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
-import { FormField } from "../styles/FormField";
-import { FormLabel } from "../styles/FormLabel";
 import {
   Select,
   SelectContent,
@@ -14,6 +12,8 @@ import {
   PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { useEffect } from "react";
+import { FormField } from "../../styles/FormField";
+import { FormLabel } from "../../styles/FormLabel";
 
 interface SelectInputUIBlockProps {
   configuration: SelectInputUIBlockConfiguration;

@@ -1,6 +1,7 @@
 import {
   BlockType,
   ColumnsLayoutBlockConfiguration,
+  ConditonBlockConfiguration,
   LayoutBlockConfiguration,
   ScreenConfiguration,
   UIBlockConfiguration,
@@ -10,8 +11,9 @@ import {
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { UIBlock } from "../uiBlocks/UIBlock";
-import { LayoutBlock } from "./LayoutBlock";
+import { UIBlock } from "../../uiBlocks/UIBlock";
+import { LayoutBlock } from "../LayoutBlock";
+import { ConditionBlock } from "../../ConditionBlock/ConditionBlock";
 
 export interface ColumnLayoutBlockProps {
   columnsLayoutBlockConfiguration: ColumnsLayoutBlockConfiguration;
@@ -48,7 +50,10 @@ export function ColumnLayoutBlock({
 }: ColumnLayoutBlockProps) {
   const children = childConfigurations.map(
     (
-      childConfiguration: UIBlockConfiguration | LayoutBlockConfiguration,
+      childConfiguration:
+        | UIBlockConfiguration
+        | LayoutBlockConfiguration
+        | ConditonBlockConfiguration,
       index: number
     ) => {
       if (childConfiguration.blockType === BlockType.UI_BLOCK) {
@@ -67,11 +72,11 @@ export function ColumnLayoutBlock({
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
         );
-      } else {
+      } else if (childConfiguration.blockType === BlockType.LAYOUT_BLOCK) {
         return (
           <LayoutBlock
             key={index}
-            layoutBlockConfiguration={childConfiguration}
+            configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
             hotelId={hotelId}
@@ -83,6 +88,27 @@ export function ColumnLayoutBlock({
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
         );
+      } else if (childConfiguration.blockType === BlockType.CONDITION_BLOCK) {
+        return (
+          <div key={index}>
+            <ConditionBlock
+              configuration={childConfiguration}
+              keyPath={keyPath}
+              formData={formData}
+              hotelId={hotelId}
+              bifrostTravelerId={bifrostTravelerId}
+              handleSetFormData={handleSetFormData}
+              pushScreenConfigurationStack={pushScreenConfigurationStack}
+              popRightscreenConfigurationStack={
+                popRightscreenConfigurationStack
+              }
+              registerBifrostFormInput={registerBifrostFormInput}
+              handleSubmitFormData={handleSubmitFormData}
+            />
+          </div>
+        );
+      } else {
+        throw new Error("Invalid block type");
       }
     }
   );

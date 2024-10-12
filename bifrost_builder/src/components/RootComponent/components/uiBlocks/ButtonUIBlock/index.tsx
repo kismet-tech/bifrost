@@ -1,3 +1,4 @@
+import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { Button } from "@/components/ui/button";
 import {
   ButtonUIBlockConfiguration,
@@ -9,7 +10,6 @@ import {
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import styled from "styled-components";
-import { routeWithPointer } from "../../utilities/routeWithPointer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,7 +38,13 @@ interface ButtonUIBlockProps {
 }
 
 export function ButtonUIBlock({
-  configuration: { keyName, keyValue, label, submitsForm, pointer },
+  configuration: {
+    keyName,
+    keyValue,
+    label,
+    submitsForm,
+    screenPointer: pointer,
+  },
   hotelId,
   keyPath,
   formData,

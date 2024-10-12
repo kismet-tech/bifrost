@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { generateHotelRoomDateScreenSequence } from "../screenSequences/hotelRoomDateScreenSequence/generateHotelRoomDateScreenSequence";
 import { knollcroftCompletedScreenConfiguration } from "../knollcroftCompletedScreenConfiguration";
 
@@ -30,7 +30,7 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
               keyName: "are_hotel_rooms_needed",
               keyValue: "true",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: generateHotelRoomDateScreenSequence({
                   startCalendarDateKeyName: "start_date",
@@ -63,7 +63,7 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
               keyName: "are_hotel_rooms_needed",
               keyValue: "false",
               submitsForm: false,
-              pointer: {
+              screenPointer: {
                 type: ScreenPointerType.DIRECT,
                 screenConfiguration: knollcroftCompletedScreenConfiguration,
               },
@@ -75,7 +75,7 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
           uiBlockType: UIBlockType.BUTTON,
           label: "Back",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.BACK,
           },
         },
@@ -84,7 +84,7 @@ export const knollcroftBusinessHotelRoomRequirementScreenConfiguration: ScreenCo
           uiBlockType: UIBlockType.BUTTON,
           label: "Skip",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.DIRECT,
             screenConfiguration: knollcroftCompletedScreenConfiguration,
           },

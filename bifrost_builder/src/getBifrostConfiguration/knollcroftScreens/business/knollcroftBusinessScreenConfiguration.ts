@@ -4,7 +4,7 @@ import {
   ScreenConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftBusinessBudgetRangeScreenConfiguration } from "./knollcroftBusinessBudgetRangeScreenConfiguration";
 
 export const knollcroftBusinessScreenConfiguration: ScreenConfiguration = {
@@ -52,7 +52,7 @@ export const knollcroftBusinessScreenConfiguration: ScreenConfiguration = {
             uiBlockType: UIBlockType.BUTTON,
             label: "Back",
             submitsForm: false,
-            pointer: {
+            screenPointer: {
               type: ScreenPointerType.BACK,
             },
           },
@@ -61,7 +61,7 @@ export const knollcroftBusinessScreenConfiguration: ScreenConfiguration = {
             uiBlockType: UIBlockType.BUTTON,
             label: "Next",
             submitsForm: false,
-            pointer: {
+            screenPointer: {
               type: ScreenPointerType.DIRECT,
               screenConfiguration:
                 knollcroftBusinessBudgetRangeScreenConfiguration,

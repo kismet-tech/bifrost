@@ -3,15 +3,15 @@ import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { FormField } from "../styles/FormField";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import {
   attemptToPrefillKismetFieldUsingPriorResponses,
   PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
-import { FormLabel } from "../styles/FormLabel";
 import { Input } from "@/components/ui/input";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { FormField } from "../../styles/FormField";
+import { FormLabel } from "../../styles/FormLabel";
 
 interface TextInputUIBlockProps {
   configuration: TextInputUIBlockConfiguration;

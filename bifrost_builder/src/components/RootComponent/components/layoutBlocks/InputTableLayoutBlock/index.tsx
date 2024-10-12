@@ -16,11 +16,11 @@ import {
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { UIBlock } from "./uiBlocks/UIBlock";
 import { Button } from "@/components/ui/button";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { UIBlock } from "../../uiBlocks/UIBlock";
 
-interface TableInputBlockProps {
+interface InputTableLayoutBlockProps {
   configuration: InputTableLayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
@@ -41,7 +41,7 @@ interface TableInputBlockProps {
   handleSubmitFormData: () => void;
 }
 
-export function TableInputBlock({
+export function InputTableLayoutBlock({
   configuration: { keyName, columns },
   keyPath,
   formData,
@@ -52,7 +52,7 @@ export function TableInputBlock({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
-}: TableInputBlockProps) {
+}: InputTableLayoutBlockProps) {
   const tableData = getValueFromBifrostFormDataByKeyPath({
     formData,
     keyPath: [...keyPath, keyName],

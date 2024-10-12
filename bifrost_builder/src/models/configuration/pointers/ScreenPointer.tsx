@@ -1,5 +1,5 @@
-import { ScreenConfiguration } from ".";
-import { BifrostKeyPath } from "./formData";
+import { ScreenConfiguration } from "..";
+import { BifrostKeyPath } from "./../formData";
 
 export enum ScreenPointerType {
   DIRECT = "DIRECT",

@@ -4,7 +4,7 @@ import {
   LayoutBlockType,
   UIBlockType,
 } from "@/models/configuration";
-import { ScreenPointerType } from "@/models/configuration/ScreenPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration } from "./knollcroftSocialWithSpaceRequirementSplitCheckScreenConfiguration";
 
 export const knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfiguration: ScreenConfiguration =
@@ -38,7 +38,7 @@ export const knollcroftSocialAlternateRoomAvailabilityWithEventSpaceScreenConfig
           uiBlockType: UIBlockType.BUTTON,
           label: "Back",
           submitsForm: false,
-          pointer: {
+          screenPointer: {
             type: ScreenPointerType.BACK,
           },
         },

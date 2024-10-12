@@ -1,14 +1,17 @@
-import { ScreenConfiguration } from "@/models/configuration";
+import {
+  ConditonBlockConfiguration,
+  ScreenConfiguration,
+} from "@/models/configuration";
 import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
-import { BifrostScreenFooter } from "./BifrostScreenFooter";
 
-interface BifrostScreenProps {
-  screenConfiguration: ScreenConfiguration;
+interface ConditionBlockProps {
+  configuration: ConditonBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
@@ -28,8 +31,8 @@ interface BifrostScreenProps {
   handleSubmitFormData: () => void;
 }
 
-export function BifrostScreen({
-  screenConfiguration: { layout },
+export function ConditionBlock({
+  configuration: { paths },
   keyPath,
   formData,
   hotelId,
@@ -39,23 +42,39 @@ export function BifrostScreen({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
-}: BifrostScreenProps) {
-  return (
-    <div className="flex flex-col gap-4 m-[0_auto] w-full p-4 md:!w-[50vw] md:!p-8">
+}: ConditionBlockProps) {
+  return paths.map(({ conditions, layout }, index) => {
+    const conditionIsTrue: boolean = conditions.every(
+      ({ conditionKeyPath, conditionKeyValue }) => {
+        const keyValue = getValueFromBifrostFormDataByKeyPath({
+          keyPath: conditionKeyPath,
+          formData,
+        });
+
+        if (!conditionKeyValue && keyValue !== undefined && keyValue !== null) {
+          return true;
+        } else {
+          return conditionKeyValue === keyValue;
+        }
+      }
+    );
+
+    if (conditionIsTrue) {
       <LayoutBlock
+        key={index}
         configuration={layout}
         keyPath={keyPath}
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         handleSetFormData={handleSetFormData}
-        pushScreenConfigurationStack={pushScreenConfigurationStack}
-        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
         handleSubmitFormData={handleSubmitFormData}
-      />
-
-      <BifrostScreenFooter />
-    </div>
-  );
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+      />;
+    } else {
+      return <></>;
+    }
+  });
 }

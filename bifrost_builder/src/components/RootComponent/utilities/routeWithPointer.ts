@@ -9,7 +9,7 @@ import {
 import {
   ScreenPointer,
   ScreenPointerType,
-} from "@/models/configuration/ScreenPointer";
+} from "@/models/configuration/pointers/ScreenPointer";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface routeWithPointerProps {

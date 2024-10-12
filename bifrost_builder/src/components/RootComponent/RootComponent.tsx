@@ -98,32 +98,34 @@ export function KismetRootComponent({
     screenConfigurationStack[screenConfigurationStack.length - 1];
 
   return (
-    <BifrostScreen
-      screenConfiguration={renderedBifrostScreenConfiguration}
-      keyPath={[]}
-      formData={formData}
-      hotelId={bifrostConfiguration.hotelId}
-      bifrostTravelerId={bifrostTravelerId}
-      handleSetFormData={handleSetFormData}
-      pushScreenConfigurationStack={pushScreenConfigurationStack}
-      popRightscreenConfigurationStack={popRightscreenConfigurationStack}
-      registerBifrostFormInput={async () => {
-        await registerBifrostFormInput({
-          hotelId: bifrostConfiguration.hotelId,
-          bifrostTravelerId,
-          bifrostFormId: bifrostConfiguration.bifrostFormId,
-          localFormUserSessionId,
-          formData,
-        });
-      }}
-      handleSubmitFormData={() =>
-        handleSubmitFormData({
-          bifrostTravelerId,
-          localFormUserSessionId,
-          bifrostConfiguration,
-          formData,
-        })
-      }
-    />
+    <div>
+      <BifrostScreen
+        screenConfiguration={renderedBifrostScreenConfiguration}
+        keyPath={[]}
+        formData={formData}
+        hotelId={bifrostConfiguration.hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        handleSetFormData={handleSetFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={async () => {
+          await registerBifrostFormInput({
+            hotelId: bifrostConfiguration.hotelId,
+            bifrostTravelerId,
+            bifrostFormId: bifrostConfiguration.bifrostFormId,
+            localFormUserSessionId,
+            formData,
+          });
+        }}
+        handleSubmitFormData={() =>
+          handleSubmitFormData({
+            bifrostTravelerId,
+            localFormUserSessionId,
+            bifrostConfiguration,
+            formData,
+          })
+        }
+      />
+    </div>
   );
 }

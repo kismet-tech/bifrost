@@ -12,7 +12,6 @@ import {
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
 import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
 import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
-import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
 import { TextAreaInputUIBlock } from "./inputBlocks/TextAreaInputUIBlock";
 import { SelectInputUIBlock } from "./inputBlocks/SelectInputUIBlock";
 import { DateRangePickerUIBlock } from "./inputBlocks/DateRangePickerUIBlock";
@@ -20,6 +19,7 @@ import { CalendarDate } from "@/models/CalendarDate";
 import { RangeSliderInputUIBlock } from "./inputBlocks/RangeSliderInputUIBlock";
 import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock";
 import { ButtonUIBlock } from "./ButtonUIBlock";
+import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
 import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
 
 export interface UIBlockProps {

@@ -1,6 +1,6 @@
 {
   "name": "bifrost_builder",
-  "version": "1.203.0",
+  "version": "1.247.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
@@ -69,7 +69,8 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
-    "vite-plugin-css-injected-by-js": "^3.5.1"
+    "vite-plugin-css-injected-by-js": "^3.5.1",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "eslintConfig": {
     "extends": [

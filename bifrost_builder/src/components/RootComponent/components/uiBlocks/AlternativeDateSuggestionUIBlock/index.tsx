@@ -12,7 +12,7 @@ import {
   ScreenConfiguration,
 } from "@/models/configuration";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
-import { routeWithPointer } from "../../utilities/routeWithPointer";
+import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 
 const Wrapper = styled.div`
   display: flex;
