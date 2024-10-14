@@ -3,6 +3,7 @@ import {
   BifrostFormData,
   BifrostFormDataValue,
   BifrostKeyPath,
+  BifrostKeyPathElement,
 } from "@/models/configuration/formData";
 import { deepClone } from "../core/deepClone";
 
@@ -21,26 +22,23 @@ export const writeValueToBifrostFormDataByKeyPath = ({
   const updatedFormData = deepClone(formData);
 
   // Reference to traverse the formData object
-  let currentLevel: any = updatedFormData;
+  let pointer: any = updatedFormData;
 
-  keyPath.forEach((key, index) => {
-    const isLastKey = index === keyPath.length - 1;
+  keyPath.forEach((keyName: BifrostKeyPathElement, index: number) => {
+    const isLastKeyNameInWrittenKeyPath = index === keyPath.length - 1;
 
     // If it's the last key in the path, set the updatedKeyValue
-    if (isLastKey) {
-      currentLevel[key] = updatedKeyValue;
+    if (isLastKeyNameInWrittenKeyPath) {
+      pointer[keyName] = updatedKeyValue;
     } else {
-      const nextKey = keyPath[index + 1];
+      const nextKeyName = keyPath[index + 1];
 
-      // If the next key is a number, ensure the current level is an array
-      if (typeof key === "number" && !Array.isArray(currentLevel)) {
-        currentLevel[key] = [];
-      } else if (typeof key === "string" && currentLevel[key] === undefined) {
-        currentLevel[key] = typeof nextKey === "number" ? [] : {};
+      if (pointer[keyName] === undefined) {
+        pointer[keyName] = typeof nextKeyName === "number" ? [] : {};
       }
 
       // Move to the next level in the path
-      currentLevel = currentLevel[key];
+      pointer = pointer[keyName];
     }
   });
 

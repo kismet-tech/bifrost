@@ -29,7 +29,7 @@ interface ScreenNavigatorProps {
 }
 
 export function ScreenNavigator({
-  configuration,
+  configuration: { paths, skipPath },
   formData,
   hotelId,
   setFormData,
@@ -39,7 +39,7 @@ export function ScreenNavigator({
 }: ScreenNavigatorProps) {
   const maybeFirstMatchedScreenNavigatorPath =
     maybeGetFirstMatchedScreenNavigatorPath({
-      paths: configuration.paths,
+      paths,
       formData,
     });
 
@@ -62,15 +62,19 @@ export function ScreenNavigator({
       });
     };
 
-    forwardButton = <Button onClick={onClickNextButton}>Next</Button>;
+    forwardButton = (
+      <Button onClick={onClickNextButton}>
+        {maybeFirstMatchedScreenNavigatorPath.forwardPathLabel}
+      </Button>
+    );
   } else {
     const onClickSkipButton = () => {
-      if (configuration.skipPath.submitsForm) {
+      if (skipPath.submitsForm) {
         handleSubmitFormData();
       }
 
       routeWithPointer({
-        pointer: configuration.skipPath.pointer,
+        pointer: skipPath.pointer,
         hotelId,
         formData,
         setFormData,

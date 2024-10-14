@@ -22,6 +22,9 @@ import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
 import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 import { ScreenNavigator } from "./ScreenNavigator";
+import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
+import { deepEqual } from "@/utilities/core/deepEqual";
+import { deepClone } from "@/utilities/core/deepClone";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -141,16 +144,26 @@ export function UIBlock({
           startCalendarDate?: CalendarDate;
           endCalendarDate?: CalendarDate;
         }) => {
-          mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.startCalendarDateKeyName],
-            keyValue: JSON.stringify(startCalendarDate),
-            setFormData,
-          });
+          setFormData((previousFormState: BifrostFormData) => {
+            let updatedFormState: BifrostFormData = deepClone(formData);
 
-          mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.endCalendarDateKeyName],
-            keyValue: JSON.stringify(endCalendarDate),
-            setFormData,
+            updatedFormState = writeValueToBifrostFormDataByKeyPath({
+              formData: updatedFormState,
+              keyPath: [...keyPath, configuration.startCalendarDateKeyName],
+              updatedKeyValue: startCalendarDate,
+            });
+
+            updatedFormState = writeValueToBifrostFormDataByKeyPath({
+              formData: updatedFormState,
+              keyPath: [...keyPath, configuration.endCalendarDateKeyName],
+              updatedKeyValue: endCalendarDate,
+            });
+
+            if (!deepEqual(previousFormState, updatedFormState)) {
+              return updatedFormState;
+            }
+
+            return previousFormState;
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}

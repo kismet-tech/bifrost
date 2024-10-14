@@ -18,26 +18,25 @@ export const deleteValueFromBifrostFormDataByKeyPath = ({
   const updatedFormData = deepClone(formData);
 
   // Reference to traverse the cloned formData object
-  let currentLevel: any = updatedFormData;
+  let pointer: any = updatedFormData;
 
-  keyPath.forEach((key, index) => {
-    const isLastKey = index === keyPath.length - 1;
+  keyPath.forEach((keyName, index) => {
+    const isLastKeyNameInDeletedKeyPath: boolean = index === keyPath.length - 1;
+
+    if (pointer === undefined) {
+      return;
+    }
 
     // If it's the last key in the path, delete the key from the object/array
-    if (isLastKey) {
-      if (Array.isArray(currentLevel)) {
-        currentLevel.splice(key as number, 1); // Remove the array element by index
-      } else if (typeof currentLevel === "object" && key in currentLevel) {
-        delete currentLevel[key]; // Remove the property from the object
+    if (isLastKeyNameInDeletedKeyPath) {
+      if (Array.isArray(pointer)) {
+        pointer.splice(keyName as number, 1); // Remove the array element by index
+      } else if (typeof pointer === "object" && keyName in pointer) {
+        delete pointer[keyName]; // Remove the property from the object
       }
     } else {
-      // Move to the next level in the path, if it exists
-      if (currentLevel[key] !== undefined) {
-        currentLevel = currentLevel[key];
-      } else {
-        // If the path does not exist, there's nothing to delete, so return
-        return updatedFormData;
-      }
+      // Move to the next level in the path
+      pointer = pointer[keyName];
     }
   });
 

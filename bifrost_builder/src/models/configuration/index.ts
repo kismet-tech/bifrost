@@ -121,7 +121,7 @@ export interface DateRangePickerUIBlockConfiguration
   startCalendarDateKeyName: string;
   endCalendarDateKeyName: string;
 
-  autocomplete?: string;
+  smartFill?: string;
 }
 
 export interface RangeSliderInputUIBlockConfiguration

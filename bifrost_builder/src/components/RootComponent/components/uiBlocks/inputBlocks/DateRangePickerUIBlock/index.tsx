@@ -33,7 +33,12 @@ interface DateRangePickerUIBlockProps {
 }
 
 export function DateRangePickerUIBlock({
-  configuration: { label, startCalendarDateKeyName, endCalendarDateKeyName },
+  configuration: {
+    label,
+    startCalendarDateKeyName,
+    endCalendarDateKeyName,
+    smartFill,
+  },
   hotelId,
   formData,
   onChange,
@@ -106,8 +111,10 @@ export function DateRangePickerUIBlock({
       }
     }
 
-    prefillKismetStartCalendarDateFieldUsingPriorResponses();
-    prefillKismetEndCalendarDateFieldUsingPriorResponses();
+    if (smartFill) {
+      prefillKismetStartCalendarDateFieldUsingPriorResponses();
+      prefillKismetEndCalendarDateFieldUsingPriorResponses();
+    }
   }, []);
 
   const onChangeLocalCalendarDateRange = (dateRange: DateRange | undefined) => {

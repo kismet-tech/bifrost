@@ -31,6 +31,7 @@ export const pruneUnaccessibleConditionKeyPathsFromFormData = ({
       );
     }
   });
+
   conditionOutcomes.forEach(({ conditionIsTrue, keyPathsInConditionPath }) => {
     if (conditionIsTrue) {
       keyPathsInConditionPath.forEach(
