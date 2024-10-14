@@ -80,6 +80,7 @@ export function KismetRootComponent({
         hotelId={bifrostConfiguration.hotelId}
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormDataWithCallback}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={async () => {

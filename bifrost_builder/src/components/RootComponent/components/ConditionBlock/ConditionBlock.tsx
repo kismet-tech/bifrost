@@ -26,6 +26,7 @@ interface ConditionBlockProps {
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
+  screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -41,6 +42,7 @@ export function ConditionBlock({
   hotelId,
   bifrostTravelerId,
   setFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -72,6 +74,7 @@ export function ConditionBlock({
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
+            screenConfigurationStack={screenConfigurationStack}
             pushScreenConfigurationStack={pushScreenConfigurationStack}
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />

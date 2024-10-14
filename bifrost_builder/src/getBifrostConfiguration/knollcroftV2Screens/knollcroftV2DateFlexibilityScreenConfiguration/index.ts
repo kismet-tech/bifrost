@@ -39,6 +39,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               label: "my dates are firm",
               keyName: "date_flexibility",
               keyValue: "dates_are_firm",
+              hasToggle: true,
               submitsForm: false,
             },
             {
@@ -47,6 +48,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               label: "flexible",
               keyName: "date_flexibility",
               keyValue: "dates_are_flexible",
+              hasToggle: true,
               submitsForm: false,
             },
             {
@@ -55,6 +57,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               label: "still deciding",
               keyName: "date_flexibility",
               keyValue: "still_deciding",
+              hasToggle: true,
               submitsForm: false,
             },
           ],

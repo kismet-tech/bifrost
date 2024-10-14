@@ -24,6 +24,7 @@ interface ScreenNavigatorProps {
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
+  screenConfigurationStack: ScreenConfiguration[];
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
 }
@@ -34,6 +35,7 @@ export function ScreenNavigator({
   hotelId,
   setFormData,
   handleSubmitFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
 }: ScreenNavigatorProps) {
@@ -67,7 +69,7 @@ export function ScreenNavigator({
         {maybeFirstMatchedScreenNavigatorPath.forwardPathLabel}
       </Button>
     );
-  } else {
+  } else if (skipPath) {
     const onClickSkipButton = () => {
       if (skipPath.submitsForm) {
         handleSubmitFormData();
@@ -90,15 +92,29 @@ export function ScreenNavigator({
         <ChevronRight />
       </>
     );
+  } else {
+    forwardButton = <></>;
   }
 
-  return (
-    <div className="flex justify-between">
+  let backButton: JSX.Element;
+  if (screenConfigurationStack.length > 1) {
+    backButton = (
       <div className="flex items-center cursor-pointer">
         <ChevronLeft />
         <span>Back</span>
       </div>
-      <div className="flex items-center cursor-pointer">{forwardButton}</div>
+    );
+  } else {
+    backButton = <></>;
+  }
+
+  return (
+    <div className="flex justify-between">
+      {backButton}
+
+      <div className="ml-auto flex items-center cursor-pointer">
+        {forwardButton}
+      </div>
     </div>
   );
 }

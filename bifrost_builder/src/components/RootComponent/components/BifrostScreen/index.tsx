@@ -12,6 +12,7 @@ interface BifrostScreenProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
+  screenConfigurationStack: ScreenConfiguration[];
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -30,6 +31,7 @@ export function BifrostScreen({
   hotelId,
   bifrostTravelerId,
   setFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -44,6 +46,7 @@ export function BifrostScreen({
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormData}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}

@@ -162,6 +162,7 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
   keyName?: string;
   keyValue?: string;
 
+  hasToggle?: boolean;
   submitsForm: boolean;
 
   screenPointer?: ScreenPointer;
@@ -191,10 +192,15 @@ export interface ScreenNavigatorUIBlockConditionPath {
   forwardPathLabel: string;
 }
 
+export interface ScreenNavigatorUIBlockSkipPath {
+  pointer: ScreenPointer;
+  submitsForm?: boolean;
+}
+
 export interface ScreenNavigatorUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.SCREEN_NAVIGATOR;
-  skipPath: {
+  skipPath?: {
     pointer: ScreenPointer;
     submitsForm?: boolean;
   };

@@ -38,6 +38,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
               label: "Business",
               keyName: "booking_category",
               keyValue: "business",
+              hasToggle: true,
               submitsForm: false,
             },
             {
@@ -46,6 +47,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
               label: "Social",
               keyName: "booking_category",
               keyValue: "social",
+              hasToggle: true,
               submitsForm: false,
             },
             {
@@ -54,6 +56,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
               label: "Other",
               keyName: "booking_category",
               keyValue: "other",
+              hasToggle: true,
               submitsForm: false,
             },
           ],

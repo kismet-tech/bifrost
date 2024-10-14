@@ -32,6 +32,7 @@ interface InputTableLayoutBlockProps {
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
+  screenConfigurationStack: ScreenConfiguration[];
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
   handleSubmitFormData: () => void;
@@ -44,6 +45,7 @@ export function InputTableLayoutBlock({
   hotelId,
   bifrostTravelerId,
   setFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -93,6 +95,7 @@ export function InputTableLayoutBlock({
               bifrostTravelerId={bifrostTravelerId}
               setFormData={setFormData}
               handleSubmitFormData={handleSubmitFormData}
+              screenConfigurationStack={screenConfigurationStack}
               pushScreenConfigurationStack={pushScreenConfigurationStack}
               popRightscreenConfigurationStack={
                 popRightscreenConfigurationStack

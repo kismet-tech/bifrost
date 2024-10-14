@@ -36,6 +36,7 @@ export interface UIBlockProps {
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
   handleSubmitFormData: () => void;
+  screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -51,6 +52,7 @@ export function UIBlock({
   bifrostTravelerId,
   setFormData,
   handleSubmitFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -248,6 +250,7 @@ export function UIBlock({
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormData}
         handleSubmitFormData={handleSubmitFormData}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}

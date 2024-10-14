@@ -20,6 +20,7 @@ interface LayoutBlockProps {
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
+  screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -35,6 +36,7 @@ export function LayoutBlock({
   hotelId,
   bifrostTravelerId,
   setFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -49,6 +51,7 @@ export function LayoutBlock({
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormData}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -64,6 +67,7 @@ export function LayoutBlock({
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormData}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -79,6 +83,7 @@ export function LayoutBlock({
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         setFormData={setFormData}
+        screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}

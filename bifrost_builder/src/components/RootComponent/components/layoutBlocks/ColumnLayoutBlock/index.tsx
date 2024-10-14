@@ -23,6 +23,7 @@ export interface ColumnLayoutBlockProps {
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
+  screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -38,6 +39,7 @@ export function ColumnLayoutBlock({
   hotelId,
   bifrostTravelerId,
   setFormData,
+  screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -63,6 +65,7 @@ export function ColumnLayoutBlock({
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
+            screenConfigurationStack={screenConfigurationStack}
             pushScreenConfigurationStack={pushScreenConfigurationStack}
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
@@ -79,6 +82,7 @@ export function ColumnLayoutBlock({
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
+            screenConfigurationStack={screenConfigurationStack}
             pushScreenConfigurationStack={pushScreenConfigurationStack}
             popRightscreenConfigurationStack={popRightscreenConfigurationStack}
           />
@@ -93,6 +97,7 @@ export function ColumnLayoutBlock({
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
               setFormData={setFormData}
+              screenConfigurationStack={screenConfigurationStack}
               pushScreenConfigurationStack={pushScreenConfigurationStack}
               popRightscreenConfigurationStack={
                 popRightscreenConfigurationStack

@@ -75,6 +75,7 @@ export const knollcroftV2GuestCountAndPayerScreenConfiguration: ScreenConfigurat
                         label: "guests pay individually",
                         keyName: "split_payment",
                         keyValue: "guests_pay_individually",
+                        hasToggle: true,
                         submitsForm: false,
                       },
                       {
@@ -83,6 +84,7 @@ export const knollcroftV2GuestCountAndPayerScreenConfiguration: ScreenConfigurat
                         label: "host will pay for rooms",
                         keyName: "split_payment",
                         keyValue: "host_pays_for_rooms",
+                        hasToggle: true,
                         submitsForm: false,
                       },
                     ],
