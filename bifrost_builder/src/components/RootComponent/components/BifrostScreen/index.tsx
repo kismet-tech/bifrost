@@ -1,7 +1,6 @@
 import { ScreenConfiguration } from "@/models/configuration";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
@@ -13,13 +12,9 @@ interface BifrostScreenProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -34,7 +29,7 @@ export function BifrostScreen({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -48,7 +43,7 @@ export function BifrostScreen({
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}

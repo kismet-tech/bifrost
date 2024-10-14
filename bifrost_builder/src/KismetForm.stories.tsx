@@ -3,7 +3,7 @@ import { useLayoutEffect } from "react";
 import { KismetRootComponent } from "./components/RootComponent/RootComponent";
 import { blueTheme, radiusPresets } from "./models/configuration/themes";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
-import { knollcroftRootScreenConfiguration } from "./getBifrostConfiguration/knollcroftScreens/knollcroftRootScreenConfiguration";
+import { knollcroftRootScreenConfiguration } from "./getBifrostConfiguration/knollcroftV1Screens/knollcroftRootScreenConfiguration";
 
 const meta: Meta<typeof KismetRootComponent> = {
   title: "KismetForm",

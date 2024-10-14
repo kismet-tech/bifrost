@@ -6,7 +6,6 @@ import {
 import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
@@ -21,6 +20,8 @@ import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelec
 import { ButtonUIBlock } from "./ButtonUIBlock";
 import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
 import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { ScreenNavigator } from "./ScreenNavigator";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -28,13 +29,9 @@ export interface UIBlockProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -49,7 +46,7 @@ export function UIBlock({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
@@ -89,9 +86,10 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={(keyValue: string) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.keyName],
             keyValue,
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -105,9 +103,10 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={(keyValue: string) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.keyName],
             keyValue,
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -120,9 +119,10 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={(keyValue: string) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.keyName],
             keyValue,
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -141,14 +141,16 @@ export function UIBlock({
           startCalendarDate?: CalendarDate;
           endCalendarDate?: CalendarDate;
         }) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.startCalendarDateKeyName],
             keyValue: JSON.stringify(startCalendarDate),
+            setFormData,
           });
 
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.endCalendarDateKeyName],
             keyValue: JSON.stringify(endCalendarDate),
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -161,13 +163,15 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={({ min, max }) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.valueMinKeyName],
             keyValue: min?.toString() ?? "",
+            setFormData,
           });
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.valueMaxKeyName],
             keyValue: max?.toString() ?? "",
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -182,9 +186,10 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={(selectedCardName) => {
-          handleSetFormData({
+          mutateFormDataAtKeyPath({
             keyPath: [...keyPath, configuration.keyName],
             keyValue: selectedCardName,
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -195,7 +200,7 @@ export function UIBlock({
       <ButtonUIBlock
         configuration={configuration}
         keyPath={keyPath}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         handleSubmitFormData={handleSubmitFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
@@ -211,13 +216,28 @@ export function UIBlock({
       <AlternativeDateSuggestionUIBlock
         configuration={configuration}
         keyPath={keyPath}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         handleSubmitFormData={handleSubmitFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
         hotelId={hotelId}
         formData={formData}
+      />
+    );
+  } else if (configuration.uiBlockType === UIBlockType.SCREEN_NAVIGATOR) {
+    return (
+      <ScreenNavigator
+        configuration={configuration}
+        keyPath={keyPath}
+        formData={formData}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        setFormData={setFormData}
+        handleSubmitFormData={handleSubmitFormData}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
       />
     );
   } else {

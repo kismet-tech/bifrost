@@ -7,6 +7,17 @@ export class ArraySet<T> {
     }
   }
 
+  delete(array: T[]): boolean {
+    const index = this.items.findIndex((item: T[]) =>
+      this.areArraysEqual(item, array)
+    );
+    if (index !== -1) {
+      this.items.splice(index, 1); // Remove the array at the found index
+      return true;
+    }
+    return false; // Return false if the array was not found
+  }
+
   has(array: T[]): boolean {
     return this.items.some((item) => this.areArraysEqual(item, array));
   }
@@ -15,13 +26,13 @@ export class ArraySet<T> {
     return this.items.length;
   }
 
-  private areArraysEqual(a: T[], b: T[]): boolean {
-    if (a.length !== b.length) return false;
-    return a.every((value, index) => value === b[index]);
-  }
-
   /** Returns the elements of the set as an array */
   toArray(): T[][] {
     return [...this.items]; // Returns a shallow copy of the items array
+  }
+
+  private areArraysEqual(a: T[], b: T[]): boolean {
+    if (a.length !== b.length) return false;
+    return a.every((value, index) => value === b[index]);
   }
 }

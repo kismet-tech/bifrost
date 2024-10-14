@@ -5,6 +5,7 @@
 import { ThemeVariables } from "@/models/configuration/themes";
 import { ScreenPointer } from "./pointers/ScreenPointer";
 import { BifrostKeyPath } from "./formData";
+import { BifrostKeyPathCondition } from "./bifrostKeyPathCondition";
 
 export enum BlockType {
   LAYOUT_BLOCK = "LAYOUT_BLOCK",
@@ -48,6 +49,7 @@ export enum UIBlockType {
 
   // Complex
   ALTERNATIVE_DATE_SUGGESTION = "ALTERNATIVE_DATE_SUGGESTION",
+  SCREEN_NAVIGATOR = "SCREEN_NAVIGATOR",
 }
 
 export interface HeaderUIBlockConfiguration extends BaseUIBlockConfiguration {
@@ -182,6 +184,24 @@ export interface AlternativeDateSuggestionUIBlockConfiguration
   rejectedAlternativeDatesScreenPointer: ScreenPointer;
 }
 
+export interface ScreenNavigatorUIBlockConditionPath {
+  condition: BifrostKeyPathCondition;
+  screenPointer: ScreenPointer;
+  submitsForm?: boolean;
+  forwardPathLabel: string;
+}
+
+export interface ScreenNavigatorUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.SCREEN_NAVIGATOR;
+  skipPath: {
+    pointer: ScreenPointer;
+    submitsForm?: boolean;
+  };
+
+  paths: ScreenNavigatorUIBlockConditionPath[];
+}
+
 export type UIBlockConfiguration =
   | HeaderUIBlockConfiguration
   | SubheaderUIBlockConfiguration
@@ -194,19 +214,15 @@ export type UIBlockConfiguration =
   | RangeSliderInputUIBlockConfiguration
   | ExpandableCardSelectorUIBlockConfiguration
   | ButtonUIBlockConfiguration
-  | AlternativeDateSuggestionUIBlockConfiguration;
+  | AlternativeDateSuggestionUIBlockConfiguration
+  | ScreenNavigatorUIBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Condition Block
 //////////////////////////////////////////////////
 
-export interface ConditionBlockCondition {
-  conditionKeyPath: string[];
-  conditionKeyValue?: string;
-}
-
 export interface ConditionBlockPath {
-  conditions: ConditionBlockCondition[];
+  condition: BifrostKeyPathCondition;
   layout: LayoutBlockConfiguration;
 }
 

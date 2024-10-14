@@ -6,7 +6,6 @@ import {
 import { ColumnLayoutBlock } from "./ColumnLayoutBlock";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { RowLayoutBlock } from "./RowLayoutBlock";
@@ -18,13 +17,9 @@ interface LayoutBlockProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -39,7 +34,7 @@ export function LayoutBlock({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -53,7 +48,7 @@ export function LayoutBlock({
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -68,7 +63,7 @@ export function LayoutBlock({
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -83,7 +78,7 @@ export function LayoutBlock({
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormData}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}

@@ -1,20 +1,14 @@
 import { useCallback, useState } from "react";
-import { deepEqual } from "@/utilities/core/deepEqual";
 import { v4 as uuidv4 } from "uuid";
 import {
   BifrostConfiguration,
   ScreenConfiguration,
 } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostFormDataValue,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
+import { BifrostFormData } from "@/models/configuration/formData";
 import { BifrostScreen } from "./components/BifrostScreen";
 import { handleSubmitFormData } from "./utilities/handleSubmitFormData";
 import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
 import { deleteKeysPresentOnScreenFromFormData } from "./components/BifrostScreen/deleteKeysPresentOnScreenFromFormData";
-import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 
 interface KismetRootComponentProps {
   bifrostTravelerId: string;
@@ -33,30 +27,10 @@ export function KismetRootComponent({
 
   const [formData, setFormData] = useState<BifrostFormData>({});
 
-  const handleSetFormData = useCallback(
-    ({
-      keyPath,
-      keyValue,
-    }: {
-      keyPath: BifrostKeyPath;
-      keyValue: BifrostFormDataValue;
-    }) => {
-      setFormData((previousFormState) => {
-        const updatedFormState = writeValueToBifrostFormDataByKeyPath({
-          formData: previousFormState,
-          keyPath,
-          updatedKeyValue: keyValue,
-        });
+  console.log("formData");
+  console.log(JSON.stringify(formData, null, 4));
 
-        if (!deepEqual(previousFormState, updatedFormState)) {
-          return updatedFormState;
-        }
-
-        return previousFormState;
-      });
-    },
-    []
-  );
+  const setFormDataWithCallback = useCallback(setFormData, [setFormData]);
 
   const pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -105,7 +79,7 @@ export function KismetRootComponent({
         formData={formData}
         hotelId={bifrostConfiguration.hotelId}
         bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
+        setFormData={setFormDataWithCallback}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={async () => {

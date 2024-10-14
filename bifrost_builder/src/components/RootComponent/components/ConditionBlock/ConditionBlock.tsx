@@ -4,11 +4,18 @@ import {
 } from "@/models/configuration";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
+import { getKeyPathsFromConditionBlockPath } from "./getKeyPathsFromConditionBlock";
+import { pruneUnaccessibleConditionKeyPathsFromFormData } from "./pruneUnaccessibleConditionKeyPathsFromFormData";
+import { doesFormDataMatchOnKeyPathCondition } from "../../../../utilities/formData/doesConditionBlockMatchOnCondition";
+
+export interface ConditionOutcome {
+  renderedConditionPath: JSX.Element;
+  conditionIsTrue: boolean;
+  keyPathsInConditionPath: BifrostKeyPath[];
+}
 
 interface ConditionBlockProps {
   configuration: ConditonBlockConfiguration;
@@ -16,13 +23,9 @@ interface ConditionBlockProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -37,44 +40,60 @@ export function ConditionBlock({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
 }: ConditionBlockProps) {
-  return paths.map(({ conditions, layout }, index) => {
-    const conditionIsTrue: boolean = conditions.every(
-      ({ conditionKeyPath, conditionKeyValue }) => {
-        const keyValue = getValueFromBifrostFormDataByKeyPath({
-          keyPath: conditionKeyPath,
-          formData,
+  const conditionOutcomes: ConditionOutcome[] = paths.map(
+    ({ condition, layout }, index) => {
+      const conditionIsTrue: boolean = doesFormDataMatchOnKeyPathCondition({
+        condition,
+        formData,
+      });
+
+      const { keyPaths: keyPathsInConditionPath } =
+        getKeyPathsFromConditionBlockPath({
+          conditionBlockPath: { condition, layout },
+          blockKeyPath: keyPath,
         });
 
-        if (!conditionKeyValue && keyValue !== undefined && keyValue !== null) {
-          return true;
-        } else {
-          return conditionKeyValue === keyValue;
-        }
+      let renderedConditionPath: JSX.Element;
+      if (conditionIsTrue) {
+        renderedConditionPath = (
+          <LayoutBlock
+            key={index}
+            configuration={layout}
+            keyPath={keyPath}
+            formData={formData}
+            hotelId={hotelId}
+            bifrostTravelerId={bifrostTravelerId}
+            setFormData={setFormData}
+            registerBifrostFormInput={registerBifrostFormInput}
+            handleSubmitFormData={handleSubmitFormData}
+            pushScreenConfigurationStack={pushScreenConfigurationStack}
+            popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+          />
+        );
+      } else {
+        renderedConditionPath = <></>;
       }
-    );
 
-    if (conditionIsTrue) {
-      <LayoutBlock
-        key={index}
-        configuration={layout}
-        keyPath={keyPath}
-        formData={formData}
-        hotelId={hotelId}
-        bifrostTravelerId={bifrostTravelerId}
-        handleSetFormData={handleSetFormData}
-        registerBifrostFormInput={registerBifrostFormInput}
-        handleSubmitFormData={handleSubmitFormData}
-        pushScreenConfigurationStack={pushScreenConfigurationStack}
-        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
-      />;
-    } else {
-      return <></>;
+      return {
+        renderedConditionPath,
+        conditionIsTrue,
+        keyPathsInConditionPath,
+      };
     }
+  );
+
+  pruneUnaccessibleConditionKeyPathsFromFormData({
+    conditionOutcomes,
+    setFormData,
+  });
+
+  return conditionOutcomes.map(({ renderedConditionPath }, index) => {
+    return <div key={index}>{renderedConditionPath}</div>;
   });
 }

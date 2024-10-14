@@ -6,9 +6,9 @@ import {
 } from "@/models/configuration";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -22,13 +22,9 @@ interface ButtonUIBlockProps {
   hotelId: string;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -48,7 +44,7 @@ export function ButtonUIBlock({
   hotelId,
   keyPath,
   formData,
-  handleSetFormData,
+  setFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
@@ -60,9 +56,10 @@ export function ButtonUIBlock({
     event.preventDefault();
 
     if (keyName && keyValue) {
-      handleSetFormData({
+      mutateFormDataAtKeyPath({
         keyPath: [...keyPath, keyName],
         keyValue,
+        setFormData,
       });
     }
 
@@ -75,7 +72,7 @@ export function ButtonUIBlock({
         pointer,
         hotelId,
         formData,
-        handleSetFormData,
+        setFormData,
         handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,

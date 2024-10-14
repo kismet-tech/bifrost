@@ -31,18 +31,12 @@ export const writeValueToBifrostFormDataByKeyPath = ({
       currentLevel[key] = updatedKeyValue;
     } else {
       const nextKey = keyPath[index + 1];
-      const isNextKeyNumber = typeof nextKey === "number";
 
-      // If the current key is a number, ensure current level is an array
-      if (typeof key === "number") {
-        if (!Array.isArray(currentLevel)) {
-          currentLevel = [];
-        }
-      }
-
-      // Initialize the next level if it doesn't exist
-      if (currentLevel[key] === undefined) {
-        currentLevel[key] = isNextKeyNumber ? [] : {};
+      // If the next key is a number, ensure the current level is an array
+      if (typeof key === "number" && !Array.isArray(currentLevel)) {
+        currentLevel[key] = [];
+      } else if (typeof key === "string" && currentLevel[key] === undefined) {
+        currentLevel[key] = typeof nextKey === "number" ? [] : {};
       }
 
       // Move to the next level in the path

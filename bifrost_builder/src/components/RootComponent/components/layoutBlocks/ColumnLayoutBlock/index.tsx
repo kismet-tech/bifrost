@@ -8,7 +8,6 @@ import {
 } from "@/models/configuration";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { UIBlock } from "../../uiBlocks/UIBlock";
@@ -21,13 +20,9 @@ export interface ColumnLayoutBlockProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -42,7 +37,7 @@ export function ColumnLayoutBlock({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -65,7 +60,7 @@ export function ColumnLayoutBlock({
             formData={formData}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
-            handleSetFormData={handleSetFormData}
+            setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
             pushScreenConfigurationStack={pushScreenConfigurationStack}
@@ -81,7 +76,7 @@ export function ColumnLayoutBlock({
             formData={formData}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
-            handleSetFormData={handleSetFormData}
+            setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
             pushScreenConfigurationStack={pushScreenConfigurationStack}
@@ -97,7 +92,7 @@ export function ColumnLayoutBlock({
               formData={formData}
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
-              handleSetFormData={handleSetFormData}
+              setFormData={setFormData}
               pushScreenConfigurationStack={pushScreenConfigurationStack}
               popRightscreenConfigurationStack={
                 popRightscreenConfigurationStack

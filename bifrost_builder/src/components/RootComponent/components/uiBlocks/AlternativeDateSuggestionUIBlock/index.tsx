@@ -4,7 +4,6 @@ import { CalendarDate } from "@/models/CalendarDate";
 import { renderCalendarDate } from "@/utilities/dates/renderCalendarDate";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/models/configuration";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,13 +26,9 @@ interface AlternativeDateSuggestionUIBlockProps {
   hotelId: string;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -53,7 +49,7 @@ export function AlternativeDateSuggestionUIBlock({
     rejectedAlternativeDatesScreenPointer,
   },
   hotelId,
-  handleSetFormData,
+  setFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
   formData,
@@ -81,30 +77,34 @@ export function AlternativeDateSuggestionUIBlock({
       pointer: acceptedAlternativeDatesScreenPointer,
       hotelId,
       formData,
-      handleSetFormData,
+      setFormData,
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: startCalendarDateKeyPath,
       keyValue: alternativeStartCalendarDate,
+      setFormData,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: endCalendarDateKeyPath,
       keyValue: alternativeEndCalendarDate,
+      setFormData,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: alternativeStartCalendarDateKeyPath,
-      keyValue: "",
+      keyValue: undefined,
+      setFormData,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: alternativeEndCalendarDateKeyPath,
-      keyValue: "",
+      keyValue: undefined,
+      setFormData,
     });
 
     registerBifrostFormInput();
@@ -115,20 +115,22 @@ export function AlternativeDateSuggestionUIBlock({
       pointer: rejectedAlternativeDatesScreenPointer,
       hotelId,
       formData,
-      handleSetFormData,
+      setFormData,
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: alternativeStartCalendarDateKeyPath,
-      keyValue: "",
+      keyValue: undefined,
+      setFormData,
     });
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: alternativeEndCalendarDateKeyPath,
-      keyValue: "",
+      keyValue: undefined,
+      setFormData,
     });
   };
 

@@ -1,28 +1,21 @@
 import { determineIfBifrostTravelerRequiresAnEventSpace } from "@/api/determineIfBifrostTravelerRequiresAnEventSpace";
 import { determineIfRoomsAreAvailableForBifrostTravelerOnDates } from "@/api/determineIfRoomsAreAvailableForBifrostTravelerOnDates";
 import { ScreenConfiguration } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostFormDataValue,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
+import { BifrostFormData } from "@/models/configuration/formData";
 import {
   ScreenPointer,
   ScreenPointerType,
 } from "@/models/configuration/pointers/ScreenPointer";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 
 interface routeWithPointerProps {
   pointer: ScreenPointer;
   hotelId: string;
   formData: BifrostFormData;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -34,7 +27,7 @@ export const routeWithPointer = async ({
   pointer,
   hotelId,
   formData,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
 }: routeWithPointerProps) => {
@@ -100,14 +93,16 @@ export const routeWithPointer = async ({
       );
     } else {
       if (alternativeStartCalendarDate && alternativeEndCalendarDate) {
-        handleSetFormData({
+        mutateFormDataAtKeyPath({
           keyPath: pointer.alternativeStartCalendarDateKeyPath,
           keyValue: alternativeStartCalendarDate,
+          setFormData,
         });
 
-        handleSetFormData({
+        mutateFormDataAtKeyPath({
           keyPath: pointer.alternativeEndCalendarDateKeyPath,
           keyValue: alternativeEndCalendarDate,
+          setFormData,
         });
 
         console.log(

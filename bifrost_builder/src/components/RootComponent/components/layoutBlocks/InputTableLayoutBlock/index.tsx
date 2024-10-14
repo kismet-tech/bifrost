@@ -13,12 +13,12 @@ import {
 } from "@/models/configuration";
 import {
   BifrostFormData,
-  BifrostFormDataValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { Button } from "@/components/ui/button";
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { UIBlock } from "../../uiBlocks/UIBlock";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 
 interface InputTableLayoutBlockProps {
   configuration: InputTableLayoutBlockConfiguration;
@@ -26,13 +26,9 @@ interface InputTableLayoutBlockProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
-  handleSetFormData: ({
-    keyPath,
-    keyValue,
-  }: {
-    keyPath: BifrostKeyPath;
-    keyValue: BifrostFormDataValue;
-  }) => void;
+  setFormData: (
+    previousFormData: React.SetStateAction<BifrostFormData>
+  ) => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -47,7 +43,7 @@ export function InputTableLayoutBlock({
   formData,
   hotelId,
   bifrostTravelerId,
-  handleSetFormData,
+  setFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
@@ -63,9 +59,10 @@ export function InputTableLayoutBlock({
   ) => {
     event.preventDefault();
 
-    handleSetFormData({
+    mutateFormDataAtKeyPath({
       keyPath: [...keyPath, keyName, tableData.length],
       keyValue: {},
+      setFormData,
     });
   };
 
@@ -94,7 +91,7 @@ export function InputTableLayoutBlock({
               formData={formData}
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
-              handleSetFormData={handleSetFormData}
+              setFormData={setFormData}
               handleSubmitFormData={handleSubmitFormData}
               pushScreenConfigurationStack={pushScreenConfigurationStack}
               popRightscreenConfigurationStack={
