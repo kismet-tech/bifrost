@@ -25,6 +25,7 @@ import { ScreenNavigator } from "./ScreenNavigator";
 import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 import { deepEqual } from "@/utilities/core/deepEqual";
 import { deepClone } from "@/utilities/core/deepClone";
+import { DatePickerUIBlock } from "./inputBlocks/DatePickerUIBlock";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -169,6 +170,34 @@ export function UIBlock({
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
+        keyPath={keyPath}
+      />
+    );
+  } else if (configuration.uiBlockType === UIBlockType.DATE_PICKER) {
+    return (
+      <DatePickerUIBlock
+        configuration={configuration}
+        hotelId={hotelId}
+        formData={formData}
+        onChange={({ calendarDate }: { calendarDate?: CalendarDate }) => {
+          setFormData((previousFormState: BifrostFormData) => {
+            let updatedFormState: BifrostFormData = deepClone(formData);
+
+            updatedFormState = writeValueToBifrostFormDataByKeyPath({
+              formData: updatedFormState,
+              keyPath: [...keyPath, configuration.calendarDateKeyName],
+              updatedKeyValue: calendarDate,
+            });
+
+            if (!deepEqual(previousFormState, updatedFormState)) {
+              return updatedFormState;
+            }
+
+            return previousFormState;
+          });
+        }}
+        registerBifrostFormInput={registerBifrostFormInput}
+        keyPath={keyPath}
       />
     );
   } else if (configuration.uiBlockType === UIBlockType.RANGE_SLIDER) {

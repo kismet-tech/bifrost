@@ -40,6 +40,7 @@ export enum UIBlockType {
   TEXT_INPUT = "TEXT_INPUT",
   TEXT_AREA_INPUT = "TEXT_AREA_INPUT",
   SELECT_INPUT = "SELECT_INPUT",
+  DATE_PICKER = "DATE_PICKER",
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
   RANGE_SLIDER = "RANGE_SLIDER",
   EXPANDABLE_CARD_SELECTOR = "EXPANDABLE_CARD_SELECTOR",
@@ -111,6 +112,16 @@ export interface SelectInputUIBlockConfiguration
   keyName: string;
   options: SelectInputUIBlockConfigurationOption[];
   autocomplete?: string;
+}
+
+export interface DatePickerUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.DATE_PICKER;
+  label?: string;
+
+  calendarDateKeyName: string;
+
+  smartFill?: string;
 }
 
 export interface DateRangePickerUIBlockConfiguration
@@ -216,6 +227,7 @@ export type UIBlockConfiguration =
   | TextInputUIBlockConfiguration
   | TextAreaInputUIBlockConfiguration
   | SelectInputUIBlockConfiguration
+  | DatePickerUIBlockConfiguration
   | DateRangePickerUIBlockConfiguration
   | RangeSliderInputUIBlockConfiguration
   | ExpandableCardSelectorUIBlockConfiguration

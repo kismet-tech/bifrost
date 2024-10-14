@@ -1,6 +1,9 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { DateRangePickerUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
 import {
   attemptToPrefillKismetFieldUsingPriorResponses,
@@ -12,6 +15,7 @@ import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
@@ -22,6 +26,7 @@ interface DateRangePickerUIBlockProps {
   configuration: DateRangePickerUIBlockConfiguration;
   hotelId: string;
   formData: BifrostFormData;
+  keyPath: BifrostKeyPath;
   onChange: ({
     startCalendarDate,
     endCalendarDate,
@@ -41,6 +46,7 @@ export function DateRangePickerUIBlock({
   },
   hotelId,
   formData,
+  keyPath,
   onChange,
   registerBifrostFormInput,
 }: DateRangePickerUIBlockProps) {
@@ -61,7 +67,12 @@ export function DateRangePickerUIBlock({
           targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
         });
 
-      if (!formData[startCalendarDateKeyName] && targetKeyCalendarDateValue) {
+      const existingKeyValue = getValueFromBifrostFormDataByKeyPath({
+        formData,
+        keyPath: [...keyPath, startCalendarDateKeyName],
+      });
+
+      if (!existingKeyValue && targetKeyCalendarDateValue) {
         setLocalCalendarDateRange(
           (previousLocalCalendarDateRange): LocalCalendarDateRange => {
             const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
@@ -90,7 +101,12 @@ export function DateRangePickerUIBlock({
           targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
         });
 
-      if (!formData[endCalendarDateKeyName] && targetKeyCalendarDateValue) {
+      const existingKeyValue = getValueFromBifrostFormDataByKeyPath({
+        formData,
+        keyPath: [...keyPath, endCalendarDateKeyName],
+      });
+
+      if (!existingKeyValue && targetKeyCalendarDateValue) {
         setLocalCalendarDateRange(
           (previousLocalCalendarDateRange): LocalCalendarDateRange => {
             const updatedLocalCalendarDateRange: LocalCalendarDateRange = {

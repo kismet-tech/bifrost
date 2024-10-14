@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
+import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 
 interface ScreenNavigatorProps {
   configuration: ScreenNavigatorUIBlockConfiguration;
@@ -48,7 +49,11 @@ export function ScreenNavigator({
   let forwardButton: JSX.Element;
 
   if (maybeFirstMatchedScreenNavigatorPath) {
-    const onClickNextButton = () => {
+    const onClickNextButton: React.MouseEventHandler<HTMLButtonElement> = (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      event.preventDefault();
+
       if (maybeFirstMatchedScreenNavigatorPath.submitsForm) {
         handleSubmitFormData();
       }
@@ -97,9 +102,30 @@ export function ScreenNavigator({
   }
 
   let backButton: JSX.Element;
+  const onClickBackButton: React.MouseEventHandler<HTMLDivElement> = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    routeWithPointer({
+      pointer: {
+        type: ScreenPointerType.BACK,
+      },
+      hotelId,
+      formData,
+      setFormData,
+      handleSubmitFormData,
+      pushScreenConfigurationStack,
+      popRightscreenConfigurationStack,
+    });
+  };
+
   if (screenConfigurationStack.length > 1) {
     backButton = (
-      <div className="flex items-center cursor-pointer">
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={onClickBackButton}
+      >
         <ChevronLeft />
         <span>Back</span>
       </div>
