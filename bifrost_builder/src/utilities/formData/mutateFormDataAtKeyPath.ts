@@ -1,29 +1,37 @@
 import {
   BifrostFormData,
-  BifrostFormDataValue,
+  BifrostFormDataPrimitiveValue,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { writeValueToBifrostFormDataByKeyPath } from "./writeValueToBifrostFormDataByKeyPath";
 import { deepEqual } from "../core/deepEqual";
+import { deepClone } from "../core/deepClone";
+
+interface FormDataMutation {
+  keyPath: BifrostKeyPath;
+  keyValue: BifrostFormDataPrimitiveValue;
+}
 
 interface MutateFormDataAtKeyPathProps {
-  keyPath: BifrostKeyPath;
-  keyValue: BifrostFormDataValue;
+  mutations: FormDataMutation[];
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
 }
 
 export const mutateFormDataAtKeyPath = ({
-  keyPath,
-  keyValue,
+  mutations,
   setFormData,
 }: MutateFormDataAtKeyPathProps) => {
   setFormData((previousFormState: BifrostFormData) => {
-    const updatedFormState = writeValueToBifrostFormDataByKeyPath({
-      formData: previousFormState,
-      keyPath,
-      updatedKeyValue: keyValue,
+    let updatedFormState: BifrostFormData = deepClone(previousFormState);
+
+    mutations.forEach(({ keyPath, keyValue }) => {
+      updatedFormState = writeValueToBifrostFormDataByKeyPath({
+        formData: updatedFormState,
+        keyPath,
+        updatedKeyValue: keyValue,
+      });
     });
 
     if (!deepEqual(previousFormState, updatedFormState)) {

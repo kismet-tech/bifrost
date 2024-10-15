@@ -60,8 +60,12 @@ export function ButtonUIBlock({
 
     if (keyName && keyValue) {
       mutateFormDataAtKeyPath({
-        keyPath: [...keyPath, keyName],
-        keyValue,
+        mutations: [
+          {
+            keyPath: [...keyPath, keyName],
+            keyValue,
+          },
+        ],
         setFormData,
       });
     }

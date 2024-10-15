@@ -93,8 +93,12 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.keyName],
-            keyValue,
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.keyName],
+                keyValue,
+              },
+            ],
             setFormData,
           });
         }}
@@ -110,8 +114,9 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.keyName],
-            keyValue,
+            mutations: [
+              { keyPath: [...keyPath, configuration.keyName], keyValue },
+            ],
             setFormData,
           });
         }}
@@ -126,8 +131,12 @@ export function UIBlock({
         formData={formData}
         onChange={(keyValue: string) => {
           mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.keyName],
-            keyValue,
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.keyName],
+                keyValue,
+              },
+            ],
             setFormData,
           });
         }}
@@ -208,13 +217,16 @@ export function UIBlock({
         formData={formData}
         onChange={({ min, max }) => {
           mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.valueMinKeyName],
-            keyValue: min?.toString() ?? "",
-            setFormData,
-          });
-          mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.valueMaxKeyName],
-            keyValue: max?.toString() ?? "",
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.valueMinKeyName],
+                keyValue: min?.toString() ?? "",
+              },
+              {
+                keyPath: [...keyPath, configuration.valueMaxKeyName],
+                keyValue: max?.toString() ?? "",
+              },
+            ],
             setFormData,
           });
         }}
@@ -231,8 +243,12 @@ export function UIBlock({
         formData={formData}
         onChange={(selectedCardName) => {
           mutateFormDataAtKeyPath({
-            keyPath: [...keyPath, configuration.keyName],
-            keyValue: selectedCardName,
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.keyName],
+                keyValue: selectedCardName,
+              },
+            ],
             setFormData,
           });
         }}

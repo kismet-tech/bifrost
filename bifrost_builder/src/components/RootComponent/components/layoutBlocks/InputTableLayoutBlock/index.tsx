@@ -62,8 +62,13 @@ export function InputTableLayoutBlock({
     event.preventDefault();
 
     mutateFormDataAtKeyPath({
-      keyPath: [...keyPath, keyName, tableData.length],
-      keyValue: {},
+      mutations: [
+        {
+          keyPath: [...keyPath, keyName, tableData.length],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          keyValue: {} as any,
+        },
+      ],
       setFormData,
     });
   };

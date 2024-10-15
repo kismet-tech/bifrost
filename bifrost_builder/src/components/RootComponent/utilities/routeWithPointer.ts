@@ -94,14 +94,16 @@ export const routeWithPointer = async ({
     } else {
       if (alternativeStartCalendarDate && alternativeEndCalendarDate) {
         mutateFormDataAtKeyPath({
-          keyPath: pointer.alternativeStartCalendarDateKeyPath,
-          keyValue: alternativeStartCalendarDate,
-          setFormData,
-        });
-
-        mutateFormDataAtKeyPath({
-          keyPath: pointer.alternativeEndCalendarDateKeyPath,
-          keyValue: alternativeEndCalendarDate,
+          mutations: [
+            {
+              keyPath: pointer.alternativeStartCalendarDateKeyPath,
+              keyValue: alternativeStartCalendarDate,
+            },
+            {
+              keyPath: pointer.alternativeEndCalendarDateKeyPath,
+              keyValue: alternativeEndCalendarDate,
+            },
+          ],
           setFormData,
         });
 

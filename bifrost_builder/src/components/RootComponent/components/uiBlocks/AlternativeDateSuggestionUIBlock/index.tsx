@@ -84,26 +84,24 @@ export function AlternativeDateSuggestionUIBlock({
     });
 
     mutateFormDataAtKeyPath({
-      keyPath: startCalendarDateKeyPath,
-      keyValue: alternativeStartCalendarDate,
-      setFormData,
-    });
-
-    mutateFormDataAtKeyPath({
-      keyPath: endCalendarDateKeyPath,
-      keyValue: alternativeEndCalendarDate,
-      setFormData,
-    });
-
-    mutateFormDataAtKeyPath({
-      keyPath: alternativeStartCalendarDateKeyPath,
-      keyValue: undefined,
-      setFormData,
-    });
-
-    mutateFormDataAtKeyPath({
-      keyPath: alternativeEndCalendarDateKeyPath,
-      keyValue: undefined,
+      mutations: [
+        {
+          keyPath: startCalendarDateKeyPath,
+          keyValue: alternativeStartCalendarDate,
+        },
+        {
+          keyPath: endCalendarDateKeyPath,
+          keyValue: alternativeEndCalendarDate,
+        },
+        {
+          keyPath: alternativeStartCalendarDateKeyPath,
+          keyValue: undefined,
+        },
+        {
+          keyPath: alternativeEndCalendarDateKeyPath,
+          keyValue: undefined,
+        },
+      ],
       setFormData,
     });
 
@@ -122,14 +120,16 @@ export function AlternativeDateSuggestionUIBlock({
     });
 
     mutateFormDataAtKeyPath({
-      keyPath: alternativeStartCalendarDateKeyPath,
-      keyValue: undefined,
-      setFormData,
-    });
-
-    mutateFormDataAtKeyPath({
-      keyPath: alternativeEndCalendarDateKeyPath,
-      keyValue: undefined,
+      mutations: [
+        {
+          keyPath: alternativeStartCalendarDateKeyPath,
+          keyValue: undefined,
+        },
+        {
+          keyPath: alternativeEndCalendarDateKeyPath,
+          keyValue: undefined,
+        },
+      ],
       setFormData,
     });
   };
