@@ -44,6 +44,7 @@ export enum UIBlockType {
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
   RANGE_SLIDER = "RANGE_SLIDER",
   EXPANDABLE_CARD_SELECTOR = "EXPANDABLE_CARD_SELECTOR",
+  TOGGLE_GROUP = "TOGGLE_GROUP",
 
   // Buttons
   BUTTON = "BUTTON",
@@ -165,6 +166,20 @@ export interface ExpandableCardSelectorUIBlockConfiguration
   options: ExpandableSelectionCardUIBlockConfigurationOption[];
 }
 
+export interface ToggleGroupUIBlockConfigurationOption {
+  label: string;
+  keyValue: string;
+}
+
+export interface ToggleGroupUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.TOGGLE_GROUP;
+
+  label: string;
+  keyName: string;
+  options: ToggleGroupUIBlockConfigurationOption[];
+}
+
 export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.BUTTON;
 
@@ -231,6 +246,7 @@ export type UIBlockConfiguration =
   | DateRangePickerUIBlockConfiguration
   | RangeSliderInputUIBlockConfiguration
   | ExpandableCardSelectorUIBlockConfiguration
+  | ToggleGroupUIBlockConfiguration
   | ButtonUIBlockConfiguration
   | AlternativeDateSuggestionUIBlockConfiguration
   | ScreenNavigatorUIBlockConfiguration;

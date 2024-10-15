@@ -1,31 +1,32 @@
+import { CalendarDate } from "@/models/CalendarDate";
 import {
   ScreenConfiguration,
   UIBlockConfiguration,
   UIBlockType,
 } from "@/models/configuration";
-import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
 import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
-import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
-import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
-import { TextAreaInputUIBlock } from "./inputBlocks/TextAreaInputUIBlock";
-import { SelectInputUIBlock } from "./inputBlocks/SelectInputUIBlock";
-import { DateRangePickerUIBlock } from "./inputBlocks/DateRangePickerUIBlock";
-import { CalendarDate } from "@/models/CalendarDate";
-import { RangeSliderInputUIBlock } from "./inputBlocks/RangeSliderInputUIBlock";
-import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock";
-import { ButtonUIBlock } from "./ButtonUIBlock";
-import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
-import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { ScreenNavigator } from "./ScreenNavigator";
-import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
-import { deepEqual } from "@/utilities/core/deepEqual";
 import { deepClone } from "@/utilities/core/deepClone";
+import { deepEqual } from "@/utilities/core/deepEqual";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
+import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
+import { ButtonUIBlock } from "./ButtonUIBlock";
+import { ScreenNavigator } from "./ScreenNavigator";
 import { DatePickerUIBlock } from "./inputBlocks/DatePickerUIBlock";
+import { DateRangePickerUIBlock } from "./inputBlocks/DateRangePickerUIBlock";
+import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock";
+import { RangeSliderInputUIBlock } from "./inputBlocks/RangeSliderInputUIBlock";
+import { SelectInputUIBlock } from "./inputBlocks/SelectInputUIBlock";
+import { TextAreaInputUIBlock } from "./inputBlocks/TextAreaInputUIBlock";
+import { TextInputUIBlock } from "./inputBlocks/TextInputUIBlock";
+import { ToggleGroupUIBlock } from "./inputBlocks/ToggleGroupUIBlock";
+import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
+import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
+import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
+import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -247,6 +248,26 @@ export function UIBlock({
               {
                 keyPath: [...keyPath, configuration.keyName],
                 keyValue: selectedCardName,
+              },
+            ],
+            setFormData,
+          });
+        }}
+        registerBifrostFormInput={registerBifrostFormInput}
+      />
+    );
+  } else if (configuration.uiBlockType === UIBlockType.TOGGLE_GROUP) {
+    return (
+      <ToggleGroupUIBlock
+        configuration={configuration}
+        hotelId={hotelId}
+        formData={formData}
+        onChange={(keyValue: string) => {
+          mutateFormDataAtKeyPath({
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.keyName],
+                keyValue,
               },
             ],
             setFormData,
