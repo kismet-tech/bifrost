@@ -12,7 +12,7 @@ import { pruneUnaccessibleConditionKeyPathsFromFormData } from "./pruneUnaccessi
 import { doesFormDataMatchOnKeyPathCondition } from "../../../../utilities/formData/doesConditionBlockMatchOnCondition";
 
 export interface ConditionOutcome {
-  renderedConditionPath: JSX.Element;
+  renderedConditionPath: JSX.Element | null;
   conditionIsTrue: boolean;
   keyPathsInConditionPath: BifrostKeyPath[];
 }
@@ -61,7 +61,7 @@ export function ConditionBlock({
           blockKeyPath: keyPath,
         });
 
-      let renderedConditionPath: JSX.Element;
+      let renderedConditionPath: JSX.Element | null;
       if (conditionIsTrue) {
         renderedConditionPath = (
           <LayoutBlock
@@ -80,7 +80,7 @@ export function ConditionBlock({
           />
         );
       } else {
-        renderedConditionPath = <></>;
+        renderedConditionPath = null;
       }
 
       return {
@@ -96,7 +96,5 @@ export function ConditionBlock({
     setFormData,
   });
 
-  return conditionOutcomes.map(({ renderedConditionPath }, index) => {
-    return <div key={index}>{renderedConditionPath}</div>;
-  });
+  return conditionOutcomes.map((outcome) => outcome.renderedConditionPath);
 }

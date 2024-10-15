@@ -13,12 +13,8 @@ export const knollcroftV2DateFlexibilityScreenFirmDatesPath: LayoutBlockConfigur
     rows: [
       {
         blockType: BlockType.UI_BLOCK,
-        uiBlockType: UIBlockType.SUBHEADER,
-        backupText: "Dates",
-      },
-      {
-        blockType: BlockType.UI_BLOCK,
         uiBlockType: UIBlockType.DATE_RANGE_PICKER,
+        label: "Dates",
         startCalendarDateKeyName: "start_calendar_date",
         endCalendarDateKeyName: "end_calendar_date",
       },
@@ -87,30 +83,17 @@ export const knollcroftV2DateFlexibilityScreenFirmDatesPath: LayoutBlockConfigur
                         rows: [
                           {
                             blockType: BlockType.UI_BLOCK,
-                            uiBlockType: UIBlockType.SUBHEADER,
-                            backupText: "Split payment?",
-                          },
-                          {
-                            blockType: BlockType.LAYOUT_BLOCK,
-                            layoutBlockType: LayoutBlockType.COLUMNS,
-                            columns: [
+                            uiBlockType: UIBlockType.TOGGLE_GROUP,
+                            label: "Split payment?",
+                            keyName: "split_payment",
+                            options: [
                               {
-                                blockType: BlockType.UI_BLOCK,
-                                uiBlockType: UIBlockType.BUTTON,
-                                label: "guests pay individually",
-                                keyName: "split_payment",
+                                label: "Guests pay individually",
                                 keyValue: "guests_pay_individually",
-                                hasToggle: true,
-                                submitsForm: false,
                               },
                               {
-                                blockType: BlockType.UI_BLOCK,
-                                uiBlockType: UIBlockType.BUTTON,
-                                label: "host will pay for rooms",
-                                keyName: "split_payment",
+                                label: "Host will pay for rooms",
                                 keyValue: "host_pays_for_rooms",
-                                hasToggle: true,
-                                submitsForm: false,
                               },
                             ],
                           },

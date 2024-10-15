@@ -26,40 +26,13 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
         },
         {
           blockType: BlockType.UI_BLOCK,
-          uiBlockType: UIBlockType.SUBHEADER,
-          backupText: "Dates",
-        },
-        {
-          blockType: BlockType.LAYOUT_BLOCK,
-          layoutBlockType: LayoutBlockType.COLUMNS,
-          columns: [
-            {
-              blockType: BlockType.UI_BLOCK,
-              uiBlockType: UIBlockType.BUTTON,
-              label: "my dates are firm",
-              keyName: "date_flexibility",
-              keyValue: "dates_are_firm",
-              hasToggle: true,
-              submitsForm: false,
-            },
-            {
-              blockType: BlockType.UI_BLOCK,
-              uiBlockType: UIBlockType.BUTTON,
-              label: "flexible",
-              keyName: "date_flexibility",
-              keyValue: "dates_are_flexible",
-              hasToggle: true,
-              submitsForm: false,
-            },
-            {
-              blockType: BlockType.UI_BLOCK,
-              uiBlockType: UIBlockType.BUTTON,
-              label: "still deciding",
-              keyName: "date_flexibility",
-              keyValue: "still_deciding",
-              hasToggle: true,
-              submitsForm: false,
-            },
+          uiBlockType: UIBlockType.TOGGLE_GROUP,
+          label: "Date Flexibility",
+          keyName: "date_flexibility",
+          options: [
+            { label: "My Dates Are Firm", keyValue: "dates_are_firm" },
+            { label: "I'm Flexible", keyValue: "dates_are_flexible" },
+            { label: "Still Deciding", keyValue: "still_deciding" },
           ],
         },
         {
