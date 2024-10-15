@@ -8,10 +8,7 @@ import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { deepClone } from "@/utilities/core/deepClone";
-import { deepEqual } from "@/utilities/core/deepEqual";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
 import { ButtonUIBlock } from "./ButtonUIBlock";
 import { ScreenNavigator } from "./ScreenNavigator";
@@ -157,26 +154,18 @@ export function UIBlock({
           startCalendarDate?: CalendarDate;
           endCalendarDate?: CalendarDate;
         }) => {
-          setFormData((previousFormState: BifrostFormData) => {
-            let updatedFormState: BifrostFormData = deepClone(formData);
-
-            updatedFormState = writeValueToBifrostFormDataByKeyPath({
-              formData: updatedFormState,
-              keyPath: [...keyPath, configuration.startCalendarDateKeyName],
-              updatedKeyValue: startCalendarDate,
-            });
-
-            updatedFormState = writeValueToBifrostFormDataByKeyPath({
-              formData: updatedFormState,
-              keyPath: [...keyPath, configuration.endCalendarDateKeyName],
-              updatedKeyValue: endCalendarDate,
-            });
-
-            if (!deepEqual(previousFormState, updatedFormState)) {
-              return updatedFormState;
-            }
-
-            return previousFormState;
+          mutateFormDataAtKeyPath({
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.startCalendarDateKeyName],
+                keyValue: startCalendarDate,
+              },
+              {
+                keyPath: [...keyPath, configuration.endCalendarDateKeyName],
+                keyValue: endCalendarDate,
+              },
+            ],
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -190,20 +179,14 @@ export function UIBlock({
         hotelId={hotelId}
         formData={formData}
         onChange={({ calendarDate }: { calendarDate?: CalendarDate }) => {
-          setFormData((previousFormState: BifrostFormData) => {
-            let updatedFormState: BifrostFormData = deepClone(formData);
-
-            updatedFormState = writeValueToBifrostFormDataByKeyPath({
-              formData: updatedFormState,
-              keyPath: [...keyPath, configuration.calendarDateKeyName],
-              updatedKeyValue: calendarDate,
-            });
-
-            if (!deepEqual(previousFormState, updatedFormState)) {
-              return updatedFormState;
-            }
-
-            return previousFormState;
+          mutateFormDataAtKeyPath({
+            mutations: [
+              {
+                keyPath: [...keyPath, configuration.calendarDateKeyName],
+                keyValue: calendarDate,
+              },
+            ],
+            setFormData,
           });
         }}
         registerBifrostFormInput={registerBifrostFormInput}
@@ -241,6 +224,7 @@ export function UIBlock({
       <ExpandableCardSelectorUIBlock
         configuration={configuration}
         hotelId={hotelId}
+        keyPath={keyPath}
         formData={formData}
         onChange={(selectedCardName) => {
           mutateFormDataAtKeyPath({
@@ -262,7 +246,8 @@ export function UIBlock({
         configuration={configuration}
         hotelId={hotelId}
         formData={formData}
-        onChange={(keyValue: string) => {
+        keyPath={keyPath}
+        onChange={(keyValue: string | undefined) => {
           mutateFormDataAtKeyPath({
             mutations: [
               {

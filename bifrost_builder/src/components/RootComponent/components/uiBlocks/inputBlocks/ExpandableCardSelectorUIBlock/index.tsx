@@ -3,28 +3,39 @@ import {
   PrefilledBifrostFormValueType,
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ExpandableCardSelectorUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
 import { ExpandableSelectionCard } from "@/components/ui/expandable-selection-card";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface ExpandableCardSelectorUIBlockProps {
   configuration: ExpandableCardSelectorUIBlockConfiguration;
   hotelId: string;
+  keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   onChange: (selectedCardName: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function ExpandableCardSelectorUIBlock({
-  configuration: { label, keyName, options },
+  configuration: { label, keyName, options, smartFill },
   hotelId,
+  keyPath,
   formData,
   onChange,
   registerBifrostFormInput,
 }: ExpandableCardSelectorUIBlockProps) {
   const [localSelectedCardName, setLocalSelectedCardName] = useState("");
+
+  const keyValue: string = getValueFromBifrostFormDataByKeyPath({
+    formData,
+    keyPath: [...keyPath, keyName],
+  });
 
   useEffect(() => {
     async function prefillValue() {
@@ -36,14 +47,24 @@ export function ExpandableCardSelectorUIBlock({
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formData[keyName] && targetKeyStringValue) {
+      if (!keyValue && targetKeyStringValue) {
         setLocalSelectedCardName(targetKeyStringValue);
         onChange(targetKeyStringValue);
       }
     }
 
-    prefillValue();
+    if (smartFill) {
+      prefillValue();
+    }
   }, []);
+
+  useEffect(() => {
+    if (keyValue && typeof keyValue === "string") {
+      setLocalSelectedCardName(keyValue as string);
+    } else {
+      setLocalSelectedCardName("");
+    }
+  }, [keyValue]);
 
   const onChangeLocalValue = (cardName: string) => (checked: boolean) => {
     if (checked) {

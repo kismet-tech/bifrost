@@ -85,7 +85,7 @@ export interface TextInputUIBlockConfiguration
   label?: string;
   keyName: string;
   placeholder?: string;
-  smartFill?: string;
+  smartFill?: boolean;
   autocomplete?: string;
   inputType: React.HTMLInputTypeAttribute;
 }
@@ -122,7 +122,7 @@ export interface DatePickerUIBlockConfiguration
 
   calendarDateKeyName: string;
 
-  smartFill?: string;
+  smartFill?: boolean;
 }
 
 export interface DateRangePickerUIBlockConfiguration
@@ -133,7 +133,7 @@ export interface DateRangePickerUIBlockConfiguration
   startCalendarDateKeyName: string;
   endCalendarDateKeyName: string;
 
-  smartFill?: string;
+  smartFill?: boolean;
 }
 
 export interface RangeSliderInputUIBlockConfiguration
@@ -164,6 +164,8 @@ export interface ExpandableCardSelectorUIBlockConfiguration
   label: string;
   keyName: string;
   options: ExpandableSelectionCardUIBlockConfigurationOption[];
+
+  smartFill?: boolean;
 }
 
 export interface ToggleGroupUIBlockConfigurationOption {

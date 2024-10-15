@@ -37,7 +37,7 @@ export function TextInputUIBlock({
   onChange,
   registerBifrostFormInput,
 }: TextInputUIBlockProps) {
-  const [localValue, updateLocalValue] = useState<string>("");
+  const [localValue, setLocalValue] = useState<string>("");
 
   const accumulatedKeyPath: BifrostKeyPath = [...keyPath, keyName];
   const keyValue = getValueFromBifrostFormDataByKeyPath({
@@ -57,7 +57,7 @@ export function TextInputUIBlock({
         });
 
       if (!formData[keyName] && targetKeyStringValue) {
-        updateLocalValue((previousLocalValue) => {
+        setLocalValue((previousLocalValue) => {
           if (!previousLocalValue || previousLocalValue.length === 0) {
             return targetKeyStringValue;
           }
@@ -74,9 +74,9 @@ export function TextInputUIBlock({
 
   useEffect(() => {
     if (keyValue && typeof keyValue === "string") {
-      updateLocalValue(keyValue as string);
+      setLocalValue(keyValue as string);
     } else {
-      updateLocalValue("");
+      setLocalValue("");
     }
   }, [keyValue]);
 
@@ -89,7 +89,7 @@ export function TextInputUIBlock({
       onChange(value);
     }
 
-    updateLocalValue(value);
+    setLocalValue(value);
     registerBifrostFormInput();
   };
 

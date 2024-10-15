@@ -4,16 +4,21 @@ import {
 } from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ToggleGroupUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
+import {
+  BifrostFormData,
+  BifrostKeyPath,
+} from "@/models/configuration/formData";
 import { useEffect } from "react";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 
 interface ToggleGroupUIBlockProps {
   configuration: ToggleGroupUIBlockConfiguration;
   hotelId: string;
   formData: BifrostFormData;
-  onChange: (value: string) => void;
+  keyPath: BifrostKeyPath;
+  onChange: (value: string | undefined) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
@@ -21,10 +26,14 @@ export function ToggleGroupUIBlock({
   configuration: { label, keyName, options },
   hotelId,
   formData,
+  keyPath,
   onChange,
   registerBifrostFormInput,
 }: ToggleGroupUIBlockProps) {
-  const selectedValue = formData[keyName] as string | undefined;
+  const selectedValue = getValueFromBifrostFormDataByKeyPath({
+    formData,
+    keyPath: [...keyPath, keyName],
+  }) as string | undefined;
 
   // Attempt to Prefill Field Using Prior Responses
   useEffect(() => {
@@ -46,7 +55,11 @@ export function ToggleGroupUIBlock({
   }, []);
 
   const handleOnChange = (value: string) => {
-    onChange(value);
+    if (value === "") {
+      onChange(undefined);
+    } else {
+      onChange(value);
+    }
     registerBifrostFormInput();
   };
 
@@ -56,12 +69,20 @@ export function ToggleGroupUIBlock({
       <ToggleGroup
         type="single"
         variant="outline"
-        value={selectedValue}
+        value={selectedValue ? selectedValue : ""}
         onValueChange={handleOnChange}
-        className="py-2"
+        className="flex w-full space-x-4 py-2"
       >
         {options.map(({ label, keyValue }) => (
-          <ToggleGroupItem key={keyValue} value={keyValue}>
+          <ToggleGroupItem
+            key={keyValue}
+            value={keyValue}
+            className="
+              flex-1 px-4 py-2 text-center rounded-lg border border-black transition-colors duration-200 ease-in-out
+              data-[state=on]:bg-black data-[state=on]:text-white
+              data-[state=off]:bg-transparent data-[state=off]:text-black
+            "
+          >
             {label}
           </ToggleGroupItem>
         ))}
