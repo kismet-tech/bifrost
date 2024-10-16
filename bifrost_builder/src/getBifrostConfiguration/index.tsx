@@ -4,8 +4,8 @@ import {
   LayoutBlockType,
   ScreenConfiguration,
 } from "@/models/configuration";
+import { ThemeVariables, knollcroftTheme } from "@/models/configuration/themes";
 import { knollcroftRootScreenConfiguration } from "./knollcroftV1Screens/knollcroftRootScreenConfiguration";
-import { neutralTheme, ThemeVariables } from "@/models/configuration/themes";
 import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
@@ -31,7 +31,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
     },
   };
   let bifrostFormId: string = "";
-  const themeVariables: ThemeVariables = neutralTheme;
+  const themeVariables: ThemeVariables = knollcroftTheme;
 
   // if (hostname === "www.knollcroft.com" && urlPathname === "/contact") {
   if (hostname === "www.knollcroft.com") {

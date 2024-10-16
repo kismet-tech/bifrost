@@ -1,6 +1,5 @@
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
 import {
   ButtonUIBlockConfiguration,
   ScreenConfiguration,
@@ -9,7 +8,6 @@ import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 import styled from "styled-components";
 
@@ -40,7 +38,6 @@ export function ButtonUIBlock({
     keyName,
     keyValue,
     label,
-    hasToggle,
     submitsForm,
     screenPointer: pointer,
   },
@@ -89,26 +86,9 @@ export function ButtonUIBlock({
     registerBifrostFormInput();
   };
 
-  let renderedButton: JSX.Element = <></>;
-  if (hasToggle) {
-    if (keyName && keyValue) {
-      const existingKeyValue = getValueFromBifrostFormDataByKeyPath({
-        formData,
-        keyPath: [...keyPath, keyName],
-      });
-
-      renderedButton = (
-        <Toggle
-          onClick={handleButtonClick}
-          pressed={existingKeyValue === keyValue}
-        >
-          {label}
-        </Toggle>
-      );
-    }
-  } else {
-    renderedButton = <Button onClick={handleButtonClick}>{label}</Button>;
-  }
-
-  return <Wrapper>{renderedButton}</Wrapper>;
+  return (
+    <Wrapper>
+      <Button onClick={handleButtonClick}>{label}</Button>
+    </Wrapper>
+  );
 }

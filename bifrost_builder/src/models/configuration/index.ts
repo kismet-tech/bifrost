@@ -190,7 +190,6 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
   keyName?: string;
   keyValue?: string;
 
-  hasToggle?: boolean;
   submitsForm: boolean;
 
   screenPointer?: ScreenPointer;
