@@ -1,3 +1,4 @@
+import { BifrostFormData } from "@/models/configuration/formData";
 import { Api } from ".";
 
 interface SubmitBifrostFormProps {
@@ -5,7 +6,7 @@ interface SubmitBifrostFormProps {
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  formData: Record<string, string>;
+  formData: BifrostFormData;
 }
 
 export const submitBifrostForm = async ({

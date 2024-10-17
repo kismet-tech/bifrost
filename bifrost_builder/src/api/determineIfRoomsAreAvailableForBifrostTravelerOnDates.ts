@@ -1,11 +1,12 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
+import { BifrostFormData } from "@/models/configuration/formData";
 
 interface DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps {
   hotelId: string;
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
-  formData: Record<string, string>;
+  formData: BifrostFormData;
 }
 
 export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({
