@@ -52,6 +52,7 @@ export enum UIBlockType {
   // Complex
   ALTERNATIVE_DATE_SUGGESTION = "ALTERNATIVE_DATE_SUGGESTION",
   SCREEN_NAVIGATOR = "SCREEN_NAVIGATOR",
+  INSTANT_OFFER = "INSTANT_OFFER",
 }
 
 export interface HeaderUIBlockConfiguration extends BaseUIBlockConfiguration {
@@ -236,6 +237,11 @@ export interface ScreenNavigatorUIBlockConfiguration
   paths: ScreenNavigatorUIBlockConditionPath[];
 }
 
+export interface InstantOfferUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.INSTANT_OFFER;
+}
+
 export type UIBlockConfiguration =
   | HeaderUIBlockConfiguration
   | SubheaderUIBlockConfiguration
@@ -251,7 +257,8 @@ export type UIBlockConfiguration =
   | ToggleGroupUIBlockConfiguration
   | ButtonUIBlockConfiguration
   | AlternativeDateSuggestionUIBlockConfiguration
-  | ScreenNavigatorUIBlockConfiguration;
+  | ScreenNavigatorUIBlockConfiguration
+  | InstantOfferUIBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Condition Block

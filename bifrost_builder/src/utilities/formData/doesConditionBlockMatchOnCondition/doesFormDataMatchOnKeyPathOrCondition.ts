@@ -11,7 +11,10 @@ export const doesFormDataMatchOnKeyPathOrCondition = ({
   condition: { OR },
   formData,
 }: DoesFormDataMatchOnKeyPathOrConditionProps): boolean => {
-  return OR.some((condition) =>
-    doesFormDataMatchOnKeyPathCondition({ condition, formData })
-  );
+  return OR.some((condition) => {
+    const formDataMatchesOnKeyPathCondition =
+      doesFormDataMatchOnKeyPathCondition({ condition, formData });
+
+    return formDataMatchesOnKeyPathCondition;
+  });
 };

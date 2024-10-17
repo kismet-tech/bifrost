@@ -24,6 +24,7 @@ import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
 import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
 import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
+import { InstantOfferUIBlock } from "./InstantOffer";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -294,6 +295,22 @@ export function UIBlock({
   } else if (configuration.uiBlockType === UIBlockType.SCREEN_NAVIGATOR) {
     return (
       <ScreenNavigator
+        configuration={configuration}
+        keyPath={keyPath}
+        formData={formData}
+        hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        setFormData={setFormData}
+        handleSubmitFormData={handleSubmitFormData}
+        screenConfigurationStack={screenConfigurationStack}
+        pushScreenConfigurationStack={pushScreenConfigurationStack}
+        popRightscreenConfigurationStack={popRightscreenConfigurationStack}
+        registerBifrostFormInput={registerBifrostFormInput}
+      />
+    );
+  } else if (configuration.uiBlockType === UIBlockType.INSTANT_OFFER) {
+    return (
+      <InstantOfferUIBlock
         configuration={configuration}
         keyPath={keyPath}
         formData={formData}

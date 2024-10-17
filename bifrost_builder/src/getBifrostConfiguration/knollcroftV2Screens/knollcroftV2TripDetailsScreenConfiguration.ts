@@ -40,6 +40,38 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
           ],
         },
         {
+          blockType: BlockType.CONDITION_BLOCK,
+          paths: [
+            {
+              condition: {
+                type: BifrostKeyPathConditionType.MATCH,
+                conditionKeyPath: ["booking_category"],
+                conditionKeyValue: "business",
+              },
+              layout: {
+                blockType: BlockType.LAYOUT_BLOCK,
+                layoutBlockType: LayoutBlockType.ROWS,
+                rows: [
+                  {
+                    blockType: BlockType.UI_BLOCK,
+                    uiBlockType: UIBlockType.TEXT_INPUT,
+                    label: "Company",
+                    keyName: "Company Name",
+                    inputType: "text",
+                  },
+                  {
+                    blockType: BlockType.UI_BLOCK,
+                    uiBlockType: UIBlockType.TEXT_INPUT,
+                    label: "Website",
+                    keyName: "Company Website",
+                    inputType: "text",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.SCREEN_NAVIGATOR,
           skipPath: {
@@ -53,8 +85,32 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
             {
               forwardPathLabel: "Next",
               condition: {
-                type: BifrostKeyPathConditionType.MATCH,
-                conditionKeyPath: ["booking_category"],
+                type: BifrostKeyPathConditionType.OR,
+                OR: [
+                  {
+                    type: BifrostKeyPathConditionType.NOT,
+                    conditionKeyPath: ["booking_category"],
+                    notConditionKeyValue: "business",
+                  },
+                  {
+                    type: BifrostKeyPathConditionType.AND,
+                    AND: [
+                      {
+                        type: BifrostKeyPathConditionType.MATCH,
+                        conditionKeyPath: ["booking_category"],
+                        conditionKeyValue: "business",
+                      },
+                      {
+                        type: BifrostKeyPathConditionType.MATCH,
+                        conditionKeyPath: ["Company Name"],
+                      },
+                      {
+                        type: BifrostKeyPathConditionType.MATCH,
+                        conditionKeyPath: ["Company Website"],
+                      },
+                    ],
+                  },
+                ],
               },
               screenPointer: {
                 type: ScreenPointerType.DIRECT,

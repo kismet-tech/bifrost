@@ -6,6 +6,7 @@ import { BifrostFormData } from "@/models/configuration/formData";
 import { doesFormDataMatchOnKeyPathMatchCondition } from "./doesFormDataMatchOnKeyPathMatchCondition";
 import { doesFormDataMatchOnKeyPathOrCondition } from "./doesFormDataMatchOnKeyPathOrCondition";
 import { doesFormDataMatchOnKeyPathAndCondition } from "./doesFormDataMatchOnKeyPathAndCondition";
+import { doesFormDataMatchOnKeyPathNotCondition } from "./doesFormDataMatchOnKeyPathNotCondition";
 
 interface DoesFormDataMatchOnKeyPathConditionProps {
   condition: BifrostKeyPathCondition;
@@ -18,6 +19,11 @@ export const doesFormDataMatchOnKeyPathCondition = ({
 }: DoesFormDataMatchOnKeyPathConditionProps): boolean => {
   if (condition.type === BifrostKeyPathConditionType.MATCH) {
     return doesFormDataMatchOnKeyPathMatchCondition({
+      condition,
+      formData,
+    });
+  } else if (condition.type === BifrostKeyPathConditionType.NOT) {
+    return doesFormDataMatchOnKeyPathNotCondition({
       condition,
       formData,
     });

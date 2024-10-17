@@ -4,7 +4,6 @@ import {
   LayoutBlockType,
   ScreenConfiguration,
 } from "@/models/configuration";
-import { knollcroftRootScreenConfiguration } from "./knollcroftV1Screens/knollcroftRootScreenConfiguration";
 import { neutralTheme, ThemeVariables } from "@/models/configuration/themes";
 import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
 
@@ -48,7 +47,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
   } else if (hostname === "theknollcroft.com") {
     hotelId = "knollcroft";
     bifrostFormId = "2";
-    rootScreenConfiguration = knollcroftRootScreenConfiguration;
+    rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
   } else if (hostname.includes("theneighborhoodhotel.com")) {
     hotelId = "nbhd";
 
