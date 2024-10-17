@@ -1,10 +1,6 @@
 {
   "name": "bifrost_builder",
-<<<<<<< HEAD
-  "version": "1.430.0",
-=======
-  "version": "1.339.0",
->>>>>>> eea9d873de0afcc4cb2464043d5bfe18b9c65151
+  "version": "1.431.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {

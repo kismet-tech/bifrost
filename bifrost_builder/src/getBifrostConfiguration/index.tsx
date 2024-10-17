@@ -4,12 +4,7 @@ import {
   LayoutBlockType,
   ScreenConfiguration,
 } from "@/models/configuration";
-<<<<<<< HEAD
-import { neutralTheme, ThemeVariables } from "@/models/configuration/themes";
-=======
 import { ThemeVariables, knollcroftTheme } from "@/models/configuration/themes";
-import { knollcroftRootScreenConfiguration } from "./knollcroftV1Screens/knollcroftRootScreenConfiguration";
->>>>>>> eea9d873de0afcc4cb2464043d5bfe18b9c65151
 import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
