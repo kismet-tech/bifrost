@@ -38,7 +38,7 @@ export function BifrostScreen({
   handleSubmitFormData,
 }: BifrostScreenProps) {
   return (
-    <div className="flex flex-col gap-4 m-[0_auto] w-full p-4 md:!w-[50vw] md:!p-8">
+    <div className="flex flex-col gap-4 m-[0_auto] w-full p-4 md:!max-w-[50vw] md:!p-8">
       <LayoutBlock
         configuration={layout}
         keyPath={keyPath}

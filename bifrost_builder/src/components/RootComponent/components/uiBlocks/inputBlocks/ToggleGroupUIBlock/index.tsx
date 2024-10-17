@@ -74,15 +74,7 @@ export function ToggleGroupUIBlock({
         className="flex w-full space-x-4 py-2"
       >
         {options.map(({ label, keyValue }) => (
-          <ToggleGroupItem
-            key={keyValue}
-            value={keyValue}
-            className="
-              flex-1 px-4 py-2 text-center rounded-lg border border-black transition-colors duration-200 ease-in-out
-              data-[state=on]:bg-black data-[state=on]:text-white
-              data-[state=off]:bg-transparent data-[state=off]:text-black
-            "
-          >
+          <ToggleGroupItem key={keyValue} value={keyValue}>
             {label}
           </ToggleGroupItem>
         ))}
