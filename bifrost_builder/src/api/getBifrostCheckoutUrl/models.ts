@@ -1,3 +1,4 @@
+import { CalendarDate } from "@/models/CalendarDate";
 import { EitherResponseType } from "@/models/monads";
 
 export interface GetBifrostCheckoutUrlHotelRoomInstantBookOffer {
@@ -12,6 +13,9 @@ export interface GetBifrostCheckoutUrlRequestDto {
   bifrostTravelerId?: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
+
+  startCalendarDate: CalendarDate;
+  endCalendarDate: CalendarDate;
 
   hotelRoomOffers: GetBifrostCheckoutUrlHotelRoomInstantBookOffer[];
   userSessionId: string;

@@ -47,6 +47,9 @@ export function RenderedInstantOffer({
       bifrostFormId,
       localFormUserSessionId,
 
+      startCalendarDate: renderableInstantOffer.startCalendarDate,
+      endCalendarDate: renderableInstantOffer.endCalendarDate,
+
       hotelRoomOffers,
       userSessionId,
     });
