@@ -30,61 +30,73 @@ export const routeBranchByInstantOfferAvailability = async ({
   formData,
   pushScreenConfigurationStack,
 }: RouteBranchByInstantOfferAvailabilityProps) => {
-  const { userSessionId } = await submitBifrostForm({
-    hotelId,
-    bifrostTravelerId,
-    bifrostFormId,
-    localFormUserSessionId,
-    formData,
-  });
+  // trigger some before API call action
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).userSessionId = userSessionId;
-
-  console.log(`userSessionId: ${userSessionId}`);
-
-  const { instantBookOffers: maybeInstantBookOffers } =
-    await maybeGetInstantBookOffers({
+  try {
+    const { userSessionId } = await submitBifrostForm({
       hotelId,
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
       formData,
-      userSessionId,
     });
 
-  console.log("maybeInstantBookOffers");
-  console.log(JSON.stringify(maybeInstantBookOffers, null, 4));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).userSessionId = userSessionId;
 
-  if (maybeInstantBookOffers.length === 0) {
+    console.log(`userSessionId: ${userSessionId}`);
+
+    const { instantBookOffers: maybeInstantBookOffers } =
+      await maybeGetInstantBookOffers({
+        hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
+        formData,
+        userSessionId,
+      });
+
+    console.log("maybeInstantBookOffers");
+    console.log(JSON.stringify(maybeInstantBookOffers, null, 4));
+
+    if (maybeInstantBookOffers.length === 0) {
+      console.log("PUSHING instantOfferIsNotAvailableScreenConfiguration");
+
+      pushScreenConfigurationStack(
+        pointer.instantOfferIsNotAvailableScreenConfiguration
+      );
+    } else {
+      console.log("PUSHING instantOfferIsAvailableScreenConfiguration");
+
+      console.log(
+        JSON.stringify(
+          {
+            ...pointer.instantOfferIsAvailableScreenConfiguration,
+            metadata: {
+              ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
+              instantBookOffers: maybeInstantBookOffers,
+            },
+          },
+          null,
+          4
+        )
+      );
+
+      pushScreenConfigurationStack({
+        ...pointer.instantOfferIsAvailableScreenConfiguration,
+        metadata: {
+          ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
+          instantBookOffers: maybeInstantBookOffers,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
     console.log("PUSHING instantOfferIsNotAvailableScreenConfiguration");
 
     pushScreenConfigurationStack(
       pointer.instantOfferIsNotAvailableScreenConfiguration
     );
-  } else {
-    console.log("PUSHING instantOfferIsAvailableScreenConfiguration");
-
-    console.log(
-      JSON.stringify(
-        {
-          ...pointer.instantOfferIsAvailableScreenConfiguration,
-          metadata: {
-            ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
-            instantBookOffers: maybeInstantBookOffers,
-          },
-        },
-        null,
-        4
-      )
-    );
-
-    pushScreenConfigurationStack({
-      ...pointer.instantOfferIsAvailableScreenConfiguration,
-      metadata: {
-        ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
-        instantBookOffers: maybeInstantBookOffers,
-      },
-    });
   }
 };

@@ -12,6 +12,7 @@ import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer
 import { knollcroftV2GuestCountAndPayerScreenConfiguration } from "../knollcroftV2GuestCountAndPayerScreenConfiguration";
 import { knollcroftV2QualificationScreenConfiguration } from "../knollcroftV2QualificationScreenConfiguration";
 import { knollcroftV2InstantOfferScreenConfiguration } from "../knollcroftV2InstantOfferScreenConfiguration";
+import { KnollcroftConfigurationV2ScreenKeys } from "../keys";
 
 export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration =
   {
@@ -29,7 +30,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
           blockType: BlockType.UI_BLOCK,
           uiBlockType: UIBlockType.TOGGLE_GROUP,
           label: "Date Flexibility",
-          keyName: "date_flexibility",
+          keyName: KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
           options: [
             { label: "My Dates Are Firm", keyValue: "dates_are_firm" },
             { label: "I'm Flexible", keyValue: "dates_are_flexible" },
@@ -42,7 +43,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
             {
               condition: {
                 type: BifrostKeyPathConditionType.MATCH,
-                conditionKeyPath: ["date_flexibility"],
+                conditionKeyPath: [
+                  KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                ],
                 conditionKeyValue: "dates_are_firm",
               },
               layout: knollcroftV2DateFlexibilityScreenFirmDatesPath,
@@ -50,7 +53,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
             {
               condition: {
                 type: BifrostKeyPathConditionType.MATCH,
-                conditionKeyPath: ["date_flexibility"],
+                conditionKeyPath: [
+                  KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                ],
                 conditionKeyValue: "dates_are_flexible",
               },
               layout: knollcroftV2DateFlexibilityScreenFlexibleDatesPath,
@@ -58,7 +63,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
             {
               condition: {
                 type: BifrostKeyPathConditionType.MATCH,
-                conditionKeyPath: ["date_flexibility"],
+                conditionKeyPath: [
+                  KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                ],
                 conditionKeyValue: "still_deciding",
               },
               layout: knollcroftV2StillDecidingDatesPath,
@@ -86,7 +93,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                 AND: [
                   {
                     type: BifrostKeyPathConditionType.MATCH,
-                    conditionKeyPath: ["date_flexibility"],
+                    conditionKeyPath: [
+                      KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                    ],
                     conditionKeyValue: "dates_are_firm",
                   },
                   {
@@ -111,7 +120,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                 AND: [
                   {
                     type: BifrostKeyPathConditionType.MATCH,
-                    conditionKeyPath: ["date_flexibility"],
+                    conditionKeyPath: [
+                      KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                    ],
                     conditionKeyValue: "dates_are_flexible",
                   },
                   {
@@ -133,12 +144,16 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                 AND: [
                   {
                     type: BifrostKeyPathConditionType.MATCH,
-                    conditionKeyPath: ["date_flexibility"],
+                    conditionKeyPath: [
+                      KnollcroftConfigurationV2ScreenKeys.DATE_FLEXIBILITY,
+                    ],
                     conditionKeyValue: "still_deciding",
                   },
                   {
                     type: BifrostKeyPathConditionType.MATCH,
-                    conditionKeyPath: ["additional_details"],
+                    conditionKeyPath: [
+                      KnollcroftConfigurationV2ScreenKeys.ADDITIONAL_DETAILS,
+                    ],
                   },
                 ],
               },

@@ -4,6 +4,7 @@ import {
   LayoutBlockType,
   UIBlockType,
 } from "@/models/configuration";
+import { KnollcroftConfigurationV2ScreenKeys } from "./keys";
 
 export const knollcroftV2StillDecidingDatesPath: LayoutBlockConfiguration = {
   blockType: BlockType.LAYOUT_BLOCK,
@@ -12,7 +13,7 @@ export const knollcroftV2StillDecidingDatesPath: LayoutBlockConfiguration = {
     {
       blockType: BlockType.UI_BLOCK,
       uiBlockType: UIBlockType.TEXT_AREA_INPUT,
-      keyName: "additional_details",
+      keyName: KnollcroftConfigurationV2ScreenKeys.ADDITIONAL_DETAILS,
       label: "Details",
       placeholder:
         "Potential length of stay, weeks, months, time of year, etc...",
