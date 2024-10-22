@@ -52,6 +52,9 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      transitionDuration: {
+        1600: "1600ms",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

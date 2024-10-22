@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
+import { Button } from "@/components/ui/button";
 import {
   ScreenConfiguration,
   ScreenNavigatorUIBlockConfiguration,
@@ -7,10 +8,10 @@ import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
-import { Button } from "@/components/ui/button";
-import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
-import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
+import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
+import { useState } from "react";
+import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
 
 interface ScreenNavigatorProps {
   configuration: ScreenNavigatorUIBlockConfiguration;
@@ -51,19 +52,15 @@ export function ScreenNavigator({
       formData,
     });
 
-  let forwardButton: JSX.Element;
+  let forwardButton: JSX.Element | null;
 
   if (maybeFirstMatchedScreenNavigatorPath) {
-    const onClickNextButton: React.MouseEventHandler<HTMLButtonElement> = (
-      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-      event.preventDefault();
-
+    const onClickNextButton = async () => {
       if (maybeFirstMatchedScreenNavigatorPath.submitsForm) {
         handleSubmitFormData();
       }
 
-      routeWithPointer({
+      await routeWithPointer({
         pointer: maybeFirstMatchedScreenNavigatorPath.screenPointer,
         hotelId,
         bifrostTravelerId,
@@ -78,9 +75,10 @@ export function ScreenNavigator({
     };
 
     forwardButton = (
-      <Button onClick={onClickNextButton}>
-        {maybeFirstMatchedScreenNavigatorPath.forwardPathLabel}
-      </Button>
+      <NavigatorNextButton
+        onClick={onClickNextButton}
+        label={maybeFirstMatchedScreenNavigatorPath.forwardPathLabel}
+      />
     );
   } else if (skipPath) {
     const onClickSkipButton = () => {
@@ -103,18 +101,18 @@ export function ScreenNavigator({
     };
 
     forwardButton = (
-      <>
-        <span onClick={onClickSkipButton}>Skip</span>
-        <ChevronRight />
-      </>
+      <Button variant="ghost" onClick={onClickSkipButton}>
+        Skip
+        <ChevronRight className="h-5 w-5" />
+      </Button>
     );
   } else {
-    forwardButton = <></>;
+    forwardButton = null;
   }
 
-  let backButton: JSX.Element;
-  const onClickBackButton: React.MouseEventHandler<HTMLDivElement> = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  let backButton: JSX.Element | null;
+  const onClickBackButton: React.MouseEventHandler<HTMLButtonElement> = (
+    event
   ) => {
     event.preventDefault();
 
@@ -136,25 +134,52 @@ export function ScreenNavigator({
 
   if (screenConfigurationStack.length > 1) {
     backButton = (
-      <div
-        className="flex items-center cursor-pointer"
-        onClick={onClickBackButton}
-      >
-        <ChevronLeft />
-        <span>Back</span>
-      </div>
+      <Button variant="ghost" onClick={onClickBackButton}>
+        <ChevronLeft className="h-5 w-5" />
+        Back
+      </Button>
     );
   } else {
-    backButton = <></>;
+    backButton = null;
   }
 
   return (
     <div className="flex justify-between">
-      {backButton}
-
-      <div className="ml-auto flex items-center cursor-pointer">
-        {forwardButton}
-      </div>
+      <div className="flex items-center">{backButton}</div>
+      <div className="flex items-center">{forwardButton}</div>
     </div>
+  );
+}
+
+interface NavigatorNextButtonProps {
+  onClick: () => Promise<void>;
+  label: string;
+}
+
+function NavigatorNextButton({ onClick, label }: NavigatorNextButtonProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onClickNextButton = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      await onClick();
+      setIsSubmitting(false);
+    } catch {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Button onClick={onClickNextButton}>
+      {label}
+      {isSubmitting && (
+        <Loader className="h-5 w-5 animate-spin duration-1600" />
+      )}
+    </Button>
   );
 }
