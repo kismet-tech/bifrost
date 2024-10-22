@@ -25,6 +25,8 @@ export function RenderedInstantOfferSummary({
   localFormUserSessionId,
   userSessionId,
 }: RenderedInstantOfferSummaryProps) {
+  console.log(`userSessionId in RenderedInstantOfferSummary: ${userSessionId}`);
+
   // Manage Dialog open state
   const [instantOfferModalIsOpen, setInstantOfferModalIsOpen] = useState(false);
 
@@ -32,6 +34,13 @@ export function RenderedInstantOfferSummary({
   const handleCloseInstantOfferModal = () => {
     setInstantOfferModalIsOpen(false);
   };
+
+  const numberOfRooms = renderableInstantOffer.hotelRoomOffers.reduce(
+    (accum: number, hotelRoomOffer) => {
+      return accum + hotelRoomOffer.countOffered;
+    },
+    0
+  );
 
   return (
     <div className="flex items-center justify-between bg-white p-4 rounded-md shadow-md">
@@ -54,7 +63,11 @@ export function RenderedInstantOfferSummary({
           {renderableInstantOffer.endCalendarDate.year.toString().slice(-2)}
         </div>{" "}
         <div className="text mt-1">
-          ${Math.round(renderableInstantOffer.offerPriceInCents / 100)}/pp (
+          $
+          {Math.round(
+            renderableInstantOffer.offerPriceInCents / numberOfRooms / 100
+          )}
+          /room (
           {getDiscountPercent({
             listPrice: renderableInstantOffer.listPriceInCents,
             offerPrice: renderableInstantOffer.offerPriceInCents,

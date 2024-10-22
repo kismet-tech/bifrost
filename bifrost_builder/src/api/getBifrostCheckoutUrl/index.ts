@@ -9,6 +9,9 @@ import {
 export const getBifrostCheckoutUrl = async (
   requestBody: GetBifrostCheckoutUrlRequestDto
 ): Promise<{ checkoutUrl: string }> => {
+  console.log("getBifrostCheckoutUrl requestBody");
+  console.log(requestBody);
+
   const response: AxiosResponse<
     GetBifrostCheckoutUrlSuccessResponseDto | ErrorResponseDto
   > = await Api.post(`/Bifrost/GetBifrostCheckoutUrl`, requestBody, {});

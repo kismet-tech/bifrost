@@ -3,6 +3,7 @@ import { submitBifrostForm } from "@/api/submitBifrostForm";
 import { ScreenConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
 import { SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer } from "@/models/configuration/pointers/ScreenPointer";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 
 interface RouteBranchByInstantOfferAvailabilityProps {
   pointer: SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer;
@@ -28,6 +29,7 @@ export const routeBranchByInstantOfferAvailability = async ({
   bifrostFormId,
   localFormUserSessionId,
   formData,
+  setFormData,
   pushScreenConfigurationStack,
 }: RouteBranchByInstantOfferAvailabilityProps) => {
   // trigger some before API call action
@@ -43,6 +45,17 @@ export const routeBranchByInstantOfferAvailability = async ({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).userSessionId = userSessionId;
+
+    mutateFormDataAtKeyPath({
+      mutations: [
+        {
+          keyPath: ["userSessionId"],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          keyValue: {} as any,
+        },
+      ],
+      setFormData,
+    });
 
     console.log(`userSessionId: ${userSessionId}`);
 
@@ -87,6 +100,7 @@ export const routeBranchByInstantOfferAvailability = async ({
         metadata: {
           ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
           instantBookOffers: maybeInstantBookOffers,
+          userSessionId,
         },
       });
     }

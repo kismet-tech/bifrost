@@ -14,6 +14,13 @@ export function RenderedInstantOfferHeader({
   instantOfferIndex,
   handleVisitCheckoutPage,
 }: RenderedInstantOfferHeaderProps) {
+  const numberOfRooms = renderableInstantOffer.hotelRoomOffers.reduce(
+    (accum: number, hotelRoomOffer) => {
+      return accum + hotelRoomOffer.countOffered;
+    },
+    0
+  );
+
   return (
     <div className="flex items-center bg-white p-2 pl-0 rounded-md shadow-md">
       <div className="w-20 h-20 mr-2 flex-shrink-0">
@@ -37,7 +44,11 @@ export function RenderedInstantOfferHeader({
           {renderableInstantOffer.endCalendarDate.year.toString().slice(-2)}
         </div>
         <div className="mt-1 text-sm sm:text-base whitespace-nowrap">
-          ${Math.round(renderableInstantOffer.offerPriceInCents / 100)}/pp (
+          $
+          {Math.round(
+            renderableInstantOffer.offerPriceInCents / numberOfRooms / 100
+          )}
+          /room (
           {getDiscountPercent({
             listPrice: renderableInstantOffer.listPriceInCents,
             offerPrice: renderableInstantOffer.offerPriceInCents,

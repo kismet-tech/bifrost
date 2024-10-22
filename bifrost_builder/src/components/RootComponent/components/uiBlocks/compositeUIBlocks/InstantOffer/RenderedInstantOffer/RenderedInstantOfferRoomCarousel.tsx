@@ -48,7 +48,7 @@ export function RenderedInstantOfferRoomCarousel({
           <SwiperSlide key={index} className="!w-64 sm:!w-72 md:!w-80">
             <div className="relative">
               {/* Badge */}
-              <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+              <div className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
                 {roomOffer.countOffered}
               </div>
 
