@@ -50,8 +50,7 @@ export const routeBranchByInstantOfferAvailability = async ({
       mutations: [
         {
           keyPath: ["userSessionId"],
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          keyValue: {} as any,
+          keyValue: userSessionId,
         },
       ],
       setFormData,

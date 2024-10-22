@@ -44,6 +44,7 @@ export function InstantOfferUIBlock({
     keyPath: ["userSessionId"],
   });
 
+  console.log(`formData: ${JSON.stringify(formData)}`);
   console.log(`InstantOfferUIBlock`);
   console.log(`hotelId: ${hotelId}`);
   console.log(`userSessionId: ${userSessionId}`);
