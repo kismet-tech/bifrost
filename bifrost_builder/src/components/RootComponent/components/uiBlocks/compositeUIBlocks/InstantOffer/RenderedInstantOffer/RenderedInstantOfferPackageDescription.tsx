@@ -1,7 +1,4 @@
-import {
-  RenderableBifrostInstantBookOffer,
-  RenderableBifrostInstantBookOfferCriterion,
-} from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 interface RenderedInstantOfferPackageDescriptionProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;
@@ -20,7 +17,7 @@ export function RenderedInstantOfferPackageDescription({
         {renderableInstantOffer.instantBookOfferDescription}
       </div>
 
-      <ul className="list-disc pl-5 mt-4">
+      {/* <ul className="list-disc pl-5 mt-4">
         {renderableInstantOffer.instantBookOfferCriteria.map(
           (
             {
@@ -34,7 +31,7 @@ export function RenderedInstantOfferPackageDescription({
             </li>
           )
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }

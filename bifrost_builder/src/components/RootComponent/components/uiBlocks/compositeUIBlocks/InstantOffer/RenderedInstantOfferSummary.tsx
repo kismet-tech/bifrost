@@ -35,7 +35,7 @@ export function RenderedInstantOfferSummary({
     setInstantOfferModalIsOpen(false);
   };
 
-  const numberOfRooms = renderableInstantOffer.hotelRoomOffers.reduce(
+  const numberOfRooms: number = renderableInstantOffer.hotelRoomOffers.reduce(
     (accum: number, hotelRoomOffer) => {
       return accum + hotelRoomOffer.countOffered;
     },
@@ -51,7 +51,10 @@ export function RenderedInstantOfferSummary({
       />
 
       <div className="flex-grow">
-        <div className="text-xl font-semibold">
+        <div
+          className="text-xl font-semibold cursor-pointer"
+          onClick={() => setInstantOfferModalIsOpen(true)}
+        >
           #{instantOfferIndex + 1} {renderableInstantOffer.instantBookOfferName}
         </div>{" "}
         <div className="text mt-1">
