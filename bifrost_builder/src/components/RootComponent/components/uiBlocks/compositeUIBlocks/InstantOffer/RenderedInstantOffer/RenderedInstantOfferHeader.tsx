@@ -1,14 +1,18 @@
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
-import { RenderableInstantOffer } from "../models/RenderableInstantOffer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 interface RenderedInstantOfferHeaderProps {
-  renderableInstantOffer: RenderableInstantOffer;
+  renderableInstantOffer: RenderableBifrostInstantBookOffer;
+  instantOfferIndex: number;
+  handleVisitCheckoutPage: () => Promise<void>;
 }
 
 export function RenderedInstantOfferHeader({
   renderableInstantOffer,
+  instantOfferIndex,
+  handleVisitCheckoutPage,
 }: RenderedInstantOfferHeaderProps) {
   return (
     <div className="flex items-center bg-white p-2 pl-0 rounded-md shadow-md">
@@ -22,7 +26,7 @@ export function RenderedInstantOfferHeader({
 
       <div className="flex-grow mr-2 min-w-0">
         <div className="text-base sm:text-xl font-semibold truncate">
-          {renderableInstantOffer.summary.instantOfferName}
+          #{instantOfferIndex + 1} {renderableInstantOffer.instantBookOfferName}
         </div>
         <div className="mt-1 text-sm sm:text-base">
           {renderableInstantOffer.startCalendarDate.month}/
@@ -33,7 +37,7 @@ export function RenderedInstantOfferHeader({
           {renderableInstantOffer.endCalendarDate.year.toString().slice(-2)}
         </div>
         <div className="mt-1 text-sm sm:text-base whitespace-nowrap">
-          ${renderableInstantOffer.offerPriceInCents / 100}/pp (
+          ${Math.round(renderableInstantOffer.offerPriceInCents / 100)}/pp (
           {getDiscountPercent({
             listPrice: renderableInstantOffer.listPriceInCents,
             offerPrice: renderableInstantOffer.offerPriceInCents,
@@ -43,7 +47,14 @@ export function RenderedInstantOfferHeader({
         </div>
       </div>
 
-      <Button className="flex-shrink-0 flex items-center bg-transparent hover:bg-transparent border border-black text-black rounded-full w-auto px-2 py-1 text-sm sm:text-lg lowercase">
+      <Button
+        onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          event.preventDefault();
+
+          handleVisitCheckoutPage();
+        }}
+        className="flex-shrink-0 flex items-center bg-transparent hover:bg-transparent border border-black text-black rounded-full w-auto px-2 py-1 text-sm sm:text-lg lowercase"
+      >
         Place Hold <ArrowRight className="ml-1 sm:ml-2" />
       </Button>
     </div>

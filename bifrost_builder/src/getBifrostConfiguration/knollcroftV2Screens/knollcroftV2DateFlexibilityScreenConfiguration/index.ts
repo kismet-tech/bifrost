@@ -9,8 +9,9 @@ import { knollcroftV2DateFlexibilityScreenFirmDatesPath } from "./knollcroftV2Da
 import { knollcroftV2DateFlexibilityScreenFlexibleDatesPath } from "./knollcroftV2DateFlexibilityScreenFlexibleDatesPath";
 import { knollcroftV2StillDecidingDatesPath } from "../knollcroftV2StillDecidingDatesPath";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
-import { knollcroftV2CompletedScreenConfiguration } from "../knollcroftV2CompletedScreenConfiguration";
 import { knollcroftV2GuestCountAndPayerScreenConfiguration } from "../knollcroftV2GuestCountAndPayerScreenConfiguration";
+import { knollcroftV2QualificationScreenConfiguration } from "../knollcroftV2QualificationScreenConfiguration";
+import { knollcroftV2InstantOfferScreenConfiguration } from "../knollcroftV2InstantOfferScreenConfiguration";
 
 export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration =
   {
@@ -69,10 +70,13 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
           uiBlockType: UIBlockType.SCREEN_NAVIGATOR,
           skipPath: {
             pointer: {
-              type: ScreenPointerType.DIRECT,
-              screenConfiguration: knollcroftV2CompletedScreenConfiguration,
+              type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY,
+              instantOfferIsNotAvailableScreenConfiguration:
+                knollcroftV2QualificationScreenConfiguration,
+              instantOfferIsAvailableScreenConfiguration:
+                knollcroftV2InstantOfferScreenConfiguration,
             },
-            submitsForm: true,
+            submitsForm: false,
           },
           paths: [
             {
@@ -92,10 +96,13 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                 ],
               },
               screenPointer: {
-                type: ScreenPointerType.DIRECT,
-                screenConfiguration: knollcroftV2CompletedScreenConfiguration,
+                type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY,
+                instantOfferIsNotAvailableScreenConfiguration:
+                  knollcroftV2QualificationScreenConfiguration,
+                instantOfferIsAvailableScreenConfiguration:
+                  knollcroftV2InstantOfferScreenConfiguration,
               },
-              submitsForm: true,
+              submitsForm: false,
             },
             {
               forwardPathLabel: "Next",

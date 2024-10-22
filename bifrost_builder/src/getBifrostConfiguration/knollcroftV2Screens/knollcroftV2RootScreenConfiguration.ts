@@ -7,6 +7,7 @@ import {
 import { knollcroftV2TripDetailsScreenConfigurations } from "./knollcroftV2TripDetailsScreenConfiguration";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { BifrostKeyPathConditionType } from "@/models/configuration/bifrostKeyPathCondition";
+import { KnollcroftConfigurationV2ScreenKeys } from "./keys";
 
 export const knollcroftV2RootScreenConfiguration: ScreenConfiguration = {
   layout: {
@@ -52,7 +53,7 @@ export const knollcroftV2RootScreenConfiguration: ScreenConfiguration = {
         blockType: BlockType.UI_BLOCK,
         uiBlockType: UIBlockType.TEXT_INPUT,
         label: "Phone Number",
-        keyName: "phone_number",
+        keyName: KnollcroftConfigurationV2ScreenKeys.PHONE_NUMBER,
         autocomplete: "tel",
         inputType: "tel",
       },

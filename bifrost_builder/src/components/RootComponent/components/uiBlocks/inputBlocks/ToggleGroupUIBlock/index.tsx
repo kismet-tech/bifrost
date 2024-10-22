@@ -23,7 +23,7 @@ interface ToggleGroupUIBlockProps {
 }
 
 export function ToggleGroupUIBlock({
-  configuration: { label, keyName, options },
+  configuration: { label, keyName, options, smartFill },
   hotelId,
   formData,
   keyPath,
@@ -51,7 +51,9 @@ export function ToggleGroupUIBlock({
       }
     }
 
-    prefillKismetFieldUsingPriorResponses();
+    if (smartFill) {
+      prefillKismetFieldUsingPriorResponses();
+    }
   }, []);
 
   const handleOnChange = (value: string) => {

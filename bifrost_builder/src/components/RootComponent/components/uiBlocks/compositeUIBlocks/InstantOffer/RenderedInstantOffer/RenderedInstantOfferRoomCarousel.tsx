@@ -1,4 +1,3 @@
-import { RenderableInstantOffer } from "../models/RenderableInstantOffer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
@@ -6,9 +5,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 interface RenderedInstantOfferRoomCarouselProps {
-  renderableInstantOffer: RenderableInstantOffer;
+  renderableInstantOffer: RenderableBifrostInstantBookOffer;
 }
 
 export function RenderedInstantOfferRoomCarousel({
@@ -40,7 +40,7 @@ export function RenderedInstantOfferRoomCarousel({
           prevEl: ".swiper-button-prev-custom",
           nextEl: ".swiper-button-next-custom",
         }}
-        loop={true}
+        loop={false}
         modules={[Navigation]}
         className="mt-4 w-full"
       >
@@ -54,7 +54,7 @@ export function RenderedInstantOfferRoomCarousel({
 
               {/* Room Image */}
               <img
-                src={roomOffer.hotelRoomImageUrl}
+                src={roomOffer.hotelRoomImageUrls[0]}
                 alt={roomOffer.hotelRoomName}
                 className="w-full h-40 object-cover rounded"
               />

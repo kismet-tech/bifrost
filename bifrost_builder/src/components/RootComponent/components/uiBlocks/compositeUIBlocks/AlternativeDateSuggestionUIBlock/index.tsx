@@ -24,6 +24,9 @@ const Wrapper = styled.div`
 interface AlternativeDateSuggestionUIBlockProps {
   configuration: AlternativeDateSuggestionUIBlockConfiguration;
   hotelId: string;
+  bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   setFormData: (
@@ -49,6 +52,9 @@ export function AlternativeDateSuggestionUIBlock({
     rejectedAlternativeDatesScreenPointer,
   },
   hotelId,
+  bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
@@ -76,6 +82,9 @@ export function AlternativeDateSuggestionUIBlock({
     routeWithPointer({
       pointer: acceptedAlternativeDatesScreenPointer,
       hotelId,
+      bifrostTravelerId,
+      bifrostFormId,
+      localFormUserSessionId,
       formData,
       setFormData,
       handleSubmitFormData,
@@ -112,6 +121,9 @@ export function AlternativeDateSuggestionUIBlock({
     routeWithPointer({
       pointer: rejectedAlternativeDatesScreenPointer,
       hotelId,
+      bifrostTravelerId,
+      bifrostFormId,
+      localFormUserSessionId,
       formData,
       setFormData,
       handleSubmitFormData,

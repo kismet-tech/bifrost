@@ -1,6 +1,6 @@
 import { UIBlockConfiguration, UIBlockType } from "@/models/configuration";
 import { BifrostKeyPath } from "@/models/configuration/formData";
-import { getKeyPathsFromAlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock/getKeyPathsFromAlternativeDateSuggestionUIBlock";
+import { getKeyPathsFromAlternativeDateSuggestionUIBlock } from "./compositeUIBlocks/AlternativeDateSuggestionUIBlock/getKeyPathsFromAlternativeDateSuggestionUIBlock";
 import { getKeyPathsFromTextInputUIBlock } from "./inputBlocks/TextInputUIBlock/getKeyPathsFromTextInputUIBlock";
 import { getKeyPathsFromDateRangePickerUIBlock } from "./inputBlocks/DateRangePickerUIBlock/getKeyPathsFromDateRangePickerUIBlock";
 import { getKeyPathsFromExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock/getKeyPathsFromExpandableCardSelectorUIBlock";

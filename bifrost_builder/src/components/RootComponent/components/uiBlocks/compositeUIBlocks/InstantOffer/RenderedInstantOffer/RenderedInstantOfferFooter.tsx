@@ -1,13 +1,16 @@
 // RenderedInstantOfferFooter.tsx
 
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface RenderedInstantOfferFooterProps {
   handleCloseInstantOfferModal?: () => void;
+  handleVisitCheckoutPage: () => Promise<void>;
 }
 
 export function RenderedInstantOfferFooter({
   handleCloseInstantOfferModal,
+  handleVisitCheckoutPage,
 }: RenderedInstantOfferFooterProps) {
   return (
     <div className="flex items-center justify-between mt-4">
@@ -20,11 +23,17 @@ export function RenderedInstantOfferFooter({
         <span>Back</span>
       </button>
 
-      {/* Place Hold Button */}
-      <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+      <Button
+        onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          event.preventDefault();
+
+          handleVisitCheckoutPage();
+        }}
+        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700"
+      >
         <span>Place hold</span>
         <ArrowRight className="w-4 h-4 ml-2" />
-      </button>
+      </Button>
     </div>
   );
 }

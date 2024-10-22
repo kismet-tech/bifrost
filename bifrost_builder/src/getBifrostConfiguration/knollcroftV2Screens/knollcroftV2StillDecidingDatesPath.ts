@@ -16,6 +16,7 @@ export const knollcroftV2StillDecidingDatesPath: LayoutBlockConfiguration = {
       label: "Details",
       placeholder:
         "Potential length of stay, weeks, months, time of year, etc...",
+      smartFill: false,
     },
   ],
 };

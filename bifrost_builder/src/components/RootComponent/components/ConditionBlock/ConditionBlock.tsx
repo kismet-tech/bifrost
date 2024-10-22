@@ -1,6 +1,7 @@
 import {
   ConditonBlockConfiguration,
   ScreenConfiguration,
+  ScreenMetadata,
 } from "@/models/configuration";
 import {
   BifrostFormData,
@@ -21,8 +22,11 @@ interface ConditionBlockProps {
   configuration: ConditonBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
+  screenMetadata: ScreenMetadata;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -32,15 +36,18 @@ interface ConditionBlockProps {
   ) => void;
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function ConditionBlock({
   configuration: { paths },
   keyPath,
   formData,
+  screenMetadata,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -69,8 +76,11 @@ export function ConditionBlock({
             configuration={layout}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}

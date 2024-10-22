@@ -6,9 +6,10 @@ import {
 } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
 import { BifrostScreen } from "./components/BifrostScreen";
-import { handleSubmitFormData } from "./utilities/handleSubmitFormData";
 import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
 import { deleteKeysPresentOnScreenFromFormData } from "./components/BifrostScreen/deleteKeysPresentOnScreenFromFormData";
+import { submitBifrostForm } from "@/api/submitBifrostForm";
+import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
 
 interface KismetRootComponentProps {
   bifrostTravelerId: string;
@@ -79,6 +80,8 @@ export function KismetRootComponent({
         formData={formData}
         hotelId={bifrostConfiguration.hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostConfiguration.bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormDataWithCallback}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
@@ -92,14 +95,30 @@ export function KismetRootComponent({
             formData,
           });
         }}
-        handleSubmitFormData={() =>
-          handleSubmitFormData({
+        handleSubmitFormData={async (): Promise<void> => {
+          const { userSessionId } = await submitBifrostForm({
+            hotelId: bifrostConfiguration.hotelId,
             bifrostTravelerId,
+            bifrostFormId: bifrostConfiguration.bifrostFormId,
             localFormUserSessionId,
-            bifrostConfiguration,
             formData,
-          })
-        }
+          });
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).userSessionId = userSessionId;
+
+          mutateFormDataAtKeyPath({
+            mutations: [
+              {
+                keyPath: ["userSessionId"],
+                keyValue: userSessionId,
+              },
+            ],
+            setFormData,
+          });
+
+          await new Promise((r) => setTimeout(r, 1000));
+        }}
       />
     </div>
   );

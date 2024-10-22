@@ -12,6 +12,8 @@ interface BifrostScreenProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   screenConfigurationStack: ScreenConfiguration[];
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
@@ -21,15 +23,17 @@ interface BifrostScreenProps {
   ) => void;
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function BifrostScreen({
-  screenConfiguration: { layout },
+  screenConfiguration: { layout, metadata: screenMetadata },
   keyPath,
   formData,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -37,14 +41,20 @@ export function BifrostScreen({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: BifrostScreenProps) {
+  console.log(`BifrostScreen screenMetadata`);
+  console.log(`${JSON.stringify(screenMetadata)}`);
+
   return (
     <div className="flex flex-col gap-4 m-[0_auto] w-full p-4 md:!max-w-[50vw] md:!p-8">
       <LayoutBlock
         configuration={layout}
         keyPath={keyPath}
         formData={formData}
+        screenMetadata={screenMetadata || {}}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}

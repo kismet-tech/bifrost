@@ -10,6 +10,7 @@ import {
   InputTableLayoutBlockColumnConfiguration,
   InputTableLayoutBlockConfiguration,
   ScreenConfiguration,
+  ScreenMetadata,
 } from "@/models/configuration";
 import {
   BifrostFormData,
@@ -24,8 +25,11 @@ interface InputTableLayoutBlockProps {
   configuration: InputTableLayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
+  screenMetadata: ScreenMetadata;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -35,15 +39,18 @@ interface InputTableLayoutBlockProps {
   screenConfigurationStack: ScreenConfiguration[];
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function InputTableLayoutBlock({
   configuration: { keyName, columns },
   keyPath,
   formData,
+  screenMetadata,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -96,8 +103,11 @@ export function InputTableLayoutBlock({
               configuration={column.inputCell}
               keyPath={[...keyPath, keyName, rowIndex]}
               formData={formData}
+              screenMetadata={screenMetadata}
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
+              bifrostFormId={bifrostFormId}
+              localFormUserSessionId={localFormUserSessionId}
               setFormData={setFormData}
               handleSubmitFormData={handleSubmitFormData}
               screenConfigurationStack={screenConfigurationStack}

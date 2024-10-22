@@ -1,10 +1,10 @@
 import {
-  RenderableInstantOffer,
-  RenderableInstantOfferCriterion,
-} from "../models/RenderableInstantOffer";
+  RenderableBifrostInstantBookOffer,
+  RenderableBifrostInstantBookOfferCriterion,
+} from "@/api/maybeGetInstantBookOffers/models";
 
 interface RenderedInstantOfferPackageDescriptionProps {
-  renderableInstantOffer: RenderableInstantOffer;
+  renderableInstantOffer: RenderableBifrostInstantBookOffer;
 }
 
 export function RenderedInstantOfferPackageDescription({
@@ -13,18 +13,20 @@ export function RenderedInstantOfferPackageDescription({
   return (
     <div>
       <h2 className="text-xl font-semibold mt-4">
-        {renderableInstantOffer.summary.instantOfferName}
+        {renderableInstantOffer.instantBookOfferName}
       </h2>
 
-      <div className="mt-2">{renderableInstantOffer.offerDescription}</div>
+      <div className="mt-2">
+        {renderableInstantOffer.instantBookOfferDescription}
+      </div>
 
       <ul className="list-disc pl-5 mt-4">
-        {renderableInstantOffer.offerCriteria.map(
+        {renderableInstantOffer.instantBookOfferCriteria.map(
           (
             {
               criterionName,
               doesMatchCriterion,
-            }: RenderableInstantOfferCriterion,
+            }: RenderableBifrostInstantBookOfferCriterion,
             index: number
           ) => (
             <li key={index}>

@@ -2,6 +2,7 @@ import {
   LayoutBlockConfiguration,
   LayoutBlockType,
   ScreenConfiguration,
+  ScreenMetadata,
 } from "@/models/configuration";
 import { ColumnLayoutBlock } from "./ColumnLayoutBlock";
 import {
@@ -15,8 +16,11 @@ interface LayoutBlockProps {
   configuration: LayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
+  screenMetadata: ScreenMetadata;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -26,15 +30,18 @@ interface LayoutBlockProps {
   ) => void;
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function LayoutBlock({
   configuration,
   keyPath,
   formData,
+  screenMetadata,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -42,14 +49,20 @@ export function LayoutBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: LayoutBlockProps) {
+  console.log(`LayoutBlock screenMetadata`);
+  console.log(`${JSON.stringify(screenMetadata)}`);
+
   if (configuration.layoutBlockType === LayoutBlockType.ROWS) {
     return (
       <RowLayoutBlock
         configuration={configuration}
         keyPath={keyPath}
         formData={formData}
+        screenMetadata={screenMetadata}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
@@ -64,8 +77,11 @@ export function LayoutBlock({
         columnsLayoutBlockConfiguration={configuration}
         keyPath={keyPath}
         formData={formData}
+        screenMetadata={screenMetadata}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
@@ -80,8 +96,11 @@ export function LayoutBlock({
         configuration={configuration}
         keyPath={keyPath}
         formData={formData}
+        screenMetadata={screenMetadata}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}

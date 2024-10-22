@@ -18,6 +18,8 @@ interface ScreenNavigatorProps {
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -34,6 +36,9 @@ export function ScreenNavigator({
   configuration: { paths, skipPath },
   formData,
   hotelId,
+  bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   handleSubmitFormData,
   screenConfigurationStack,
@@ -61,6 +66,9 @@ export function ScreenNavigator({
       routeWithPointer({
         pointer: maybeFirstMatchedScreenNavigatorPath.screenPointer,
         hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
         formData,
         setFormData,
         handleSubmitFormData,
@@ -83,6 +91,9 @@ export function ScreenNavigator({
       routeWithPointer({
         pointer: skipPath.pointer,
         hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
         formData,
         setFormData,
         handleSubmitFormData,
@@ -112,6 +123,9 @@ export function ScreenNavigator({
         type: ScreenPointerType.BACK,
       },
       hotelId,
+      bifrostTravelerId,
+      bifrostFormId,
+      localFormUserSessionId,
       formData,
       setFormData,
       handleSubmitFormData,

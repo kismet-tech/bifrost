@@ -4,6 +4,7 @@ import {
   LayoutBlockConfiguration,
   RowsLayoutBlockConfiguration,
   ScreenConfiguration,
+  ScreenMetadata,
   UIBlockConfiguration,
 } from "@/models/configuration";
 import {
@@ -18,8 +19,11 @@ export interface RowLayoutBlockProps {
   configuration: RowsLayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
+  screenMetadata: ScreenMetadata;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -29,15 +33,18 @@ export interface RowLayoutBlockProps {
   ) => void;
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function RowLayoutBlock({
   configuration: { rows: childConfigurations },
   keyPath,
   formData,
+  screenMetadata,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -45,6 +52,9 @@ export function RowLayoutBlock({
   registerBifrostFormInput,
   handleSubmitFormData,
 }: RowLayoutBlockProps) {
+  console.log(`RowLayoutBlock screenMetadata`);
+  console.log(`${JSON.stringify(screenMetadata)}`);
+
   const children = childConfigurations.map(
     (
       childConfiguration:
@@ -60,8 +70,11 @@ export function RowLayoutBlock({
             configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
@@ -77,8 +90,11 @@ export function RowLayoutBlock({
             configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
@@ -94,8 +110,11 @@ export function RowLayoutBlock({
             configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}

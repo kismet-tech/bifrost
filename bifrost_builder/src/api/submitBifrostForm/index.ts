@@ -1,45 +1,60 @@
-import { submitBifrostForm } from "@/api/submitBifrostForm";
-import { sentryScope } from "@/instrument";
-import { BifrostConfiguration } from "@/models/configuration";
 import { BifrostFormData } from "@/models/configuration/formData";
+import { Api } from "..";
+import { AxiosResponse } from "axios";
+import { ErrorResponseDto } from "@/models/monads";
+import { SubmitBifrostFormSuccessResponseDto } from "./models";
+import { sentryScope } from "@/instrument";
 
-interface HandleSubmitFormDataProps {
+interface SubmitBifrostFormProps {
+  hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
   localFormUserSessionId: string;
-  bifrostConfiguration: BifrostConfiguration;
   formData: BifrostFormData;
 }
 
-export const handleSubmitFormData = async ({
+export const submitBifrostForm = async ({
+  hotelId,
   bifrostTravelerId,
+  bifrostFormId,
   localFormUserSessionId,
-  bifrostConfiguration,
   formData,
-}: HandleSubmitFormDataProps) => {
+}: SubmitBifrostFormProps): Promise<{ userSessionId: string }> => {
   try {
-    const response = await submitBifrostForm({
-      hotelId: bifrostConfiguration.hotelId,
-      bifrostTravelerId,
-      bifrostFormId: bifrostConfiguration.bifrostFormId,
-      localFormUserSessionId,
-      formData,
-    });
+    const response: AxiosResponse<
+      SubmitBifrostFormSuccessResponseDto | ErrorResponseDto
+    > = await Api.post(
+      `/Bifrost/SubmitBifrostForm`,
+      {
+        hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
+        formData,
+      },
+      {}
+    );
 
-    if (response.data && response.data.error) {
+    if ("error" in response.data) {
       const serverError = new Error(
         `BIFROST_SERVER_ERROR: ${response.data.error}`
       );
       serverError.name = "BIFROST_SERVER_ERROR";
-      sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+      sentryScope.setExtra("hotelId", hotelId);
       sentryScope.setExtra("bifrostTravelerId", bifrostTravelerId);
-      sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+      sentryScope.setExtra("bifrostFormId", bifrostFormId);
       sentryScope.setExtra("formData", formData);
       sentryScope.setExtra("version", __APP_VERSION__);
       sentryScope.setExtra("serverResponse", response.data);
       sentryScope.captureException(serverError);
       console.error("Error submitting form:", serverError);
     }
-    console.log("COMPLETED");
+
+    const userSessionId: string = (
+      response.data as SubmitBifrostFormSuccessResponseDto
+    ).success.userSessionId;
+
+    return { userSessionId };
   } catch (error) {
     const updatedError = new Error(
       `BIFROST_FORM_SUBMISSION_ERROR: ${
@@ -47,12 +62,13 @@ export const handleSubmitFormData = async ({
       }`
     );
     updatedError.name = "BIFROST_FORM_SUBMISSION_ERROR";
-    sentryScope.setExtra("hotelId", bifrostConfiguration.hotelId);
+    sentryScope.setExtra("hotelId", hotelId);
     sentryScope.setExtra("bifrostTravelerId", bifrostTravelerId);
-    sentryScope.setExtra("bifrostFormId", bifrostConfiguration.bifrostFormId);
+    sentryScope.setExtra("bifrostFormId", bifrostFormId);
     sentryScope.setExtra("formData", formData);
     sentryScope.setExtra("version", __APP_VERSION__);
     sentryScope.captureException(updatedError);
     console.error("Error submitting form:", error);
+    throw error;
   }
 };

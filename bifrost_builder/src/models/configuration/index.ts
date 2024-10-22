@@ -49,7 +49,7 @@ export enum UIBlockType {
   // Buttons
   BUTTON = "BUTTON",
 
-  // Complex
+  // COMPOSITE
   ALTERNATIVE_DATE_SUGGESTION = "ALTERNATIVE_DATE_SUGGESTION",
   SCREEN_NAVIGATOR = "SCREEN_NAVIGATOR",
   INSTANT_OFFER = "INSTANT_OFFER",
@@ -99,6 +99,8 @@ export interface TextAreaInputUIBlockConfiguration
   keyName: string;
   placeholder: string;
   autocomplete?: string;
+
+  smartFill?: boolean;
 }
 
 export interface SelectInputUIBlockConfigurationOption {
@@ -181,6 +183,7 @@ export interface ToggleGroupUIBlockConfiguration
   label: string;
   keyName: string;
   options: ToggleGroupUIBlockConfigurationOption[];
+  smartFill?: boolean;
 }
 
 export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
@@ -192,6 +195,9 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
   keyValue?: string;
 
   submitsForm: boolean;
+
+  updatesUserSession?: boolean;
+  updatesUserSessionKeyPaths?: BifrostKeyPath[];
 
   screenPointer?: ScreenPointer;
 }
@@ -325,9 +331,10 @@ export type LayoutBlockConfiguration =
 //////////////////////////////////////////////////
 // Screen
 //////////////////////////////////////////////////
+export type ScreenMetadata = Record<string, unknown>;
 
 export interface ScreenConfiguration {
-  metadata?: Record<string, string>;
+  metadata?: ScreenMetadata;
   layout: LayoutBlockConfiguration;
 }
 

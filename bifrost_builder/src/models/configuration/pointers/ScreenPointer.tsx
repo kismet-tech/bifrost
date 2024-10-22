@@ -6,6 +6,7 @@ export enum ScreenPointerType {
   BACK = "BACK",
   BRANCH_BY_EVENT_SPACE_REQUIREMENT = "BRANCH_BY_EVENT_SPACE_REQUIREMENT",
   BRANCH_BY_ROOM_AVAILABILITY_ON_DATES = "BRANCH_BY_ROOM_AVAILABILITY_ON_DATES",
+  SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY = "BRANCH_BY_INSTANT_OFFER_AVAILABILITY",
 }
 
 export interface BaseScreenPointer {
@@ -42,8 +43,23 @@ export interface BranchByRoomAvailabilityOnDatesScreenPointer {
   roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration: ScreenConfiguration;
 }
 
+export interface SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer {
+  type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY;
+
+  instantOfferIsAvailableScreenConfiguration: ScreenConfiguration;
+  instantOfferIsNotAvailableScreenConfiguration: ScreenConfiguration;
+}
+
+export interface SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer {
+  type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY;
+
+  instantOfferIsAvailableScreenConfiguration: ScreenConfiguration;
+  instantOfferIsNotAvailableScreenConfiguration: ScreenConfiguration;
+}
+
 export type ScreenPointer =
   | DirectScreenPointer
   | BackScreenPointer
   | BranchByEventSpaceRequirementScreenPointer
-  | BranchByRoomAvailabilityOnDatesScreenPointer;
+  | BranchByRoomAvailabilityOnDatesScreenPointer
+  | SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer;

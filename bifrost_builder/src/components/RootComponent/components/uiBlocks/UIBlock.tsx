@@ -1,6 +1,7 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import {
   ScreenConfiguration,
+  ScreenMetadata,
   UIBlockConfiguration,
   UIBlockType,
 } from "@/models/configuration";
@@ -9,9 +10,9 @@ import {
   BifrostKeyPath,
 } from "@/models/configuration/formData";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { AlternativeDateSuggestionUIBlock } from "./AlternativeDateSuggestionUIBlock";
+import { AlternativeDateSuggestionUIBlock } from "./compositeUIBlocks/AlternativeDateSuggestionUIBlock";
 import { ButtonUIBlock } from "./ButtonUIBlock";
-import { ScreenNavigator } from "./ScreenNavigator";
+import { ScreenNavigator } from "./compositeUIBlocks/ScreenNavigator";
 import { DatePickerUIBlock } from "./inputBlocks/DatePickerUIBlock";
 import { DateRangePickerUIBlock } from "./inputBlocks/DateRangePickerUIBlock";
 import { ExpandableCardSelectorUIBlock } from "./inputBlocks/ExpandableCardSelectorUIBlock";
@@ -24,18 +25,22 @@ import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
 import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
 import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
-import { InstantOfferUIBlock } from "./InstantOffer";
+import { InstantOfferUIBlock } from "./compositeUIBlocks/InstantOffer";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
+  screenMetadata: ScreenMetadata;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
   screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -46,10 +51,13 @@ export interface UIBlockProps {
 
 export function UIBlock({
   configuration,
+  screenMetadata,
   keyPath,
   formData,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   handleSubmitFormData,
   screenConfigurationStack,
@@ -57,6 +65,9 @@ export function UIBlock({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: UIBlockProps) {
+  console.log(`UIBlock screenMetadata`);
+  console.log(`${JSON.stringify(screenMetadata)}`);
+
   if (configuration.uiBlockType === UIBlockType.HEADER) {
     return <HeaderUIBlock configuration={configuration} formData={formData} />;
   } else if (configuration.uiBlockType === UIBlockType.SUBHEADER) {
@@ -273,6 +284,9 @@ export function UIBlock({
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
         hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         formData={formData}
       />
     );
@@ -289,6 +303,9 @@ export function UIBlock({
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
         registerBifrostFormInput={registerBifrostFormInput}
         hotelId={hotelId}
+        bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         formData={formData}
       />
     );
@@ -300,6 +317,8 @@ export function UIBlock({
         formData={formData}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         handleSubmitFormData={handleSubmitFormData}
         screenConfigurationStack={screenConfigurationStack}
@@ -309,13 +328,19 @@ export function UIBlock({
       />
     );
   } else if (configuration.uiBlockType === UIBlockType.INSTANT_OFFER) {
+    const renderableInstantOffers: RenderableBifrostInstantBookOffer[] =
+      screenMetadata.instantBookOffers as RenderableBifrostInstantBookOffer[];
+
     return (
       <InstantOfferUIBlock
         configuration={configuration}
         keyPath={keyPath}
         formData={formData}
+        renderableInstantOffers={renderableInstantOffers}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
+        bifrostFormId={bifrostFormId}
+        localFormUserSessionId={localFormUserSessionId}
         setFormData={setFormData}
         handleSubmitFormData={handleSubmitFormData}
         screenConfigurationStack={screenConfigurationStack}

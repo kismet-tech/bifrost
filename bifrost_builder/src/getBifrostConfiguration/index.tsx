@@ -6,6 +6,7 @@ import {
 } from "@/models/configuration";
 import { ThemeVariables, knollcroftTheme } from "@/models/configuration/themes";
 import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
+import { knollcroftV2InstantOfferScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2InstantOfferScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -36,8 +37,17 @@ export function getBifrostConfiguration(): BifrostConfiguration {
   if (hostname === "www.knollcroft.com") {
     hotelId = "knollcroft";
 
-    if (
-      ["/contact", "/groups"].some((knollcroftPathname) =>
+    if (urlPathname.includes("groups-beta")) {
+      bifrostFormId = "16";
+      rootScreenConfiguration = knollcroftV2InstantOfferScreenConfiguration;
+    } else if (
+      ["/contact"].some((knollcroftPathname) =>
+        urlPathname.includes(knollcroftPathname)
+      )
+    ) {
+      rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
+    } else if (
+      ["/groups"].some((knollcroftPathname) =>
         urlPathname.includes(knollcroftPathname)
       )
     ) {

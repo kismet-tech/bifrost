@@ -18,7 +18,7 @@ interface TextAreaInputUIBlockProps {
 }
 
 export function TextAreaInputUIBlock({
-  configuration,
+  configuration: { keyName, placeholder, label, smartFill },
   hotelId,
   formData,
   onChange,
@@ -33,29 +33,28 @@ export function TextAreaInputUIBlock({
         await attemptToPrefillKismetFieldUsingPriorResponses({
           hotelId,
           formData: formData,
-          targetKeyName: configuration.keyName,
+          targetKeyName: keyName,
           targetValueType: PrefilledBifrostFormValueType.STRING,
         });
 
-      if (!formData[configuration.keyName] && targetKeyStringValue) {
+      if (!formData[keyName] && targetKeyStringValue) {
         updateLocalValue(targetKeyStringValue);
         onChange(targetKeyStringValue);
       }
     }
 
-    prefillKismetFieldUsingPriorResponses();
+    if (smartFill) {
+      prefillKismetFieldUsingPriorResponses();
+    }
   }, []);
 
   useEffect(() => {
-    if (
-      configuration.keyName in formData &&
-      typeof formData[configuration.keyName] === "string"
-    ) {
-      updateLocalValue(formData[configuration.keyName] as string);
+    if (keyName in formData && typeof formData[keyName] === "string") {
+      updateLocalValue(formData[keyName] as string);
     } else {
       updateLocalValue("");
     }
-  }, [formData, configuration]);
+  }, [formData, keyName]);
 
   const handleOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -71,13 +70,11 @@ export function TextAreaInputUIBlock({
 
   return (
     <FormField>
-      <FormLabel htmlFor={`form_${configuration.keyName}`}>
-        {configuration.label}
-      </FormLabel>
+      <FormLabel htmlFor={`form_${keyName}`}>{label}</FormLabel>
       <Textarea
         onChange={handleOnChange}
-        id={`form_${configuration.keyName}`}
-        placeholder={configuration.placeholder}
+        id={`form_${keyName}`}
+        placeholder={placeholder}
         value={localValue}
       />
     </FormField>

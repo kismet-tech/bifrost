@@ -4,6 +4,7 @@ import {
   ConditonBlockConfiguration,
   LayoutBlockConfiguration,
   ScreenConfiguration,
+  ScreenMetadata,
   UIBlockConfiguration,
 } from "@/models/configuration";
 import {
@@ -18,8 +19,11 @@ export interface ColumnLayoutBlockProps {
   columnsLayoutBlockConfiguration: ColumnsLayoutBlockConfiguration;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
+  screenMetadata: ScreenMetadata;
   hotelId: string;
   bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
@@ -29,15 +33,18 @@ export interface ColumnLayoutBlockProps {
   ) => void;
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
 }
 
 export function ColumnLayoutBlock({
   columnsLayoutBlockConfiguration: { columns: childConfigurations },
   keyPath,
   formData,
+  screenMetadata,
   hotelId,
   bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
@@ -60,8 +67,11 @@ export function ColumnLayoutBlock({
             configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
@@ -77,8 +87,11 @@ export function ColumnLayoutBlock({
             configuration={childConfiguration}
             keyPath={keyPath}
             formData={formData}
+            screenMetadata={screenMetadata}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
+            bifrostFormId={bifrostFormId}
+            localFormUserSessionId={localFormUserSessionId}
             setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
@@ -94,8 +107,11 @@ export function ColumnLayoutBlock({
               configuration={childConfiguration}
               keyPath={keyPath}
               formData={formData}
+              screenMetadata={screenMetadata}
               hotelId={hotelId}
               bifrostTravelerId={bifrostTravelerId}
+              bifrostFormId={bifrostFormId}
+              localFormUserSessionId={localFormUserSessionId}
               setFormData={setFormData}
               screenConfigurationStack={screenConfigurationStack}
               pushScreenConfigurationStack={pushScreenConfigurationStack}

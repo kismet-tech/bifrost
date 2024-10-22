@@ -6,7 +6,8 @@ import {
 } from "@/models/configuration";
 import { BifrostKeyPathConditionType } from "@/models/configuration/bifrostKeyPathCondition";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
-import { knollcroftV2CompletedScreenConfiguration } from "./knollcroftV2CompletedScreenConfiguration";
+import { knollcroftV2QualificationScreenConfiguration } from "./knollcroftV2QualificationScreenConfiguration";
+import { knollcroftV2InstantOfferScreenConfiguration } from "./knollcroftV2InstantOfferScreenConfiguration";
 
 export const knollcroftV2GuestCountAndPayerScreenConfiguration: ScreenConfiguration =
   {
@@ -86,10 +87,13 @@ export const knollcroftV2GuestCountAndPayerScreenConfiguration: ScreenConfigurat
           uiBlockType: UIBlockType.SCREEN_NAVIGATOR,
           skipPath: {
             pointer: {
-              type: ScreenPointerType.DIRECT,
-              screenConfiguration: knollcroftV2CompletedScreenConfiguration,
+              type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY,
+              instantOfferIsNotAvailableScreenConfiguration:
+                knollcroftV2QualificationScreenConfiguration,
+              instantOfferIsAvailableScreenConfiguration:
+                knollcroftV2InstantOfferScreenConfiguration,
             },
-            submitsForm: true,
+            submitsForm: false,
           },
           paths: [
             {
@@ -98,10 +102,13 @@ export const knollcroftV2GuestCountAndPayerScreenConfiguration: ScreenConfigurat
                 conditionKeyPath: ["split_payment"],
               },
               screenPointer: {
-                type: ScreenPointerType.DIRECT,
-                screenConfiguration: knollcroftV2CompletedScreenConfiguration,
+                type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY,
+                instantOfferIsNotAvailableScreenConfiguration:
+                  knollcroftV2QualificationScreenConfiguration,
+                instantOfferIsAvailableScreenConfiguration:
+                  knollcroftV2InstantOfferScreenConfiguration,
               },
-              submitsForm: true,
+              submitsForm: false,
               forwardPathLabel: "Submit",
             },
           ],

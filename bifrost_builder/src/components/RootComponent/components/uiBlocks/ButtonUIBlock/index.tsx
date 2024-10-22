@@ -1,3 +1,4 @@
+import { updateBifrostUserSession } from "@/api/updateBifrostUserSession";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,9 @@ import {
   BifrostFormData,
   BifrostKeyPath,
 } from "@/models/configuration/formData";
+import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -20,12 +23,15 @@ const Wrapper = styled.div`
 interface ButtonUIBlockProps {
   configuration: ButtonUIBlockConfiguration;
   hotelId: string;
+  bifrostTravelerId: string;
+  bifrostFormId: string;
+  localFormUserSessionId: string;
   keyPath: BifrostKeyPath;
   formData: BifrostFormData;
   setFormData: (
     previousFormData: React.SetStateAction<BifrostFormData>
   ) => void;
-  handleSubmitFormData: () => void;
+  handleSubmitFormData: () => Promise<void>;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -39,9 +45,14 @@ export function ButtonUIBlock({
     keyValue,
     label,
     submitsForm,
+    updatesUserSession,
+    updatesUserSessionKeyPaths,
     screenPointer: pointer,
   },
   hotelId,
+  bifrostTravelerId,
+  bifrostFormId,
+  localFormUserSessionId,
   keyPath,
   formData,
   setFormData,
@@ -50,7 +61,7 @@ export function ButtonUIBlock({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: ButtonUIBlockProps) {
-  const handleButtonClick = (
+  const handleButtonClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
@@ -68,13 +79,54 @@ export function ButtonUIBlock({
     }
 
     if (submitsForm) {
-      handleSubmitFormData();
+      await handleSubmitFormData();
+    }
+
+    if (
+      updatesUserSession &&
+      updatesUserSessionKeyPaths &&
+      updatesUserSessionKeyPaths.length > 0
+    ) {
+      const userSessionId = getValueFromBifrostFormDataByKeyPath({
+        keyPath: ["userSessionId"],
+        formData,
+      });
+
+      const updatedFormData = updatesUserSessionKeyPaths.reduce(
+        (accum, keyPath) => {
+          const keyValue = getValueFromBifrostFormDataByKeyPath({
+            keyPath,
+            formData,
+          });
+
+          const updatedAccum = writeValueToBifrostFormDataByKeyPath({
+            formData: accum,
+            keyPath,
+            updatedKeyValue: keyValue,
+          });
+
+          return updatedAccum;
+        },
+        {}
+      );
+
+      updateBifrostUserSession({
+        hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
+        updatedFormData,
+        userSessionId,
+      });
     }
 
     if (pointer) {
       routeWithPointer({
         pointer,
         hotelId,
+        bifrostTravelerId,
+        bifrostFormId,
+        localFormUserSessionId,
         formData,
         setFormData,
         handleSubmitFormData,
