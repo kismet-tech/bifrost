@@ -7,6 +7,10 @@ import {
 } from "@/models/configuration/pointers/ScreenPointer";
 import { routeBranchByRoomAvailabilityOnDates } from "./routeBranchByRoomAvailabilityOnDates";
 import { routeBranchByInstantOfferAvailability } from "./routeBranchByInstantOfferAvailability";
+import {
+  BifrostSessionDataKey,
+  BifrostSessionDataValue,
+} from "@/models/configuration/bifrostSessionData";
 
 interface routeWithPointerProps {
   pointer: ScreenPointer;
@@ -23,6 +27,13 @@ interface routeWithPointerProps {
     screenConfiguration: ScreenConfiguration
   ) => void;
   popRightscreenConfigurationStack: () => void;
+  mutateBifrostSessionData: ({
+    key,
+    value,
+  }: {
+    key: BifrostSessionDataKey;
+    value: BifrostSessionDataValue;
+  }) => void;
 }
 
 export const routeWithPointer = async ({
@@ -36,6 +47,7 @@ export const routeWithPointer = async ({
   handleSubmitFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
+  mutateBifrostSessionData,
 }: routeWithPointerProps) => {
   if (pointer.type === ScreenPointerType.DIRECT) {
     pushScreenConfigurationStack(pointer.screenConfiguration);
@@ -86,6 +98,7 @@ export const routeWithPointer = async ({
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
+      mutateBifrostSessionData,
     });
   }
 };

@@ -12,6 +12,7 @@ import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { useState } from "react";
 import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
+import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
 
 interface ScreenNavigatorProps {
   configuration: ScreenNavigatorUIBlockConfiguration;
@@ -46,6 +47,8 @@ export function ScreenNavigator({
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
 }: ScreenNavigatorProps) {
+  const { mutateBifrostSessionData } = useBifrostSessionData();
+
   const maybeFirstMatchedScreenNavigatorPath =
     maybeGetFirstMatchedScreenNavigatorPath({
       paths,
@@ -71,6 +74,7 @@ export function ScreenNavigator({
         handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
+        mutateBifrostSessionData,
       });
     };
 
@@ -97,6 +101,7 @@ export function ScreenNavigator({
         handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
+        mutateBifrostSessionData,
       });
     };
 
@@ -129,6 +134,7 @@ export function ScreenNavigator({
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
+      mutateBifrostSessionData,
     });
   };
 

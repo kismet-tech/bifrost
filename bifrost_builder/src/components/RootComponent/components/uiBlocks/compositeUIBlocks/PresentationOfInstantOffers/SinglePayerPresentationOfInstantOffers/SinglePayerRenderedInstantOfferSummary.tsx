@@ -3,10 +3,10 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Assuming the path to the Button component from ShadCN
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { RenderedInstantOffer } from "./RenderedInstantOffer";
+import { RenderedInstantOffer } from "../RenderedInstantOffer";
 import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
-interface RenderedInstantOfferSummaryProps {
+interface SinglePayerRenderedInstantOfferSummaryProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;
   instantOfferIndex: number;
   hotelId: string;
@@ -16,7 +16,7 @@ interface RenderedInstantOfferSummaryProps {
   userSessionId: string;
 }
 
-export function RenderedInstantOfferSummary({
+export function SinglePayerRenderedInstantOfferSummary({
   renderableInstantOffer,
   instantOfferIndex,
   hotelId,
@@ -24,9 +24,7 @@ export function RenderedInstantOfferSummary({
   bifrostFormId,
   localFormUserSessionId,
   userSessionId,
-}: RenderedInstantOfferSummaryProps) {
-  console.log(`userSessionId in RenderedInstantOfferSummary: ${userSessionId}`);
-
+}: SinglePayerRenderedInstantOfferSummaryProps) {
   // Manage Dialog open state
   const [instantOfferModalIsOpen, setInstantOfferModalIsOpen] = useState(false);
 

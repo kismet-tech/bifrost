@@ -31,6 +31,8 @@ export interface RenderableBifrostInstantBookOfferCriterion {
 }
 
 export interface RenderableBifrostInstantBookOffer {
+  bifrostInstantBookOfferId: string;
+
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
 

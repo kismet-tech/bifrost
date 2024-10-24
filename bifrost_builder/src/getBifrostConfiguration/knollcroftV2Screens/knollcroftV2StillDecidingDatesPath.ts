@@ -4,7 +4,7 @@ import {
   LayoutBlockType,
   UIBlockType,
 } from "@/models/configuration";
-import { KnollcroftConfigurationV2ScreenKeys } from "./keys";
+import { KnollcroftConfigurationV2ScreenKeys } from "./knollcroftV2Keys";
 
 export const knollcroftV2StillDecidingDatesPath: LayoutBlockConfiguration = {
   blockType: BlockType.LAYOUT_BLOCK,

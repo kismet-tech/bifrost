@@ -1,6 +1,11 @@
 import { maybeGetInstantBookOffers } from "@/api/maybeGetInstantBookOffers";
 import { submitBifrostForm } from "@/api/submitBifrostForm";
+import { BifrostSessionDataKeys } from "@/contexts/bifrostSessionDataKeys";
 import { ScreenConfiguration } from "@/models/configuration";
+import {
+  BifrostSessionDataKey,
+  BifrostSessionDataValue,
+} from "@/models/configuration/bifrostSessionData";
 import { BifrostFormData } from "@/models/configuration/formData";
 import { SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer } from "@/models/configuration/pointers/ScreenPointer";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
@@ -20,6 +25,13 @@ interface RouteBranchByInstantOfferAvailabilityProps {
     screenConfiguration: ScreenConfiguration
   ) => void;
   popRightscreenConfigurationStack: () => void;
+  mutateBifrostSessionData: ({
+    key,
+    value,
+  }: {
+    key: BifrostSessionDataKey;
+    value: BifrostSessionDataValue;
+  }) => void;
 }
 
 export const routeBranchByInstantOfferAvailability = async ({
@@ -31,6 +43,7 @@ export const routeBranchByInstantOfferAvailability = async ({
   formData,
   setFormData,
   pushScreenConfigurationStack,
+  mutateBifrostSessionData,
 }: RouteBranchByInstantOfferAvailabilityProps) => {
   // trigger some before API call action
 
@@ -41,6 +54,11 @@ export const routeBranchByInstantOfferAvailability = async ({
       bifrostFormId,
       localFormUserSessionId,
       formData,
+    });
+
+    mutateBifrostSessionData({
+      key: BifrostSessionDataKeys.userSessionId,
+      value: userSessionId,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -93,6 +111,11 @@ export const routeBranchByInstantOfferAvailability = async ({
           4
         )
       );
+
+      mutateBifrostSessionData({
+        key: BifrostSessionDataKeys.instantBookOffers,
+        value: maybeInstantBookOffers,
+      });
 
       pushScreenConfigurationStack({
         ...pointer.instantOfferIsAvailableScreenConfiguration,

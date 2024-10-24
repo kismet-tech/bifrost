@@ -1,6 +1,7 @@
 import { updateBifrostUserSession } from "@/api/updateBifrostUserSession";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { Button } from "@/components/ui/button";
+import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
 import {
   ButtonUIBlockConfiguration,
   ScreenConfiguration,
@@ -61,6 +62,8 @@ export function ButtonUIBlock({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: ButtonUIBlockProps) {
+  const { mutateBifrostSessionData } = useBifrostSessionData();
+
   const handleButtonClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -132,6 +135,7 @@ export function ButtonUIBlock({
         handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
+        mutateBifrostSessionData,
       });
     }
 

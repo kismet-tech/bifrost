@@ -13,6 +13,7 @@ import {
 import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,6 +63,8 @@ export function AlternativeDateSuggestionUIBlock({
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: AlternativeDateSuggestionUIBlockProps) {
+  const { mutateBifrostSessionData } = useBifrostSessionData();
+
   const alternativeStartCalendarDate: CalendarDate =
     getValueFromBifrostFormDataByKeyPath({
       formData,
@@ -90,6 +93,7 @@ export function AlternativeDateSuggestionUIBlock({
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
+      mutateBifrostSessionData,
     });
 
     mutateFormDataAtKeyPath({
@@ -129,6 +133,7 @@ export function AlternativeDateSuggestionUIBlock({
       handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
+      mutateBifrostSessionData,
     });
 
     mutateFormDataAtKeyPath({

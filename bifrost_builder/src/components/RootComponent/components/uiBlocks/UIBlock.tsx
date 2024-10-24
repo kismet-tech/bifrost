@@ -25,8 +25,7 @@ import { HeaderUIBlock } from "./textBlocks/HeaderUIBlock";
 import { SmartFarewellSubheaderUIBlock } from "./textBlocks/SmartFarewellSubheaderUIBlock";
 import { SmartGreetingSubheaderUIBlock } from "./textBlocks/SmartGreetingSubheaderUIBlock";
 import { SubheaderUIBlock } from "./textBlocks/SubheaderUIBlock";
-import { InstantOfferUIBlock } from "./compositeUIBlocks/InstantOffer";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { PresentationOfInstantOffersUIBlock } from "./compositeUIBlocks/PresentationOfInstantOffers";
 
 export interface UIBlockProps {
   configuration: UIBlockConfiguration;
@@ -328,15 +327,11 @@ export function UIBlock({
       />
     );
   } else if (configuration.uiBlockType === UIBlockType.INSTANT_OFFER) {
-    const renderableInstantOffers: RenderableBifrostInstantBookOffer[] =
-      screenMetadata.instantBookOffers as RenderableBifrostInstantBookOffer[];
-
     return (
-      <InstantOfferUIBlock
+      <PresentationOfInstantOffersUIBlock
         configuration={configuration}
         keyPath={keyPath}
         formData={formData}
-        renderableInstantOffers={renderableInstantOffers}
         hotelId={hotelId}
         bifrostTravelerId={bifrostTravelerId}
         bifrostFormId={bifrostFormId}

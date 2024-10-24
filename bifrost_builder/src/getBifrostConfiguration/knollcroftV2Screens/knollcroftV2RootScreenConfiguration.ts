@@ -7,7 +7,7 @@ import {
 import { knollcroftV2TripDetailsScreenConfigurations } from "./knollcroftV2TripDetailsScreenConfiguration";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { BifrostKeyPathConditionType } from "@/models/configuration/bifrostKeyPathCondition";
-import { KnollcroftConfigurationV2ScreenKeys } from "./keys";
+import { KnollcroftConfigurationV2ScreenKeys } from "./knollcroftV2Keys";
 
 export const knollcroftV2RootScreenConfiguration: ScreenConfiguration = {
   layout: {

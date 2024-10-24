@@ -1,4 +1,8 @@
 import {
+  ReservedKismetFormKeyNames,
+  ReservedKismetFormKeyValues,
+} from "@/getBifrostConfiguration/reservedKismetFormKeys";
+import {
   BlockType,
   LayoutBlockConfiguration,
   LayoutBlockType,
@@ -85,15 +89,18 @@ export const knollcroftV2DateFlexibilityScreenFirmDatesPath: LayoutBlockConfigur
                             blockType: BlockType.UI_BLOCK,
                             uiBlockType: UIBlockType.TOGGLE_GROUP,
                             label: "Split payment?",
-                            keyName: "split_payment",
+                            keyName:
+                              ReservedKismetFormKeyNames.HOW_IS_PAYMENT_SPLIT,
                             options: [
                               {
                                 label: "Guests pay individually",
-                                keyValue: "guests_pay_individually",
+                                keyValue:
+                                  ReservedKismetFormKeyValues.GUESTS_PAY_SEPARATELY,
                               },
                               {
                                 label: "Host will pay for rooms",
-                                keyValue: "host_pays_for_rooms",
+                                keyValue:
+                                  ReservedKismetFormKeyValues.HOST_WILL_PAY_FOR_ALL_THE_ROOMS,
                               },
                             ],
                           },

@@ -12,7 +12,8 @@ import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer
 import { knollcroftV2GuestCountAndPayerScreenConfiguration } from "../knollcroftV2GuestCountAndPayerScreenConfiguration";
 import { knollcroftV2QualificationScreenConfiguration } from "../knollcroftV2QualificationScreenConfiguration";
 import { knollcroftV2InstantOfferScreenConfiguration } from "../knollcroftV2InstantOfferScreenConfiguration";
-import { KnollcroftConfigurationV2ScreenKeys } from "../keys";
+import { KnollcroftConfigurationV2ScreenKeys } from "../knollcroftV2Keys";
+import { ReservedKismetFormKeyNames } from "@/getBifrostConfiguration/reservedKismetFormKeys";
 
 export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration =
   {
@@ -77,11 +78,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
           uiBlockType: UIBlockType.SCREEN_NAVIGATOR,
           skipPath: {
             pointer: {
-              type: ScreenPointerType.SUBMIT_FORM_AND_BRANCH_BY_INSTANT_OFFER_AVAILABILITY,
-              instantOfferIsNotAvailableScreenConfiguration:
-                knollcroftV2QualificationScreenConfiguration,
-              instantOfferIsAvailableScreenConfiguration:
-                knollcroftV2InstantOfferScreenConfiguration,
+              type: ScreenPointerType.DIRECT,
+              screenConfiguration:
+                knollcroftV2GuestCountAndPayerScreenConfiguration,
             },
             submitsForm: false,
           },
@@ -100,7 +99,9 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                   },
                   {
                     type: BifrostKeyPathConditionType.MATCH,
-                    conditionKeyPath: ["split_payment"],
+                    conditionKeyPath: [
+                      ReservedKismetFormKeyNames.HOW_IS_PAYMENT_SPLIT,
+                    ],
                   },
                 ],
               },
