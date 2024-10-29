@@ -1,9 +1,9 @@
-import { getBifrostCheckoutUrl } from "@/api/getBifrostCheckoutUrl";
+import { getBifrostSinglePayerCheckoutUrl } from "@/api/getBifrostSinglePayerCheckoutUrl";
 import { RenderedInstantOfferFooter } from "./RenderedInstantOfferFooter";
 import { RenderedInstantOfferHeader } from "./RenderedInstantOfferHeader";
 import { RenderedInstantOfferPackageDescription } from "./RenderedInstantOfferPackageDescription";
 import { RenderedInstantOfferRoomCarousel } from "./RenderedInstantOfferRoomCarousel";
-import { GetBifrostCheckoutUrlHotelRoomInstantBookOffer } from "@/api/getBifrostCheckoutUrl/models";
+import { GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer } from "@/api/getBifrostSinglePayerCheckoutUrl/models";
 import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 export interface RenderedInstantOfferProps {
@@ -30,9 +30,11 @@ export function RenderedInstantOffer({
   userSessionId,
 }: RenderedInstantOfferProps) {
   const handleVisitCheckoutPage: () => Promise<void> = async () => {
-    const hotelRoomOffers: GetBifrostCheckoutUrlHotelRoomInstantBookOffer[] =
+    const hotelRoomOffers: GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer[] =
       renderableInstantOffer.hotelRoomOffers.map(
-        (hotelRoomOffer): GetBifrostCheckoutUrlHotelRoomInstantBookOffer => {
+        (
+          hotelRoomOffer
+        ): GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer => {
           return {
             countRequested: hotelRoomOffer.countOffered,
             offerPriceInCents: hotelRoomOffer.offerPriceInCents,
@@ -41,7 +43,7 @@ export function RenderedInstantOffer({
         }
       );
 
-    const { checkoutUrl } = await getBifrostCheckoutUrl({
+    const { checkoutUrl } = await getBifrostSinglePayerCheckoutUrl({
       hotelId,
       bifrostTravelerId,
       bifrostFormId,

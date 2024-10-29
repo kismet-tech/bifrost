@@ -1,14 +1,14 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { EitherResponseType } from "@/models/monads";
 
-export interface GetBifrostCheckoutUrlHotelRoomInstantBookOffer {
+export interface GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer {
   countRequested: number;
   offerPriceInCents: number;
 
   hotelRoomId: string;
 }
 
-export interface GetBifrostCheckoutUrlRequestDto {
+export interface GetBifrostSinglePayerCheckoutUrlRequestDto {
   hotelId: string;
   bifrostTravelerId?: string;
   bifrostFormId: string;
@@ -17,16 +17,16 @@ export interface GetBifrostCheckoutUrlRequestDto {
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
 
-  hotelRoomOffers: GetBifrostCheckoutUrlHotelRoomInstantBookOffer[];
+  hotelRoomOffers: GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer[];
   userSessionId: string;
 }
 
-export interface GetBifrostCheckoutUrlSuccessResponseDataDto {
+export interface GetBifrostSinglePayerCheckoutUrlSuccessResponseDataDto {
   checkoutUrl: string;
 }
 
-export interface GetBifrostCheckoutUrlSuccessResponseDto {
+export interface GetBifrostSinglePayerCheckoutUrlSuccessResponseDto {
   type: EitherResponseType.SUCCESS;
 
-  success: GetBifrostCheckoutUrlSuccessResponseDataDto;
+  success: GetBifrostSinglePayerCheckoutUrlSuccessResponseDataDto;
 }

@@ -11,14 +11,14 @@ interface SplitPayerRenderedInstantOfferSummaryProps {
   bifrostFormId: string;
   localFormUserSessionId: string;
   userSessionId: string;
-  selectInstantOffer: () => void;
+  handleClickSelectInstantOffer: () => void;
   selectedBifrostInstantBookOfferId?: string;
 }
 
 export function SplitPayerRenderedInstantOfferSummary({
   renderableInstantOffer,
   instantOfferIndex,
-  selectInstantOffer,
+  handleClickSelectInstantOffer,
   selectedBifrostInstantBookOfferId,
 }: SplitPayerRenderedInstantOfferSummaryProps) {
   const numberOfRooms: number = renderableInstantOffer.hotelRoomOffers.reduce(
@@ -53,7 +53,7 @@ export function SplitPayerRenderedInstantOfferSummary({
           {renderableInstantOffer.endCalendarDate.year.toString().slice(-2)}
         </div>
         <div className="text mt-1">
-          $
+          Starting at $
           {Math.round(
             renderableInstantOffer.offerPriceInCents / numberOfRooms / 100
           )}
@@ -70,7 +70,7 @@ export function SplitPayerRenderedInstantOfferSummary({
       <Button
         onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           event.preventDefault();
-          selectInstantOffer();
+          handleClickSelectInstantOffer();
         }}
         className={`flex items-center ${
           isSelected

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Assuming the path to the Button component from ShadCN
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { RenderedInstantOffer } from "../RenderedInstantOffer";
+import { RenderedInstantOffer } from "./RenderedInstantOffer";
 import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 
 interface SinglePayerRenderedInstantOfferSummaryProps {

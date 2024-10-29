@@ -2,26 +2,30 @@ import { Api } from "..";
 import { AxiosResponse } from "axios";
 import { ErrorResponseDto } from "@/models/monads";
 import {
-  GetBifrostCheckoutUrlRequestDto,
-  GetBifrostCheckoutUrlSuccessResponseDto,
+  GetBifrostSinglePayerCheckoutUrlRequestDto,
+  GetBifrostSinglePayerCheckoutUrlSuccessResponseDto,
 } from "./models";
 
-export const getBifrostCheckoutUrl = async (
-  requestBody: GetBifrostCheckoutUrlRequestDto
+export const getBifrostSinglePayerCheckoutUrl = async (
+  requestBody: GetBifrostSinglePayerCheckoutUrlRequestDto
 ): Promise<{ checkoutUrl: string }> => {
   console.log("getBifrostCheckoutUrl requestBody");
   console.log(requestBody);
 
   const response: AxiosResponse<
-    GetBifrostCheckoutUrlSuccessResponseDto | ErrorResponseDto
-  > = await Api.post(`/Bifrost/GetBifrostCheckoutUrl`, requestBody, {});
+    GetBifrostSinglePayerCheckoutUrlSuccessResponseDto | ErrorResponseDto
+  > = await Api.post(
+    `/Bifrost/GetBifrostSinglePayerCheckoutUrl`,
+    requestBody,
+    {}
+  );
 
   if ("error" in response.data) {
     console.error(response.data.error.reason);
   }
 
   const checkoutUrl: string = (
-    response.data as GetBifrostCheckoutUrlSuccessResponseDto
+    response.data as GetBifrostSinglePayerCheckoutUrlSuccessResponseDto
   ).success.checkoutUrl;
 
   return { checkoutUrl };

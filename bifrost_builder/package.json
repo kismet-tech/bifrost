@@ -1,6 +1,6 @@
 {
   "name": "bifrost_builder",
-  "version": "1.516.0",
+  "version": "1.547.0",
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
@@ -17,6 +17,7 @@
     "deploy_storybook": "yarn cloud_build_storybook && gcloud run deploy kismet-bifrost-storybook --region us-central1 --image us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-popover": "^1.1.1",
