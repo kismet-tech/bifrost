@@ -1,79 +1,71 @@
-import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
-  PrefilledBifrostFormValueType,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { TextAreaInputUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import {
+  QuestionResponseType,
+  QuestionWithResponse,
+} from "@/models/formQuestions/questionWithResponse";
 
 interface TextAreaInputUIBlockProps {
   configuration: TextAreaInputUIBlockConfiguration;
-  hotelId: string;
-  formData: BifrostFormData;
-  onChange: (value: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function TextAreaInputUIBlock({
-  configuration: { keyName, placeholder, label, smartFill },
-  hotelId,
-  formData,
-  onChange,
+  configuration: { placeholder, label, formQuestionId },
   registerBifrostFormInput,
 }: TextAreaInputUIBlockProps) {
-  const [localValue, updateLocalValue] = useState<string>("");
+  const [localValue, setLocalValue] = useState<string>("");
 
-  // Attempt to Prefill Field Using Prior Responses
-  useEffect(() => {
-    async function prefillKismetFieldUsingPriorResponses() {
-      const { targetKeyStringValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData: formData,
-          targetKeyName: keyName,
-          targetValueType: PrefilledBifrostFormValueType.STRING,
-        });
+  const {
+    setResponseToQuestion,
+    maybeGetQuestionWithResponseByFormQuestionId,
+  } = useBifrostFormState();
 
-      if (!formData[keyName] && targetKeyStringValue) {
-        updateLocalValue(targetKeyStringValue);
-        onChange(targetKeyStringValue);
-      }
-    }
+  const maybeQuestionWithResponse: QuestionWithResponse | undefined =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId: formQuestionId,
+    });
 
-    if (smartFill) {
-      prefillKismetFieldUsingPriorResponses();
-    }
-  }, []);
+  const maybeQuestionResponse: string =
+    (maybeQuestionWithResponse?.response as string) || "";
 
   useEffect(() => {
-    if (keyName in formData && typeof formData[keyName] === "string") {
-      updateLocalValue(formData[keyName] as string);
+    if (maybeQuestionResponse) {
+      setLocalValue(maybeQuestionResponse);
     } else {
-      updateLocalValue("");
+      setLocalValue("");
     }
-  }, [formData, keyName]);
+  }, [maybeQuestionResponse]);
 
   const handleOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const value = event.target.value;
-    if (onChange) {
-      onChange(value);
-    }
 
-    updateLocalValue(value);
+    setResponseToQuestion({
+      questionWithResponse: {
+        formQuestionId: formQuestionId,
+        responseType: QuestionResponseType.STRING,
+        response: value,
+      },
+    });
+
+    setLocalValue(value);
     registerBifrostFormInput();
   };
 
   return (
     <FormField>
-      <FormLabel htmlFor={`form_${keyName}`}>{label}</FormLabel>
+      <FormLabel htmlFor={`form_text_area_input_ui_block_${formQuestionId}`}>
+        {label}
+      </FormLabel>
       <Textarea
         onChange={handleOnChange}
-        id={`form_${keyName}`}
+        id={`form_text_area_input_ui_block_${formQuestionId}`}
         placeholder={placeholder}
         value={localValue}
       />

@@ -1,5 +1,5 @@
+import { FormQuestionId } from "@/models/formQuestions/questionWithResponse";
 import { ScreenConfiguration } from "..";
-import { BifrostKeyPath } from "./../formData";
 
 export enum ScreenPointerType {
   DIRECT = "DIRECT",
@@ -32,11 +32,8 @@ export interface BranchByEventSpaceRequirementScreenPointer {
 export interface BranchByRoomAvailabilityOnDatesScreenPointer {
   type: ScreenPointerType.BRANCH_BY_ROOM_AVAILABILITY_ON_DATES;
 
-  startCalendarDateKeyPath: BifrostKeyPath;
-  endCalendarDateKeyPath: BifrostKeyPath;
-
-  alternativeStartCalendarDateKeyPath: BifrostKeyPath;
-  alternativeEndCalendarDateKeyPath: BifrostKeyPath;
+  calendarDataFormQuestionId: FormQuestionId;
+  alternativeCalendarDataFormQuestionId: FormQuestionId;
 
   roomsAreAvailableScreenConfiguration: ScreenConfiguration;
   roomsAreNotAvailableButAlternativesAreAvailableScreenConfiguration: ScreenConfiguration;

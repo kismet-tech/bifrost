@@ -1,14 +1,10 @@
 import { maybeGetInstantBookOffers } from "@/api/maybeGetInstantBookOffers";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { submitBifrostForm } from "@/api/submitBifrostForm";
-import { BifrostSessionDataKeys } from "@/contexts/bifrostSessionDataKeys";
+import { rewriteQuestionsWithResponsesToFormData } from "@/api/utilities/rewriteQuestionsWithResponsesToFormData";
 import { ScreenConfiguration } from "@/models/configuration";
-import {
-  BifrostSessionDataKey,
-  BifrostSessionDataValue,
-} from "@/models/configuration/bifrostSessionData";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer } from "@/models/configuration/pointers/ScreenPointer";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface RouteBranchByInstantOfferAvailabilityProps {
   pointer: SubmitFormAndBranchByInstantOfferAvailabilityScreenPointer;
@@ -16,22 +12,16 @@ interface RouteBranchByInstantOfferAvailabilityProps {
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  formData: BifrostFormData;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
-  handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
-  popRightscreenConfigurationStack: () => void;
-  mutateBifrostSessionData: ({
-    key,
-    value,
+  setUserSessionId: ({ userSessionId }: { userSessionId: string }) => void;
+  setInstantBookOffers: ({
+    instantBookOffers,
   }: {
-    key: BifrostSessionDataKey;
-    value: BifrostSessionDataValue;
+    instantBookOffers: RenderableBifrostInstantBookOffer[];
   }) => void;
+  getQuestionsWithResponses: () => QuestionWithResponse[];
 }
 
 export const routeBranchByInstantOfferAvailability = async ({
@@ -40,12 +30,17 @@ export const routeBranchByInstantOfferAvailability = async ({
   bifrostTravelerId,
   bifrostFormId,
   localFormUserSessionId,
-  formData,
-  setFormData,
   pushScreenConfigurationStack,
-  mutateBifrostSessionData,
+  setUserSessionId,
+  setInstantBookOffers,
+  getQuestionsWithResponses,
 }: RouteBranchByInstantOfferAvailabilityProps) => {
-  // trigger some before API call action
+  const questionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
+
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
 
   try {
     const { userSessionId } = await submitBifrostForm({
@@ -53,26 +48,10 @@ export const routeBranchByInstantOfferAvailability = async ({
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
-      formData,
+      questionsWithResponses,
     });
 
-    mutateBifrostSessionData({
-      key: BifrostSessionDataKeys.userSessionId,
-      value: userSessionId,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).userSessionId = userSessionId;
-
-    mutateFormDataAtKeyPath({
-      mutations: [
-        {
-          keyPath: ["userSessionId"],
-          keyValue: userSessionId,
-        },
-      ],
-      setFormData,
-    });
+    setUserSessionId({ userSessionId });
 
     console.log(`userSessionId: ${userSessionId}`);
 
@@ -102,28 +81,18 @@ export const routeBranchByInstantOfferAvailability = async ({
         JSON.stringify(
           {
             ...pointer.instantOfferIsAvailableScreenConfiguration,
-            metadata: {
-              ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
-              instantBookOffers: maybeInstantBookOffers,
-            },
           },
           null,
           4
         )
       );
 
-      mutateBifrostSessionData({
-        key: BifrostSessionDataKeys.instantBookOffers,
-        value: maybeInstantBookOffers,
+      setInstantBookOffers({
+        instantBookOffers: maybeInstantBookOffers,
       });
 
       pushScreenConfigurationStack({
         ...pointer.instantOfferIsAvailableScreenConfiguration,
-        metadata: {
-          ...pointer.instantOfferIsAvailableScreenConfiguration.metadata,
-          instantBookOffers: maybeInstantBookOffers,
-          userSessionId,
-        },
       });
     }
   } catch (error) {

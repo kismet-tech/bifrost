@@ -1,18 +1,15 @@
 import { updateBifrostUserSession } from "@/api/updateBifrostUserSession";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { Button } from "@/components/ui/button";
-import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import {
   ButtonUIBlockConfiguration,
   ScreenConfiguration,
 } from "@/models/configuration";
 import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { writeValueToBifrostFormDataByKeyPath } from "@/utilities/formData/writeValueToBifrostFormDataByKeyPath";
+  QuestionResponseType,
+  QuestionWithResponse,
+} from "@/models/formQuestions/questionWithResponse";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -23,15 +20,6 @@ const Wrapper = styled.div`
 
 interface ButtonUIBlockProps {
   configuration: ButtonUIBlockConfiguration;
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  keyPath: BifrostKeyPath;
-  formData: BifrostFormData;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
   handleSubmitFormData: () => Promise<void>;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -42,85 +30,74 @@ interface ButtonUIBlockProps {
 
 export function ButtonUIBlock({
   configuration: {
-    keyName,
-    keyValue,
     label,
     submitsForm,
-    updatesUserSession,
-    updatesUserSessionKeyPaths,
     screenPointer: pointer,
+    formQuestionId,
+    formQuestionResponse,
   },
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  keyPath,
-  formData,
-  setFormData,
   handleSubmitFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: ButtonUIBlockProps) {
-  const { mutateBifrostSessionData } = useBifrostSessionData();
+  const {
+    getUserSessionId,
+    getHotelId,
+    setUserSessionId,
+    setInstantBookOffers,
+    maybeGetQuestionWithResponseByFormQuestionId,
+    setProposedAlternativeDates,
+    setResponseToQuestion,
+    getQuestionsWithResponses,
+    maybeGetBifrostTravelerId,
+    maybeGetBifrostFormId,
+    maybeGetLocalFormUserSessionId,
+  } = useBifrostFormState();
+
+  const hotelId: string = getHotelId();
+
+  const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
+
+  const bifrostFormId: string = maybeGetBifrostFormId() as string;
+
+  const localFormUserSessionId: string =
+    maybeGetLocalFormUserSessionId() as string;
+
+  const questionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
+
+  const maybeUserSessionId = getUserSessionId();
 
   const handleButtonClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
 
-    if (keyName && keyValue) {
-      mutateFormDataAtKeyPath({
-        mutations: [
-          {
-            keyPath: [...keyPath, keyName],
-            keyValue,
-          },
-        ],
-        setFormData,
-      });
-    }
-
     if (submitsForm) {
       await handleSubmitFormData();
     }
 
-    if (
-      updatesUserSession &&
-      updatesUserSessionKeyPaths &&
-      updatesUserSessionKeyPaths.length > 0
-    ) {
-      const userSessionId = getValueFromBifrostFormDataByKeyPath({
-        keyPath: ["userSessionId"],
-        formData,
-      });
-
-      const updatedFormData = updatesUserSessionKeyPaths.reduce(
-        (accum, keyPath) => {
-          const keyValue = getValueFromBifrostFormDataByKeyPath({
-            keyPath,
-            formData,
-          });
-
-          const updatedAccum = writeValueToBifrostFormDataByKeyPath({
-            formData: accum,
-            keyPath,
-            updatedKeyValue: keyValue,
-          });
-
-          return updatedAccum;
+    if (formQuestionId && formQuestionResponse) {
+      setResponseToQuestion({
+        questionWithResponse: {
+          formQuestionId,
+          responseType: QuestionResponseType.STRING,
+          response: formQuestionResponse,
         },
-        {}
-      );
-
-      updateBifrostUserSession({
-        hotelId,
-        bifrostTravelerId,
-        bifrostFormId,
-        localFormUserSessionId,
-        updatedFormData,
-        userSessionId,
       });
+
+      if (maybeUserSessionId) {
+        updateBifrostUserSession({
+          hotelId,
+          bifrostTravelerId,
+          bifrostFormId,
+          localFormUserSessionId,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          updatedFormData: questionsWithResponses as any,
+          userSessionId: maybeUserSessionId,
+        });
+      }
     }
 
     if (pointer) {
@@ -130,12 +107,13 @@ export function ButtonUIBlock({
         bifrostTravelerId,
         bifrostFormId,
         localFormUserSessionId,
-        formData,
-        setFormData,
-        handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
-        mutateBifrostSessionData,
+        setUserSessionId,
+        setInstantBookOffers,
+        maybeGetQuestionWithResponseByFormQuestionId,
+        getQuestionsWithResponses,
+        setProposedAlternativeDates,
       });
     }
 

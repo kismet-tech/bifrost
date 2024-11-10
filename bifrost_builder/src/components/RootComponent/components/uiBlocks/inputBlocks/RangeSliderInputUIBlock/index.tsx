@@ -1,19 +1,11 @@
-import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
-  PrefilledBifrostFormValueType,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { RangeSliderInputUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
-import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
+import { useState } from "react";
 
 interface RangeSliderInputUIBlockProps {
   configuration: RangeSliderInputUIBlockConfiguration;
-  hotelId: string;
-  formData: BifrostFormData;
-  onChange: (value: { min?: number; max?: number }) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
@@ -22,13 +14,9 @@ export function RangeSliderInputUIBlock({
     label,
     initialRangeMin,
     initialRangeMax,
-    valueMinKeyName,
-    valueMaxKeyName,
     initialStepSize,
+    formQuestionId,
   },
-  hotelId,
-  formData,
-  onChange,
   registerBifrostFormInput,
 }: RangeSliderInputUIBlockProps) {
   const [rangeMin] = useState<number>(initialRangeMin);
@@ -39,75 +27,6 @@ export function RangeSliderInputUIBlock({
     min: number;
     max: number;
   }>({ min: rangeMin, max: rangeMax });
-
-  useEffect(() => {
-    async function prefillValueMin() {
-      const { targetKeyNumberValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData,
-          targetKeyName: valueMinKeyName,
-          targetValueType: PrefilledBifrostFormValueType.NUMBER,
-        });
-
-      if (!formData[valueMinKeyName] && targetKeyNumberValue) {
-        setLocalValue((prev) => {
-          // If the min value has already been set by the user, don't override it
-          if (prev.min !== rangeMin) return prev;
-
-          const updatedMinValue =
-            typeof targetKeyNumberValue === "number" &&
-            !Number.isNaN(targetKeyNumberValue)
-              ? targetKeyNumberValue
-              : prev.min;
-
-          const updatedLocalValue = {
-            ...prev,
-            min: updatedMinValue,
-          };
-
-          onChange(updatedLocalValue);
-
-          return updatedLocalValue;
-        });
-      }
-    }
-
-    async function prefillValueMax() {
-      const { targetKeyNumberValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData,
-          targetKeyName: valueMaxKeyName,
-          targetValueType: PrefilledBifrostFormValueType.NUMBER,
-        });
-
-      if (!formData[valueMaxKeyName] && targetKeyNumberValue) {
-        setLocalValue((prev) => {
-          // If the max value has already been set by the user, don't override it
-          if (prev.max !== rangeMax) return prev;
-
-          const updatedMaxValue =
-            typeof targetKeyNumberValue === "number" &&
-            !Number.isNaN(targetKeyNumberValue)
-              ? targetKeyNumberValue
-              : prev.max;
-
-          const updatedLocalValue = {
-            ...prev,
-            max: updatedMaxValue,
-          };
-
-          onChange(updatedLocalValue);
-
-          return updatedLocalValue;
-        });
-      }
-    }
-
-    prefillValueMin();
-    prefillValueMax();
-  }, []);
 
   const onChangeLocalValue = ([changedMinValue, changedMaxValue]: number[]) => {
     if (typeof changedMinValue !== "number" || Number.isNaN(changedMinValue))
@@ -120,7 +39,6 @@ export function RangeSliderInputUIBlock({
     const updatedLocalValue = { min: changedMinValue, max: changedMaxValue };
 
     setLocalValue(updatedLocalValue);
-    onChange(updatedLocalValue);
     registerBifrostFormInput();
 
     // if (changedMaxValue > 0.95 * rangeMax) {
@@ -128,7 +46,7 @@ export function RangeSliderInputUIBlock({
     // }
   };
 
-  const inputId = `kismet_${valueMinKeyName}_${valueMaxKeyName}`;
+  const inputId = `kismet_${formQuestionId}`;
 
   const value = [localValue.min ?? rangeMin, localValue.max ?? rangeMax];
   const valueText =

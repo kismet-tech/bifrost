@@ -1,21 +1,15 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { DateRangePickerUIBlockConfiguration } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
-import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
-  PrefilledBifrostFormValueType,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { DateRange } from "react-day-picker";
 import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { CalendarDateRange } from "@/models/CalendarDateRange";
+import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
@@ -24,30 +18,11 @@ interface LocalCalendarDateRange {
 
 interface DateRangePickerUIBlockProps {
   configuration: DateRangePickerUIBlockConfiguration;
-  hotelId: string;
-  formData: BifrostFormData;
-  keyPath: BifrostKeyPath;
-  onChange: ({
-    startCalendarDate,
-    endCalendarDate,
-  }: {
-    startCalendarDate?: CalendarDate;
-    endCalendarDate?: CalendarDate;
-  }) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function DateRangePickerUIBlock({
-  configuration: {
-    label,
-    startCalendarDateKeyName,
-    endCalendarDateKeyName,
-    smartFill,
-  },
-  hotelId,
-  formData,
-  keyPath,
-  onChange,
+  configuration: { label, formQuestionId },
   registerBifrostFormInput,
 }: DateRangePickerUIBlockProps) {
   const [localCalendarDateRange, setLocalCalendarDateRange] =
@@ -56,82 +31,32 @@ export function DateRangePickerUIBlock({
       endCalendarDate: undefined,
     });
 
-  // Attempt to Prefill Field Using Prior Responses
+  const {
+    setResponseToQuestion,
+    maybeGetQuestionWithResponseByFormQuestionId,
+  } = useBifrostFormState();
+
+  const maybeQuestionWithResponse =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId: formQuestionId,
+    });
+
+  const maybeQuestionResponse: CalendarDateRange | undefined =
+    (maybeQuestionWithResponse?.response as unknown as CalendarDateRange) ||
+    undefined;
+
   useEffect(() => {
-    async function prefillKismetStartCalendarDateFieldUsingPriorResponses() {
-      const { targetKeyCalendarDateValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData,
-          targetKeyName: startCalendarDateKeyName,
-          targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
-        });
+    if (maybeQuestionResponse) {
+      setLocalCalendarDateRange((): LocalCalendarDateRange => {
+        const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
+          startCalendarDate: maybeQuestionResponse.startCalendarDate,
+          endCalendarDate: maybeQuestionResponse.endCalendarDate,
+        };
 
-      const existingKeyValue = getValueFromBifrostFormDataByKeyPath({
-        formData,
-        keyPath: [...keyPath, startCalendarDateKeyName],
+        return updatedLocalCalendarDateRange;
       });
-
-      if (!existingKeyValue && targetKeyCalendarDateValue) {
-        setLocalCalendarDateRange(
-          (previousLocalCalendarDateRange): LocalCalendarDateRange => {
-            const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
-              startCalendarDate: targetKeyCalendarDateValue,
-              endCalendarDate: previousLocalCalendarDateRange.endCalendarDate,
-            };
-
-            onChange({
-              startCalendarDate:
-                updatedLocalCalendarDateRange.startCalendarDate,
-              endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
-            });
-
-            return updatedLocalCalendarDateRange;
-          }
-        );
-      }
     }
-
-    async function prefillKismetEndCalendarDateFieldUsingPriorResponses() {
-      const { targetKeyCalendarDateValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData,
-          targetKeyName: endCalendarDateKeyName,
-          targetValueType: PrefilledBifrostFormValueType.CALENDAR_DATE,
-        });
-
-      const existingKeyValue = getValueFromBifrostFormDataByKeyPath({
-        formData,
-        keyPath: [...keyPath, endCalendarDateKeyName],
-      });
-
-      if (!existingKeyValue && targetKeyCalendarDateValue) {
-        setLocalCalendarDateRange(
-          (previousLocalCalendarDateRange): LocalCalendarDateRange => {
-            const updatedLocalCalendarDateRange: LocalCalendarDateRange = {
-              startCalendarDate:
-                previousLocalCalendarDateRange.startCalendarDate,
-              endCalendarDate: targetKeyCalendarDateValue,
-            };
-
-            onChange({
-              startCalendarDate:
-                updatedLocalCalendarDateRange.startCalendarDate,
-              endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
-            });
-
-            return updatedLocalCalendarDateRange;
-          }
-        );
-      }
-    }
-
-    if (smartFill) {
-      prefillKismetStartCalendarDateFieldUsingPriorResponses();
-      prefillKismetEndCalendarDateFieldUsingPriorResponses();
-    }
-  }, []);
+  }, [maybeQuestionResponse]);
 
   const onChangeLocalCalendarDateRange = (dateRange: DateRange | undefined) => {
     if (!dateRange) return;
@@ -151,10 +76,18 @@ export function DateRangePickerUIBlock({
           updatedLocalCalendarDateRange.startCalendarDate &&
           updatedLocalCalendarDateRange.endCalendarDate
         ) {
-          onChange({
-            startCalendarDate: updatedLocalCalendarDateRange.startCalendarDate,
-            endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
+          setResponseToQuestion({
+            questionWithResponse: {
+              formQuestionId: formQuestionId,
+              responseType: QuestionResponseType.CALENDAR_DATE_RANGE,
+              response: {
+                startCalendarDate:
+                  updatedLocalCalendarDateRange.startCalendarDate,
+                endCalendarDate: updatedLocalCalendarDateRange.endCalendarDate,
+              },
+            },
           });
+
           registerBifrostFormInput();
         }
 
@@ -165,11 +98,7 @@ export function DateRangePickerUIBlock({
 
   return (
     <FormField>
-      <FormLabel
-        htmlFor={`kismet_${startCalendarDateKeyName}_${endCalendarDateKeyName}`}
-      >
-        {label}
-      </FormLabel>
+      <FormLabel htmlFor={`kismet_${formQuestionId}`}>{label}</FormLabel>
 
       <DateRangePicker
         dateRange={{

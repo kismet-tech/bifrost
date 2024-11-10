@@ -4,55 +4,67 @@ import {
   ScreenConfiguration,
   ScreenNavigatorUIBlockConfiguration,
 } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
 import { ScreenPointerType } from "@/models/configuration/pointers/ScreenPointer";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { useState } from "react";
 import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
-import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface ScreenNavigatorProps {
   configuration: ScreenNavigatorUIBlockConfiguration;
-  keyPath: BifrostKeyPath;
-  formData: BifrostFormData;
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
-  handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
   screenConfigurationStack: ScreenConfiguration[];
   popRightscreenConfigurationStack: () => void;
   registerBifrostFormInput: () => Promise<void>;
+  handleSubmitFormData: () => void;
 }
 
 export function ScreenNavigator({
   configuration: { paths, skipPath },
-  formData,
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  setFormData,
-  handleSubmitFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
+  handleSubmitFormData,
 }: ScreenNavigatorProps) {
-  const { mutateBifrostSessionData } = useBifrostSessionData();
+  const {
+    getHotelId,
+    setUserSessionId,
+    setInstantBookOffers,
+    getQuestionsWithResponses,
+    setProposedAlternativeDates,
+    maybeGetQuestionWithResponseByFormQuestionId,
+    maybeGetBifrostTravelerId,
+    maybeGetBifrostFormId,
+    maybeGetLocalFormUserSessionId,
+  } = useBifrostFormState();
+
+  const hotelId: string = getHotelId();
+
+  const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
+
+  const bifrostFormId: string = maybeGetBifrostFormId() as string;
+
+  const localFormUserSessionId: string =
+    maybeGetLocalFormUserSessionId() as string;
+
+  const formQuestionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
+
+  console.log(
+    `questionsWithResonses: ${JSON.stringify(
+      formQuestionsWithResponses,
+      null,
+      4
+    )}`
+  );
 
   const maybeFirstMatchedScreenNavigatorPath =
     maybeGetFirstMatchedScreenNavigatorPath({
       paths,
-      formData,
+      formQuestionsWithResponses,
     });
 
   let forwardButton: JSX.Element | null;
@@ -69,12 +81,13 @@ export function ScreenNavigator({
         bifrostTravelerId,
         bifrostFormId,
         localFormUserSessionId,
-        formData,
-        setFormData,
-        handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
-        mutateBifrostSessionData,
+        setUserSessionId,
+        setInstantBookOffers,
+        maybeGetQuestionWithResponseByFormQuestionId,
+        getQuestionsWithResponses,
+        setProposedAlternativeDates,
       });
     };
 
@@ -96,18 +109,19 @@ export function ScreenNavigator({
         bifrostTravelerId,
         bifrostFormId,
         localFormUserSessionId,
-        formData,
-        setFormData,
-        handleSubmitFormData,
         pushScreenConfigurationStack,
         popRightscreenConfigurationStack,
-        mutateBifrostSessionData,
+        setUserSessionId,
+        setInstantBookOffers,
+        maybeGetQuestionWithResponseByFormQuestionId,
+        getQuestionsWithResponses,
+        setProposedAlternativeDates,
       });
     };
 
     forwardButton = (
       <Button variant="ghost" onClick={onClickSkipButton}>
-        Skip
+        {skipPath.skipLabel ? skipPath.skipLabel : "Skip"}
         <ChevronRight className="h-5 w-5" />
       </Button>
     );
@@ -129,12 +143,13 @@ export function ScreenNavigator({
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
-      formData,
-      setFormData,
-      handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
-      mutateBifrostSessionData,
+      setUserSessionId,
+      setInstantBookOffers,
+      maybeGetQuestionWithResponseByFormQuestionId,
+      getQuestionsWithResponses,
+      setProposedAlternativeDates,
     });
   };
 

@@ -1,6 +1,6 @@
 import { getBifrostFormGreeting } from "@/api/getBifrostFormGreeting";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import { SmartGreetingSubheaderUIBlockConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -10,17 +10,28 @@ export const Wrapper = styled.div`
 
 interface SmartGreetingSubheaderUIBlockProps {
   configuration: SmartGreetingSubheaderUIBlockConfiguration;
-  hotelId: string;
-  formData: BifrostFormData;
-  bifrostTravelerId: string;
 }
 
 export function SmartGreetingSubheaderUIBlock({
-  configuration: { formGreetingDataKeyPath },
-  hotelId,
-  formData,
-  bifrostTravelerId,
+  configuration: { additionalDetailsFormQuestionId },
 }: SmartGreetingSubheaderUIBlockProps) {
+  const {
+    getHotelId,
+    maybeGetBifrostTravelerId,
+    maybeGetQuestionWithResponseByFormQuestionId,
+  } = useBifrostFormState();
+
+  const hotelId: string = getHotelId();
+  const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
+
+  const maybeQuestionWithResponse =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId: additionalDetailsFormQuestionId,
+    });
+
+  const maybeQuestionResponse: string =
+    (maybeQuestionWithResponse?.response as string) || "";
+
   const [text, updateText] = useState<string>("");
 
   useEffect(() => {
@@ -28,7 +39,7 @@ export function SmartGreetingSubheaderUIBlock({
       const response = await getBifrostFormGreeting({
         hotelId,
         bifrostTravelerId,
-        additionalDetails: formData[formGreetingDataKeyPath] as string,
+        additionalDetails: maybeQuestionResponse,
       });
 
       if ("error" in response.data) {
@@ -40,7 +51,7 @@ export function SmartGreetingSubheaderUIBlock({
     }
 
     setSmartingGreetingText();
-  }, [hotelId, bifrostTravelerId, formData, formGreetingDataKeyPath]);
+  }, [hotelId, bifrostTravelerId, maybeQuestionResponse]);
 
   return <Wrapper>{text}</Wrapper>;
 }

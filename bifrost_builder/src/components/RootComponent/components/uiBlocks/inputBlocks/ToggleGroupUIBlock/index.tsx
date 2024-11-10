@@ -1,77 +1,58 @@
-import {
-  PrefilledBifrostFormValueType,
-  attemptToPrefillKismetFieldUsingPriorResponses,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ToggleGroupUIBlockConfiguration } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
-import { useEffect } from "react";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface ToggleGroupUIBlockProps {
   configuration: ToggleGroupUIBlockConfiguration;
-  hotelId: string;
-  formData: BifrostFormData;
-  keyPath: BifrostKeyPath;
-  onChange: (value: string | undefined) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function ToggleGroupUIBlock({
-  configuration: { label, keyName, options, smartFill },
-  hotelId,
-  formData,
-  keyPath,
-  onChange,
+  configuration: { label, options, formQuestionId: questionId },
   registerBifrostFormInput,
 }: ToggleGroupUIBlockProps) {
-  const selectedValue = getValueFromBifrostFormDataByKeyPath({
-    formData,
-    keyPath: [...keyPath, keyName],
-  }) as string | undefined;
+  const {
+    setResponseToQuestion,
+    maybeGetQuestionWithResponseByFormQuestionId,
+    deleteResponseToQuestion,
+  } = useBifrostFormState();
 
-  // Attempt to Prefill Field Using Prior Responses
-  useEffect(() => {
-    async function prefillKismetFieldUsingPriorResponses() {
-      const { targetKeyStringValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData: formData,
-          targetKeyName: keyName,
-          targetValueType: PrefilledBifrostFormValueType.STRING,
-        });
+  const maybeQuestionWithResponse =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId: questionId,
+    });
 
-      if (!formData[keyName] && targetKeyStringValue) {
-        onChange(targetKeyStringValue);
-      }
-    }
-
-    if (smartFill) {
-      prefillKismetFieldUsingPriorResponses();
-    }
-  }, []);
+  const maybeQuestionResponse: string =
+    (maybeQuestionWithResponse?.response as string) || "";
 
   const handleOnChange = (value: string) => {
     if (value === "") {
-      onChange(undefined);
+      deleteResponseToQuestion({
+        formQuestionId: questionId,
+      });
     } else {
-      onChange(value);
+      setResponseToQuestion({
+        questionWithResponse: {
+          formQuestionId: questionId,
+          responseType: QuestionResponseType.STRING,
+          response: value,
+        },
+      });
     }
+
     registerBifrostFormInput();
   };
 
   return (
     <FormField>
-      <FormLabel htmlFor={`form_${keyName}`}>{label}</FormLabel>
+      <FormLabel htmlFor={`form_${questionId}`}>{label}</FormLabel>
       <ToggleGroup
         type="single"
         variant="outline"
-        value={selectedValue ? selectedValue : ""}
+        value={maybeQuestionResponse}
         onValueChange={handleOnChange}
         className="flex w-full space-x-4 py-2"
       >

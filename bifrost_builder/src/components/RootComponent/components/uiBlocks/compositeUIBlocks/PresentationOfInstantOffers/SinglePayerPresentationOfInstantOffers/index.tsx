@@ -1,23 +1,29 @@
 import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { SinglePayerRenderedInstantOfferSummary } from "./SinglePayerRenderedInstantOfferSummary";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 
 interface SinglePayerPresentationOfInstantOffersProps {
   renderableInstantOffers: RenderableBifrostInstantBookOffer[];
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  userSessionId: string;
 }
 
 export function SinglePayerPresentationOfInstantOffers({
   renderableInstantOffers,
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  userSessionId,
 }: SinglePayerPresentationOfInstantOffersProps) {
+  const {
+    getHotelId,
+    maybeGetBifrostTravelerId,
+    maybeGetBifrostFormId,
+    maybeGetLocalFormUserSessionId,
+    getUserSessionId,
+  } = useBifrostFormState();
+
+  const hotelId: string = getHotelId();
+  const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
+  const bifrostFormId: string = maybeGetBifrostFormId() as string;
+  const localFormUserSessionId: string =
+    maybeGetLocalFormUserSessionId() as string;
+  const userSessionId: string = getUserSessionId() as string;
+
   return (
     <div>
       <div>Instant Book</div>

@@ -1,93 +1,98 @@
 import { determineIfRoomsAreAvailableForBifrostTravelerOnDates } from "@/api/determineIfRoomsAreAvailableForBifrostTravelerOnDates";
+import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { ScreenConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { BranchByRoomAvailabilityOnDatesScreenPointer } from "@/models/configuration/pointers/ScreenPointer";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface RouteBranchByRoomAvailabilityOnDatesProps {
   pointer: BranchByRoomAvailabilityOnDatesScreenPointer;
   hotelId: string;
-  formData: BifrostFormData;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
-  handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
-  popRightscreenConfigurationStack: () => void;
+  maybeGetQuestionWithResponseByFormQuestionId: ({
+    formQuestionId,
+  }: {
+    formQuestionId: string;
+  }) => QuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => QuestionWithResponse[];
+  setProposedAlternativeDates: ({
+    calendarDateRange,
+  }: {
+    calendarDateRange: CalendarDateRange;
+  }) => void;
 }
 
 export const routeBranchByRoomAvailabilityOnDates = async ({
   pointer,
   hotelId,
-  formData,
-  setFormData,
   pushScreenConfigurationStack,
+  maybeGetQuestionWithResponseByFormQuestionId,
+  getQuestionsWithResponses,
+  setProposedAlternativeDates,
 }: RouteBranchByRoomAvailabilityOnDatesProps) => {
-  const startCalendarDate = getValueFromBifrostFormDataByKeyPath({
-    formData,
-    keyPath: pointer.startCalendarDateKeyPath,
-  });
+  const questionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
 
-  const endCalendarDate = getValueFromBifrostFormDataByKeyPath({
-    formData,
-    keyPath: pointer.endCalendarDateKeyPath,
-  });
+  const maybeQuestionWithResponse =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId: pointer.calendarDataFormQuestionId,
+    });
 
-  if (!endCalendarDate || !startCalendarDate) {
+  const maybeCalendarDateRange: CalendarDateRange | undefined =
+    maybeQuestionWithResponse?.response as CalendarDateRange;
+
+  if (
+    !maybeCalendarDateRange ||
+    !maybeCalendarDateRange.startCalendarDate ||
+    !maybeCalendarDateRange.endCalendarDate
+  ) {
     console.log(
       "Missing endCalendarDate or startCalendarDate | Pushing roomsAreAvailableBranchFormBlocks"
     );
     pushScreenConfigurationStack(
       pointer.roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration
     );
-  }
-
-  const {
-    roomsAreAvailable,
-    alternativeStartCalendarDate,
-    alternativeEndCalendarDate,
-  } = await determineIfRoomsAreAvailableForBifrostTravelerOnDates({
-    hotelId,
-    startCalendarDate,
-    endCalendarDate,
-    formData,
-  });
-
-  if (roomsAreAvailable) {
-    console.log("Pushing roomsAreAvailableBranchFormBlocks");
-    pushScreenConfigurationStack(pointer.roomsAreAvailableScreenConfiguration);
   } else {
-    if (alternativeStartCalendarDate && alternativeEndCalendarDate) {
-      mutateFormDataAtKeyPath({
-        mutations: [
-          {
-            keyPath: pointer.alternativeStartCalendarDateKeyPath,
-            keyValue: alternativeStartCalendarDate,
-          },
-          {
-            keyPath: pointer.alternativeEndCalendarDateKeyPath,
-            keyValue: alternativeEndCalendarDate,
-          },
-        ],
-        setFormData,
-      });
+    const {
+      roomsAreAvailable,
+      alternativeStartCalendarDate,
+      alternativeEndCalendarDate,
+    } = await determineIfRoomsAreAvailableForBifrostTravelerOnDates({
+      hotelId,
+      startCalendarDate: maybeCalendarDateRange?.startCalendarDate,
+      endCalendarDate: maybeCalendarDateRange?.endCalendarDate,
+      questionsWithResponses,
+    });
 
-      console.log(
-        "Pushing roomsAreNotAvailableBranchButAlternativesAreAvailableFormBlocks"
-      );
+    if (roomsAreAvailable) {
+      console.log("Pushing roomsAreAvailableBranchFormBlocks");
       pushScreenConfigurationStack(
-        pointer.roomsAreNotAvailableButAlternativesAreAvailableScreenConfiguration
+        pointer.roomsAreAvailableScreenConfiguration
       );
     } else {
-      console.log(
-        "Pushing roomsAreNotAvailableBranchAndNoAlternativesAreAvailableFormBlocks"
-      );
-      pushScreenConfigurationStack(
-        pointer.roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration
-      );
+      if (alternativeStartCalendarDate && alternativeEndCalendarDate) {
+        setProposedAlternativeDates({
+          calendarDateRange: {
+            startCalendarDate: alternativeStartCalendarDate,
+            endCalendarDate: alternativeEndCalendarDate,
+          },
+        });
+
+        console.log(
+          "Pushing roomsAreNotAvailableBranchButAlternativesAreAvailableFormBlocks"
+        );
+        pushScreenConfigurationStack(
+          pointer.roomsAreNotAvailableButAlternativesAreAvailableScreenConfiguration
+        );
+      } else {
+        console.log(
+          "Pushing roomsAreNotAvailableBranchAndNoAlternativesAreAvailableFormBlocks"
+        );
+        pushScreenConfigurationStack(
+          pointer.roomsAreNotAvailableAndAlternativesAreNotAvailableScreenConfiguration
+        );
+      }
     }
   }
 };

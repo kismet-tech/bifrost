@@ -1,16 +1,14 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   BifrostConfiguration,
   ScreenConfiguration,
 } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { BifrostScreen } from "./components/BifrostScreen";
 import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
-import { deleteKeysPresentOnScreenFromFormData } from "./components/BifrostScreen/deleteKeysPresentOnScreenFromFormData";
 import { submitBifrostForm } from "@/api/submitBifrostForm";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface RootComponentWithProvidersProps {
   bifrostTravelerId: string;
@@ -21,17 +19,20 @@ export function RootComponentWithProviders({
   bifrostTravelerId,
   bifrostConfiguration,
 }: RootComponentWithProvidersProps) {
-  const { mutateBifrostSessionData } = useBifrostSessionData();
+  const {
+    setUserSessionId,
+    deleteResponsesToQuestions,
+    getQuestionsWithResponses,
+  } = useBifrostFormState();
+
+  const questionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
 
   const [localFormUserSessionId] = useState<string>(uuidv4());
 
   const [screenConfigurationStack, setScreenConfigurationStack] = useState<
     ScreenConfiguration[]
   >([bifrostConfiguration.rootScreenConfiguration as ScreenConfiguration]);
-
-  const [formData, setFormData] = useState<BifrostFormData>({});
-
-  const setFormDataWithCallback = useCallback(setFormData, [setFormData]);
 
   const pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -52,9 +53,8 @@ export function RootComponentWithProviders({
               previousScreenConfigurationStack.length - 1
             ];
 
-          deleteKeysPresentOnScreenFromFormData({
-            poppedScreenConfiguration,
-            setFormData,
+          deleteResponsesToQuestions({
+            formQuestionIds: poppedScreenConfiguration.formQuestionIds,
           });
 
           const updatedScreenConfigurationStack: ScreenConfiguration[] = [
@@ -76,13 +76,6 @@ export function RootComponentWithProviders({
     <div>
       <BifrostScreen
         screenConfiguration={renderedBifrostScreenConfiguration}
-        keyPath={[]}
-        formData={formData}
-        hotelId={bifrostConfiguration.hotelId}
-        bifrostTravelerId={bifrostTravelerId}
-        bifrostFormId={bifrostConfiguration.bifrostFormId}
-        localFormUserSessionId={localFormUserSessionId}
-        setFormData={setFormDataWithCallback}
         screenConfigurationStack={screenConfigurationStack}
         pushScreenConfigurationStack={pushScreenConfigurationStack}
         popRightscreenConfigurationStack={popRightscreenConfigurationStack}
@@ -92,7 +85,7 @@ export function RootComponentWithProviders({
             bifrostTravelerId,
             bifrostFormId: bifrostConfiguration.bifrostFormId,
             localFormUserSessionId,
-            formData,
+            questionsWithResponses,
           });
         }}
         handleSubmitFormData={async (): Promise<void> => {
@@ -101,26 +94,13 @@ export function RootComponentWithProviders({
             bifrostTravelerId,
             bifrostFormId: bifrostConfiguration.bifrostFormId,
             localFormUserSessionId,
-            formData,
+            questionsWithResponses,
           });
 
-          mutateBifrostSessionData({
-            key: "userSessionId",
-            value: userSessionId,
-          });
+          setUserSessionId({ userSessionId });
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).userSessionId = userSessionId;
-
-          mutateFormDataAtKeyPath({
-            mutations: [
-              {
-                keyPath: ["userSessionId"],
-                keyValue: userSessionId,
-              },
-            ],
-            setFormData,
-          });
 
           await new Promise((r) => setTimeout(r, 1000));
         }}

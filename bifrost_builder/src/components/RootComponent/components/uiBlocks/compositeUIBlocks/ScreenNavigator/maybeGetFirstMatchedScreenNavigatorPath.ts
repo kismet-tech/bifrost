@@ -1,24 +1,26 @@
 import { ScreenNavigatorUIBlockConditionPath } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
-import { doesFormDataMatchOnKeyPathCondition } from "@/utilities/formData/doesConditionBlockMatchOnCondition";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { doFormQuestionResponsesMatchOnCondition } from "@/utilities/formQuestions/doFormQuestionResponsesMatchOnCondition";
 
 interface MaybeGetFirstMatchedScreenNavigatorPathProps {
   paths: ScreenNavigatorUIBlockConditionPath[];
-  formData: BifrostFormData;
+  formQuestionsWithResponses: QuestionWithResponse[];
 }
 
 export const maybeGetFirstMatchedScreenNavigatorPath = ({
   paths,
-  formData,
+  formQuestionsWithResponses,
 }: MaybeGetFirstMatchedScreenNavigatorPathProps):
   | ScreenNavigatorUIBlockConditionPath
   | undefined => {
   let matchedPath: ScreenNavigatorUIBlockConditionPath | undefined;
 
+  console.log(`paths: ${JSON.stringify(paths, null, 4)}`);
+
   paths.forEach((path: ScreenNavigatorUIBlockConditionPath) => {
-    const doesMatch: boolean = doesFormDataMatchOnKeyPathCondition({
+    const doesMatch: boolean = doFormQuestionResponsesMatchOnCondition({
       condition: path.condition,
-      formData,
+      formQuestionsWithResponses,
     });
 
     if (!matchedPath && doesMatch) {

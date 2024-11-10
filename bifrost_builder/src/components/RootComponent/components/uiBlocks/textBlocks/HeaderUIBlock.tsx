@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { BifrostFormData } from "@/models/configuration/formData";
 import { HeaderUIBlockConfiguration } from "@/models/configuration";
 import { maybeRenderTemplate } from "@/utilities/templating/maybeRenderTemplate";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 
 export const Wraper = styled.div`
   font-size: 2rem;
@@ -9,16 +9,18 @@ export const Wraper = styled.div`
 
 interface HeaderUIBlockProps {
   configuration: HeaderUIBlockConfiguration;
-  formData: BifrostFormData;
 }
 
-export function HeaderUIBlock({ configuration, formData }: HeaderUIBlockProps) {
+export function HeaderUIBlock({ configuration }: HeaderUIBlockProps) {
   let text: string;
+
+  const { maybeGetQuestionWithResponseByFormQuestionId } =
+    useBifrostFormState();
 
   if (configuration.templateText) {
     const maybeRenderedTemplate: string | null = maybeRenderTemplate({
       template: configuration.templateText,
-      formData,
+      maybeGetQuestionWithResponseByFormQuestionId,
     });
 
     if (maybeRenderedTemplate) {

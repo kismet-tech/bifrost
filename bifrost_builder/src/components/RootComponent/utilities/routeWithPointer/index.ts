@@ -1,16 +1,14 @@
 import { determineIfBifrostTravelerRequiresAnEventSpace } from "@/api/determineIfBifrostTravelerRequiresAnEventSpace";
 import { ScreenConfiguration } from "@/models/configuration";
-import { BifrostFormData } from "@/models/configuration/formData";
 import {
   ScreenPointer,
   ScreenPointerType,
 } from "@/models/configuration/pointers/ScreenPointer";
 import { routeBranchByRoomAvailabilityOnDates } from "./routeBranchByRoomAvailabilityOnDates";
 import { routeBranchByInstantOfferAvailability } from "./routeBranchByInstantOfferAvailability";
-import {
-  BifrostSessionDataKey,
-  BifrostSessionDataValue,
-} from "@/models/configuration/bifrostSessionData";
+import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { CalendarDateRange } from "@/models/CalendarDateRange";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface routeWithPointerProps {
   pointer: ScreenPointer;
@@ -18,21 +16,26 @@ interface routeWithPointerProps {
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  formData: BifrostFormData;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
-  handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
   popRightscreenConfigurationStack: () => void;
-  mutateBifrostSessionData: ({
-    key,
-    value,
+  setUserSessionId: ({ userSessionId }: { userSessionId: string }) => void;
+  setInstantBookOffers: ({
+    instantBookOffers,
   }: {
-    key: BifrostSessionDataKey;
-    value: BifrostSessionDataValue;
+    instantBookOffers: RenderableBifrostInstantBookOffer[];
+  }) => void;
+  maybeGetQuestionWithResponseByFormQuestionId: ({
+    formQuestionId,
+  }: {
+    formQuestionId: string;
+  }) => QuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => QuestionWithResponse[];
+  setProposedAlternativeDates: ({
+    calendarDateRange,
+  }: {
+    calendarDateRange: CalendarDateRange;
   }) => void;
 }
 
@@ -42,12 +45,13 @@ export const routeWithPointer = async ({
   bifrostTravelerId,
   bifrostFormId,
   localFormUserSessionId,
-  formData,
-  setFormData,
-  handleSubmitFormData,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
-  mutateBifrostSessionData,
+  setUserSessionId,
+  setInstantBookOffers,
+  maybeGetQuestionWithResponseByFormQuestionId,
+  getQuestionsWithResponses,
+  setProposedAlternativeDates,
 }: routeWithPointerProps) => {
   if (pointer.type === ScreenPointerType.DIRECT) {
     pushScreenConfigurationStack(pointer.screenConfiguration);
@@ -56,10 +60,13 @@ export const routeWithPointer = async ({
   } else if (
     pointer.type === ScreenPointerType.BRANCH_BY_EVENT_SPACE_REQUIREMENT
   ) {
+    const questionsWithResponses: QuestionWithResponse[] =
+      getQuestionsWithResponses();
+
     const { isEventSpaceRequired } =
       await determineIfBifrostTravelerRequiresAnEventSpace({
         hotelId,
-        formData,
+        questionsWithResponses,
       });
 
     if (isEventSpaceRequired) {
@@ -77,11 +84,10 @@ export const routeWithPointer = async ({
     await routeBranchByRoomAvailabilityOnDates({
       pointer,
       hotelId,
-      formData,
-      setFormData,
-      handleSubmitFormData,
       pushScreenConfigurationStack,
-      popRightscreenConfigurationStack,
+      maybeGetQuestionWithResponseByFormQuestionId,
+      getQuestionsWithResponses,
+      setProposedAlternativeDates,
     });
   } else if (
     pointer.type ===
@@ -93,12 +99,10 @@ export const routeWithPointer = async ({
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
-      formData,
-      setFormData,
-      handleSubmitFormData,
       pushScreenConfigurationStack,
-      popRightscreenConfigurationStack,
-      mutateBifrostSessionData,
+      setUserSessionId,
+      setInstantBookOffers,
+      getQuestionsWithResponses,
     });
   }
 };

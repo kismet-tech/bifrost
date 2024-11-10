@@ -1,80 +1,58 @@
-import {
-  attemptToPrefillKismetFieldUsingPriorResponses,
-  PrefilledBifrostFormValueType,
-} from "@/api/attemptToPrefillKismetFieldUsingPriorResponses";
 import { ExpandableCardSelectorUIBlockConfiguration } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
 import { useEffect, useState } from "react";
 import { ExpandableSelectionCard } from "@/components/ui/expandable-selection-card";
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface ExpandableCardSelectorUIBlockProps {
   configuration: ExpandableCardSelectorUIBlockConfiguration;
-  hotelId: string;
-  keyPath: BifrostKeyPath;
-  formData: BifrostFormData;
-  onChange: (selectedCardName: string) => void;
   registerBifrostFormInput: () => Promise<void>;
 }
 
 export function ExpandableCardSelectorUIBlock({
-  configuration: { label, keyName, options, smartFill },
-  hotelId,
-  keyPath,
-  formData,
-  onChange,
+  configuration: { label, options, formQuestionId },
   registerBifrostFormInput,
 }: ExpandableCardSelectorUIBlockProps) {
   const [localSelectedCardName, setLocalSelectedCardName] = useState("");
 
-  const keyValue: string = getValueFromBifrostFormDataByKeyPath({
-    formData,
-    keyPath: [...keyPath, keyName],
-  });
+  const {
+    maybeGetQuestionWithResponseByFormQuestionId,
+    setResponseToQuestion,
+  } = useBifrostFormState();
+
+  const maybeQuestionWithResponse =
+    maybeGetQuestionWithResponseByFormQuestionId({
+      formQuestionId,
+    });
+
+  const maybeQuestionResponse: string =
+    (maybeQuestionWithResponse?.response as string) || "";
 
   useEffect(() => {
-    async function prefillValue() {
-      const { targetKeyStringValue } =
-        await attemptToPrefillKismetFieldUsingPriorResponses({
-          hotelId,
-          formData,
-          targetKeyName: keyName,
-          targetValueType: PrefilledBifrostFormValueType.STRING,
-        });
-
-      if (!keyValue && targetKeyStringValue) {
-        setLocalSelectedCardName(targetKeyStringValue);
-        onChange(targetKeyStringValue);
-      }
-    }
-
-    if (smartFill) {
-      prefillValue();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (keyValue && typeof keyValue === "string") {
-      setLocalSelectedCardName(keyValue as string);
+    if (maybeQuestionResponse) {
+      setLocalSelectedCardName(maybeQuestionResponse);
     } else {
       setLocalSelectedCardName("");
     }
-  }, [keyValue]);
+  }, [maybeQuestionResponse]);
 
   const onChangeLocalValue = (cardName: string) => (checked: boolean) => {
     if (checked) {
       setLocalSelectedCardName(cardName);
-      onChange(cardName);
+      setResponseToQuestion({
+        questionWithResponse: {
+          formQuestionId,
+          responseType: QuestionResponseType.STRING,
+          response: cardName,
+        },
+      });
     }
     registerBifrostFormInput();
   };
 
-  const labelId = `kismet_${keyName}`;
+  const labelId = `kismet_${formQuestionId}`;
 
   return (
     <FormField>

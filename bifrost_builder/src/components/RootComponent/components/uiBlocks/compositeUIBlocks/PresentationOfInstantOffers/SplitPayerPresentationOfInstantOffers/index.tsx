@@ -5,24 +5,23 @@ import { SplitPayerRenderedInstantOffersFooter } from "./SplitPayerRenderedInsta
 import { RenderedSplitPayerRenderedInstantOfferRules } from "./RenderedSplitPayerRenderedInstantOfferRules";
 import { getBifrostSinglePayerCheckoutUrl } from "@/api/getBifrostSinglePayerCheckoutUrl";
 import { GetBifrostSplitPayerCheckoutUrlHotelRoomInstantBookOffer } from "@/api/getBifrostSplitPayerCheckoutUrl/models";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 
 interface SplitPayerPresentationOfInstantOffersProps {
   renderableInstantOffers: RenderableBifrostInstantBookOffer[];
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  userSessionId: string;
 }
 
 export function SplitPayerPresentationOfInstantOffers({
   renderableInstantOffers,
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  userSessionId,
 }: SplitPayerPresentationOfInstantOffersProps) {
+  const {
+    getHotelId,
+    maybeGetBifrostTravelerId,
+    maybeGetBifrostFormId,
+    maybeGetLocalFormUserSessionId,
+    getUserSessionId,
+  } = useBifrostFormState();
+
   const [
     selectedBifrostInstantBookOfferId,
     setSelectedBifrostInstantBookOfferId,
@@ -30,6 +29,13 @@ export function SplitPayerPresentationOfInstantOffers({
 
   const [bifrostSinglePayerCheckoutUrl, setBifrostSinglePayerCheckoutUrl] =
     useState<string | undefined>(undefined);
+
+  const hotelId: string = getHotelId();
+  const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
+  const bifrostFormId: string = maybeGetBifrostFormId() as string;
+  const localFormUserSessionId: string =
+    maybeGetLocalFormUserSessionId() as string;
+  const userSessionId: string = getUserSessionId() as string;
 
   const selectInstantOffer = (instantOfferId: string) => {
     setSelectedBifrostInstantBookOfferId(

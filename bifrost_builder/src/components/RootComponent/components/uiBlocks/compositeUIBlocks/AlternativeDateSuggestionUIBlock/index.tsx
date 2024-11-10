@@ -1,19 +1,15 @@
 import styled from "styled-components";
 import { Button } from "@/components/ui/button";
-import { CalendarDate } from "@/models/CalendarDate";
 import { renderCalendarDate } from "@/utilities/dates/renderCalendarDate";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
 import {
   AlternativeDateSuggestionUIBlockConfiguration,
   ScreenConfiguration,
 } from "@/models/configuration";
-import { getValueFromBifrostFormDataByKeyPath } from "@/utilities/formData/getValueFromBifrostFormDataByKeyPath";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
-import { mutateFormDataAtKeyPath } from "@/utilities/formData/mutateFormDataAtKeyPath";
-import { useBifrostSessionData } from "@/contexts/useBifrostSessionData";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { CalendarDateRange } from "@/models/CalendarDateRange";
+import { selectedDatesQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/dateQuestionGroupKnollcroftV3";
+import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,16 +20,6 @@ const Wrapper = styled.div`
 
 interface AlternativeDateSuggestionUIBlockProps {
   configuration: AlternativeDateSuggestionUIBlockConfiguration;
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  keyPath: BifrostKeyPath;
-  formData: BifrostFormData;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
-  handleSubmitFormData: () => void;
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
   ) => void;
@@ -43,40 +29,36 @@ interface AlternativeDateSuggestionUIBlockProps {
 
 export function AlternativeDateSuggestionUIBlock({
   configuration: {
-    startCalendarDateKeyPath,
-    endCalendarDateKeyPath,
-    alternativeStartCalendarDateKeyPath,
-    alternativeEndCalendarDateKeyPath,
     acceptAlternativeDatesLabel,
     rejectAlternativeDatesLabel,
     acceptedAlternativeDatesScreenPointer,
     rejectedAlternativeDatesScreenPointer,
   },
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  setFormData,
-  handleSubmitFormData,
   pushScreenConfigurationStack,
-  formData,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
 }: AlternativeDateSuggestionUIBlockProps) {
-  const { mutateBifrostSessionData } = useBifrostSessionData();
+  const {
+    setUserSessionId,
+    setInstantBookOffers,
+    maybeGetProposedAlternativeDates,
+    maybeGetQuestionWithResponseByFormQuestionId,
+    getQuestionsWithResponses,
+    setProposedAlternativeDates,
+    setResponseToQuestion,
+    getHotelId,
+    maybeGetBifrostFormId,
+    maybeGetLocalFormUserSessionId,
+  } = useBifrostFormState();
 
-  const alternativeStartCalendarDate: CalendarDate =
-    getValueFromBifrostFormDataByKeyPath({
-      formData,
-      keyPath: alternativeStartCalendarDateKeyPath,
-    });
+  const hotelId: string = getHotelId();
+  const bifrostTravelerId: string = maybeGetBifrostFormId() as string;
+  const bifrostFormId: string = maybeGetBifrostFormId() as string;
+  const localFormUserSessionId: string =
+    maybeGetLocalFormUserSessionId() as string;
 
-  const alternativeEndCalendarDate: CalendarDate =
-    getValueFromBifrostFormDataByKeyPath({
-      formData,
-      keyPath: alternativeEndCalendarDateKeyPath,
-    });
-
+  const maybeProposedAlternativeDates: CalendarDateRange | undefined =
+    maybeGetProposedAlternativeDates();
   const onClickAcceptAlternativeDates = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -88,37 +70,30 @@ export function AlternativeDateSuggestionUIBlock({
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
-      formData,
-      setFormData,
-      handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
-      mutateBifrostSessionData,
+      setUserSessionId,
+      setInstantBookOffers,
+      maybeGetQuestionWithResponseByFormQuestionId,
+      getQuestionsWithResponses,
+      setProposedAlternativeDates,
     });
 
-    mutateFormDataAtKeyPath({
-      mutations: [
-        {
-          keyPath: startCalendarDateKeyPath,
-          keyValue: alternativeStartCalendarDate,
+    if (
+      maybeProposedAlternativeDates?.startCalendarDate &&
+      maybeProposedAlternativeDates?.endCalendarDate
+    ) {
+      setResponseToQuestion({
+        questionWithResponse: {
+          formQuestionId: selectedDatesQuestionKnollcroftV3.formQuestionId,
+          responseType: QuestionResponseType.CALENDAR_DATE_RANGE,
+          response: {
+            startCalendarDate: maybeProposedAlternativeDates?.startCalendarDate,
+            endCalendarDate: maybeProposedAlternativeDates?.endCalendarDate,
+          },
         },
-        {
-          keyPath: endCalendarDateKeyPath,
-          keyValue: alternativeEndCalendarDate,
-        },
-        {
-          keyPath: alternativeStartCalendarDateKeyPath,
-          keyValue: undefined,
-        },
-        {
-          keyPath: alternativeEndCalendarDateKeyPath,
-          keyValue: undefined,
-        },
-      ],
-      setFormData,
-    });
-
-    registerBifrostFormInput();
+      });
+    }
   };
 
   const rejectAlternativeDates = () => {
@@ -128,26 +103,13 @@ export function AlternativeDateSuggestionUIBlock({
       bifrostTravelerId,
       bifrostFormId,
       localFormUserSessionId,
-      formData,
-      setFormData,
-      handleSubmitFormData,
       pushScreenConfigurationStack,
       popRightscreenConfigurationStack,
-      mutateBifrostSessionData,
-    });
-
-    mutateFormDataAtKeyPath({
-      mutations: [
-        {
-          keyPath: alternativeStartCalendarDateKeyPath,
-          keyValue: undefined,
-        },
-        {
-          keyPath: alternativeEndCalendarDateKeyPath,
-          keyValue: undefined,
-        },
-      ],
-      setFormData,
+      setUserSessionId,
+      setInstantBookOffers,
+      maybeGetQuestionWithResponseByFormQuestionId,
+      getQuestionsWithResponses,
+      setProposedAlternativeDates,
     });
   };
 
@@ -161,20 +123,25 @@ export function AlternativeDateSuggestionUIBlock({
     registerBifrostFormInput();
   };
 
-  if (!alternativeStartCalendarDate || !alternativeEndCalendarDate) {
+  if (
+    !maybeProposedAlternativeDates?.startCalendarDate ||
+    !maybeProposedAlternativeDates?.endCalendarDate
+  ) {
     rejectAlternativeDates();
   }
 
-  const renderedAlternativeStartCalendarDate = alternativeStartCalendarDate
-    ? renderCalendarDate({
-        calendarDate: alternativeStartCalendarDate,
-      })
-    : "";
-  const renderedAlternativeEndCalendarDate = alternativeEndCalendarDate
-    ? renderCalendarDate({
-        calendarDate: alternativeEndCalendarDate,
-      })
-    : "";
+  const renderedAlternativeStartCalendarDate =
+    maybeProposedAlternativeDates?.startCalendarDate
+      ? renderCalendarDate({
+          calendarDate: maybeProposedAlternativeDates.startCalendarDate,
+        })
+      : "";
+  const renderedAlternativeEndCalendarDate =
+    maybeProposedAlternativeDates?.endCalendarDate
+      ? renderCalendarDate({
+          calendarDate: maybeProposedAlternativeDates.endCalendarDate,
+        })
+      : "";
 
   return (
     <Wrapper>

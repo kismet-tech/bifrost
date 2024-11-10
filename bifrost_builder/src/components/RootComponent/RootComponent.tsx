@@ -1,5 +1,5 @@
 import { BifrostConfiguration } from "@/models/configuration";
-import { BifrostSessionDataProvider } from "@/contexts/BifrostSessionDataProvider";
+import { BifrostFormStateProvider } from "@/contexts/BifrostFormStateProvider";
 import { RootComponentWithProviders } from "./RootComponentWithProviders";
 import { Auth0Provider } from "@auth0/auth0-react";
 
@@ -20,12 +20,12 @@ export function KismetRootComponent({
         useRefreshTokens={false}
         cacheLocation="localstorage"
       >
-        <BifrostSessionDataProvider>
+        <BifrostFormStateProvider>
           <RootComponentWithProviders
             bifrostTravelerId={bifrostTravelerId}
             bifrostConfiguration={bifrostConfiguration}
           />
-        </BifrostSessionDataProvider>
+        </BifrostFormStateProvider>
       </Auth0Provider>
     </div>
   );

@@ -4,8 +4,8 @@
 
 import { ThemeVariables } from "@/models/configuration/themes";
 import { ScreenPointer } from "./pointers/ScreenPointer";
-import { BifrostKeyPath } from "./formData";
-import { BifrostKeyPathCondition } from "./bifrostKeyPathCondition";
+import { FormQuestionId } from "../formQuestions/questionWithResponse";
+import { FormQuestionResponseCondition } from "../formQuestions/formQuestionResponseCondition";
 
 export enum BlockType {
   LAYOUT_BLOCK = "LAYOUT_BLOCK",
@@ -42,6 +42,7 @@ export enum UIBlockType {
   SELECT_INPUT = "SELECT_INPUT",
   DATE_PICKER = "DATE_PICKER",
   DATE_RANGE_PICKER = "DATE_RANGE_PICKER",
+  MULTI_DATE_RANGE_PICKER = "MULTI_DATE_RANGE_PICKER",
   RANGE_SLIDER = "RANGE_SLIDER",
   EXPANDABLE_CARD_SELECTOR = "EXPANDABLE_CARD_SELECTOR",
   TOGGLE_GROUP = "TOGGLE_GROUP",
@@ -53,6 +54,7 @@ export enum UIBlockType {
   ALTERNATIVE_DATE_SUGGESTION = "ALTERNATIVE_DATE_SUGGESTION",
   SCREEN_NAVIGATOR = "SCREEN_NAVIGATOR",
   INSTANT_OFFER = "INSTANT_OFFER",
+  ITINERARY_SUMMARY_HEADER = "ITINERARY_SUMMARY_HEADER",
 }
 
 export interface HeaderUIBlockConfiguration extends BaseUIBlockConfiguration {
@@ -71,7 +73,7 @@ export interface SubheaderUIBlockConfiguration
 export interface SmartGreetingSubheaderUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.SMART_GREETING_SUBHEADER;
-  formGreetingDataKeyPath: string;
+  additionalDetailsFormQuestionId: FormQuestionId;
 }
 
 export interface SmartFarewellUISubheaderUIBlockConfiguration
@@ -83,8 +85,9 @@ export interface TextInputUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.TEXT_INPUT;
 
+  formQuestionId: FormQuestionId;
+
   label?: string;
-  keyName: string;
   placeholder?: string;
   smartFill?: boolean;
   autocomplete?: string;
@@ -95,8 +98,9 @@ export interface TextAreaInputUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.TEXT_AREA_INPUT;
 
+  formQuestionId: FormQuestionId;
+
   label?: string;
-  keyName: string;
   placeholder: string;
   autocomplete?: string;
 
@@ -112,8 +116,9 @@ export interface SelectInputUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.SELECT_INPUT;
 
+  formQuestionId: FormQuestionId;
+
   label: string;
-  keyName: string;
   options: SelectInputUIBlockConfigurationOption[];
   autocomplete?: string;
 }
@@ -123,7 +128,7 @@ export interface DatePickerUIBlockConfiguration
   uiBlockType: UIBlockType.DATE_PICKER;
   label?: string;
 
-  calendarDateKeyName: string;
+  formQuestionId: FormQuestionId;
 
   smartFill?: boolean;
 }
@@ -133,8 +138,17 @@ export interface DateRangePickerUIBlockConfiguration
   uiBlockType: UIBlockType.DATE_RANGE_PICKER;
   label?: string;
 
-  startCalendarDateKeyName: string;
-  endCalendarDateKeyName: string;
+  formQuestionId: FormQuestionId;
+
+  smartFill?: boolean;
+}
+
+export interface MultiDateRangePickerUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.MULTI_DATE_RANGE_PICKER;
+  label?: string;
+
+  formQuestionId: FormQuestionId;
 
   smartFill?: boolean;
 }
@@ -146,8 +160,7 @@ export interface RangeSliderInputUIBlockConfiguration
   label: string;
   initialRangeMin: number;
   initialRangeMax: number;
-  valueMinKeyName: string;
-  valueMaxKeyName: string;
+  formQuestionId: FormQuestionId;
 
   initialStepSize?: number;
 
@@ -165,7 +178,7 @@ export interface ExpandableCardSelectorUIBlockConfiguration
   uiBlockType: UIBlockType.EXPANDABLE_CARD_SELECTOR;
 
   label: string;
-  keyName: string;
+  formQuestionId: FormQuestionId;
   options: ExpandableSelectionCardUIBlockConfigurationOption[];
 
   smartFill?: boolean;
@@ -180,8 +193,9 @@ export interface ToggleGroupUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.TOGGLE_GROUP;
 
-  label: string;
-  keyName: string;
+  formQuestionId: FormQuestionId;
+
+  label?: string;
   options: ToggleGroupUIBlockConfigurationOption[];
   smartFill?: boolean;
 }
@@ -191,13 +205,10 @@ export interface ButtonUIBlockConfiguration extends BaseUIBlockConfiguration {
 
   label: string;
 
-  keyName?: string;
-  keyValue?: string;
+  formQuestionId?: FormQuestionId;
+  formQuestionResponse?: string;
 
-  submitsForm: boolean;
-
-  updatesUserSession?: boolean;
-  updatesUserSessionKeyPaths?: BifrostKeyPath[];
+  submitsForm?: boolean;
 
   screenPointer?: ScreenPointer;
 }
@@ -206,11 +217,7 @@ export interface AlternativeDateSuggestionUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.ALTERNATIVE_DATE_SUGGESTION;
 
-  startCalendarDateKeyPath: BifrostKeyPath;
-  endCalendarDateKeyPath: BifrostKeyPath;
-
-  alternativeStartCalendarDateKeyPath: BifrostKeyPath;
-  alternativeEndCalendarDateKeyPath: BifrostKeyPath;
+  formQuestionId: FormQuestionId;
 
   acceptAlternativeDatesLabel: string;
   rejectAlternativeDatesLabel: string;
@@ -220,7 +227,7 @@ export interface AlternativeDateSuggestionUIBlockConfiguration
 }
 
 export interface ScreenNavigatorUIBlockConditionPath {
-  condition: BifrostKeyPathCondition;
+  condition: FormQuestionResponseCondition;
   screenPointer: ScreenPointer;
   submitsForm?: boolean;
   forwardPathLabel: string;
@@ -237,6 +244,7 @@ export interface ScreenNavigatorUIBlockConfiguration
   skipPath?: {
     pointer: ScreenPointer;
     submitsForm?: boolean;
+    skipLabel?: string;
   };
 
   paths: ScreenNavigatorUIBlockConditionPath[];
@@ -245,6 +253,27 @@ export interface ScreenNavigatorUIBlockConfiguration
 export interface InstantOfferUIBlockConfiguration
   extends BaseUIBlockConfiguration {
   uiBlockType: UIBlockType.INSTANT_OFFER;
+}
+
+export enum ItinerarySummaryHeaderUIBlockFieldIcon {
+  BUILDING = "BUILDING",
+  CALENDAR = "CALENDAR",
+  BELL = "BELL",
+}
+
+export interface ItinerarySummaryHeaderUIBlockField {
+  icon: ItinerarySummaryHeaderUIBlockFieldIcon;
+  template: string;
+
+  updateDataLabel: string;
+  formQuestionId?: FormQuestionId;
+}
+
+export interface ItinerarySummaryHeaderUIBlockConfiguration
+  extends BaseUIBlockConfiguration {
+  uiBlockType: UIBlockType.ITINERARY_SUMMARY_HEADER;
+
+  fields: ItinerarySummaryHeaderUIBlockField[];
 }
 
 export type UIBlockConfiguration =
@@ -257,20 +286,22 @@ export type UIBlockConfiguration =
   | SelectInputUIBlockConfiguration
   | DatePickerUIBlockConfiguration
   | DateRangePickerUIBlockConfiguration
+  | MultiDateRangePickerUIBlockConfiguration
   | RangeSliderInputUIBlockConfiguration
   | ExpandableCardSelectorUIBlockConfiguration
   | ToggleGroupUIBlockConfiguration
   | ButtonUIBlockConfiguration
   | AlternativeDateSuggestionUIBlockConfiguration
   | ScreenNavigatorUIBlockConfiguration
-  | InstantOfferUIBlockConfiguration;
+  | InstantOfferUIBlockConfiguration
+  | ItinerarySummaryHeaderUIBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Condition Block
 //////////////////////////////////////////////////
 
 export interface ConditionBlockPath {
-  condition: BifrostKeyPathCondition;
+  condition: FormQuestionResponseCondition;
   layout: LayoutBlockConfiguration;
 }
 
@@ -315,26 +346,16 @@ export interface InputTableLayoutBlockColumnConfiguration {
   inputCell: UIBlockConfiguration;
 }
 
-export interface InputTableLayoutBlockConfiguration
-  extends BaseLayoutBlockConfiguration {
-  layoutBlockType: LayoutBlockType.INPUT_TABLE;
-
-  keyName: string;
-  columns: InputTableLayoutBlockColumnConfiguration[];
-}
-
 export type LayoutBlockConfiguration =
   | RowsLayoutBlockConfiguration
-  | ColumnsLayoutBlockConfiguration
-  | InputTableLayoutBlockConfiguration;
+  | ColumnsLayoutBlockConfiguration;
 
 //////////////////////////////////////////////////
 // Screen
 //////////////////////////////////////////////////
-export type ScreenMetadata = Record<string, unknown>;
 
 export interface ScreenConfiguration {
-  metadata?: ScreenMetadata;
+  formQuestionIds: FormQuestionId[];
   layout: LayoutBlockConfiguration;
 }
 

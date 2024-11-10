@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useLayoutEffect } from "react";
 import { KismetRootComponent } from "./components/RootComponent/RootComponent";
-import { knollcroftV2RootScreenConfiguration } from "./getBifrostConfiguration/knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
 import { blueTheme, knollcroftTheme } from "./models/configuration/themes";
+import { knollcroftV2RootScreenConfiguration } from "./getBifrostConfiguration/knollcroftV2Screens/screenConfigurations/knollcroftV2RootScreenConfiguration";
 
 const meta: Meta<typeof KismetRootComponent> = {
   title: "KismetForm",

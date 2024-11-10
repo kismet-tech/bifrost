@@ -1,35 +1,19 @@
 import {
   ConditonBlockConfiguration,
   ScreenConfiguration,
-  ScreenMetadata,
 } from "@/models/configuration";
-import {
-  BifrostFormData,
-  BifrostKeyPath,
-} from "@/models/configuration/formData";
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
-import { getKeyPathsFromConditionBlockPath } from "./getKeyPathsFromConditionBlock";
-import { pruneUnaccessibleConditionKeyPathsFromFormData } from "./pruneUnaccessibleConditionKeyPathsFromFormData";
-import { doesFormDataMatchOnKeyPathCondition } from "../../../../utilities/formData/doesConditionBlockMatchOnCondition";
+import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { doFormQuestionResponsesMatchOnCondition } from "@/utilities/formQuestions/doFormQuestionResponsesMatchOnCondition";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 export interface ConditionOutcome {
   renderedConditionPath: JSX.Element | null;
   conditionIsTrue: boolean;
-  keyPathsInConditionPath: BifrostKeyPath[];
 }
 
 interface ConditionBlockProps {
   configuration: ConditonBlockConfiguration;
-  keyPath: BifrostKeyPath;
-  formData: BifrostFormData;
-  screenMetadata: ScreenMetadata;
-  hotelId: string;
-  bifrostTravelerId: string;
-  bifrostFormId: string;
-  localFormUserSessionId: string;
-  setFormData: (
-    previousFormData: React.SetStateAction<BifrostFormData>
-  ) => void;
   screenConfigurationStack: ScreenConfiguration[];
   pushScreenConfigurationStack: (
     screenConfiguration: ScreenConfiguration
@@ -41,32 +25,23 @@ interface ConditionBlockProps {
 
 export function ConditionBlock({
   configuration: { paths },
-  keyPath,
-  formData,
-  screenMetadata,
-  hotelId,
-  bifrostTravelerId,
-  bifrostFormId,
-  localFormUserSessionId,
-  setFormData,
   screenConfigurationStack,
   pushScreenConfigurationStack,
   popRightscreenConfigurationStack,
   registerBifrostFormInput,
   handleSubmitFormData,
 }: ConditionBlockProps) {
+  const { getQuestionsWithResponses } = useBifrostFormState();
+
+  const formQuestionsWithResponses: QuestionWithResponse[] =
+    getQuestionsWithResponses();
+
   const conditionOutcomes: ConditionOutcome[] = paths.map(
     ({ condition, layout }, index) => {
-      const conditionIsTrue: boolean = doesFormDataMatchOnKeyPathCondition({
+      const conditionIsTrue: boolean = doFormQuestionResponsesMatchOnCondition({
         condition,
-        formData,
+        formQuestionsWithResponses,
       });
-
-      const { keyPaths: keyPathsInConditionPath } =
-        getKeyPathsFromConditionBlockPath({
-          conditionBlockPath: { condition, layout },
-          blockKeyPath: keyPath,
-        });
 
       let renderedConditionPath: JSX.Element | null;
       if (conditionIsTrue) {
@@ -74,14 +49,6 @@ export function ConditionBlock({
           <LayoutBlock
             key={index}
             configuration={layout}
-            keyPath={keyPath}
-            formData={formData}
-            screenMetadata={screenMetadata}
-            hotelId={hotelId}
-            bifrostTravelerId={bifrostTravelerId}
-            bifrostFormId={bifrostFormId}
-            localFormUserSessionId={localFormUserSessionId}
-            setFormData={setFormData}
             registerBifrostFormInput={registerBifrostFormInput}
             handleSubmitFormData={handleSubmitFormData}
             screenConfigurationStack={screenConfigurationStack}
@@ -96,15 +63,9 @@ export function ConditionBlock({
       return {
         renderedConditionPath,
         conditionIsTrue,
-        keyPathsInConditionPath,
       };
     }
   );
-
-  pruneUnaccessibleConditionKeyPathsFromFormData({
-    conditionOutcomes,
-    setFormData,
-  });
 
   return conditionOutcomes.map((outcome) => outcome.renderedConditionPath);
 }

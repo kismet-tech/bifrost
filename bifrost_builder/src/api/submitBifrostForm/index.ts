@@ -1,16 +1,17 @@
-import { BifrostFormData } from "@/models/configuration/formData";
 import { Api } from "..";
 import { AxiosResponse } from "axios";
 import { ErrorResponseDto } from "@/models/monads";
 import { SubmitBifrostFormSuccessResponseDto } from "./models";
 import { sentryScope } from "@/instrument";
+import { rewriteQuestionsWithResponsesToFormData } from "../utilities/rewriteQuestionsWithResponsesToFormData";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface SubmitBifrostFormProps {
   hotelId: string;
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  formData: BifrostFormData;
+  questionsWithResponses: QuestionWithResponse[];
 }
 
 export const submitBifrostForm = async ({
@@ -18,8 +19,12 @@ export const submitBifrostForm = async ({
   bifrostTravelerId,
   bifrostFormId,
   localFormUserSessionId,
-  formData,
+  questionsWithResponses,
 }: SubmitBifrostFormProps): Promise<{ userSessionId: string }> => {
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
+
   try {
     const response: AxiosResponse<
       SubmitBifrostFormSuccessResponseDto | ErrorResponseDto

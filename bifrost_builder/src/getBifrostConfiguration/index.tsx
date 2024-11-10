@@ -5,8 +5,8 @@ import {
   ScreenConfiguration,
 } from "@/models/configuration";
 import { ThemeVariables, knollcroftTheme } from "@/models/configuration/themes";
-import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2RootScreenConfiguration";
-import { knollcroftV2InstantOfferScreenConfiguration } from "./knollcroftV2Screens/knollcroftV2InstantOfferScreenConfiguration";
+import { knollcroftV2InstantOfferScreenConfiguration } from "./knollcroftV2Screens/screenConfigurations/knollcroftV2InstantOfferScreenConfiguration";
+import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/screenConfigurations/knollcroftV2RootScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -24,6 +24,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
 
   let hotelId: string = "";
   let rootScreenConfiguration: ScreenConfiguration = {
+    formQuestionIds: [],
     layout: {
       blockType: BlockType.LAYOUT_BLOCK,
       layoutBlockType: LayoutBlockType.ROWS,

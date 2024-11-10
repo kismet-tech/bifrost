@@ -1,17 +1,22 @@
-import { BifrostFormData } from "@/models/configuration/formData";
+import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { Api } from ".";
+import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 interface DetermineIfBifrostTravelerRequiresAnEventSpaceProps {
   hotelId: string;
-  formData: BifrostFormData;
+  questionsWithResponses: QuestionWithResponse[];
 }
 
 export const determineIfBifrostTravelerRequiresAnEventSpace = async ({
   hotelId,
-  formData,
+  questionsWithResponses,
 }: DetermineIfBifrostTravelerRequiresAnEventSpaceProps): Promise<{
   isEventSpaceRequired: boolean;
 }> => {
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
+
   const response = await Api.post(
     `/Bifrost/DetermineIfBifrostTravelerRequiresAnEventSpace`,
     {
