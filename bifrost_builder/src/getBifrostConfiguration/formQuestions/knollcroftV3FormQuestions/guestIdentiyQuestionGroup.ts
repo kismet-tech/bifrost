@@ -9,7 +9,6 @@ export const firstNameQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 1,
   label: "First Name",
-  dependentUpon: [],
 };
 
 export const lastNameQuestionKnollcroftV3: FormQuestion = {
@@ -17,7 +16,6 @@ export const lastNameQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 1,
   label: "Last Name",
-  dependentUpon: [],
 };
 
 export const guestEmailQuestionKnollcroftV3: FormQuestion = {
@@ -25,7 +23,6 @@ export const guestEmailQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 1,
   label: "Email",
-  dependentUpon: [],
 };
 
 export const guestPhoneNumberQuestionKnollcroftV3: FormQuestion = {
@@ -33,7 +30,6 @@ export const guestPhoneNumberQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 1,
   label: "Phone Number",
-  dependentUpon: [],
 };
 
 export const guestIdentiyQuestionGroupKnollcroftV3: FormQuestionGroup = {

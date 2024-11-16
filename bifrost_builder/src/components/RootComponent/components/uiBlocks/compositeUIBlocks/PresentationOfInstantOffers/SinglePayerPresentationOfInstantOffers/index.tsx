@@ -1,4 +1,4 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 import { SinglePayerRenderedInstantOfferSummary } from "./SinglePayerRenderedInstantOfferSummary";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 

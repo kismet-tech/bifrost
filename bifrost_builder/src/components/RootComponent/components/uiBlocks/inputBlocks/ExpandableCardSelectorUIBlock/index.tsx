@@ -4,7 +4,7 @@ import { ExpandableSelectionCard } from "@/components/ui/expandable-selection-ca
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface ExpandableCardSelectorUIBlockProps {
   configuration: ExpandableCardSelectorUIBlockConfiguration;
@@ -44,7 +44,7 @@ export function ExpandableCardSelectorUIBlock({
       setResponseToQuestion({
         questionWithResponse: {
           formQuestionId,
-          responseType: QuestionResponseType.STRING,
+          responseType: FormQuestionResponseType.STRING,
           response: cardName,
         },
       });

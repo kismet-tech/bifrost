@@ -1,6 +1,6 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 export enum PrefilledBifrostFormValueType {
@@ -12,8 +12,8 @@ export enum PrefilledBifrostFormValueType {
 
 interface AttemptToPrefillKismetFieldUsingPriorResponsesProps {
   hotelId: string;
-  questionWithResponse: QuestionWithResponse;
-  questionsWithResponses: QuestionWithResponse[];
+  questionWithResponse: FormQuestionWithResponse;
+  questionsWithResponses: FormQuestionWithResponse[];
 
   targetValueType: PrefilledBifrostFormValueType;
 }

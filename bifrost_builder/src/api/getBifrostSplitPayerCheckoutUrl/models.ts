@@ -17,7 +17,7 @@ export interface GetBifrostSplitPayerCheckoutUrlRequestDto {
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
 
-  hotelRoomOffers: GetBifrostSplitPayerCheckoutUrlHotelRoomInstantBookOffer[];
+  itineraryOfferId: string;
   userSessionId: string;
 }
 

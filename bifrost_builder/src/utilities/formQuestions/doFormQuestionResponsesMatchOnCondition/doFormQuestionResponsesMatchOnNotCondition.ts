@@ -1,10 +1,10 @@
 import { FormQuestionResponseNotCondition } from "@/models/formQuestions/formQuestionResponseCondition";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { doFormQuestionResponsesMatchOnCondition } from ".";
 
 interface DoesFormDataMatchOnKeyPathNotConditionProps {
   condition: FormQuestionResponseNotCondition;
-  formQuestionsWithResponses: QuestionWithResponse[];
+  formQuestionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const doesFormDataMatchOnKeyPathNotCondition = ({

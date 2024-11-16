@@ -1,11 +1,11 @@
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { Api } from ".";
 import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 interface GetBifrostFormFarewellMessageProps {
   hotelId: string;
   bifrostTravelerId: string;
-  questionsWithResponses: QuestionWithResponse[];
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const getBifrostFormFarewellMessage = async ({

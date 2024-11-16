@@ -1,4 +1,4 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 import { routeWithPointer } from "@/components/RootComponent/utilities/routeWithPointer";
 import { generateNextScreenConfiguration } from "@/getBifrostConfiguration/formQuestions/generateNextScreenConfiguration";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
@@ -10,7 +10,7 @@ import {
 import {
   FormQuestionId,
   BagOfQuestions,
-  QuestionWithResponse,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 
 interface HandleGoToUpdateItineraryFieldProps {
@@ -36,8 +36,8 @@ interface HandleGoToUpdateItineraryFieldProps {
     formQuestionId,
   }: {
     formQuestionId: string;
-  }) => QuestionWithResponse | undefined;
-  getQuestionsWithResponses: () => QuestionWithResponse[];
+  }) => FormQuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => FormQuestionWithResponse[];
   setProposedAlternativeDates: ({
     calendarDateRange,
   }: {

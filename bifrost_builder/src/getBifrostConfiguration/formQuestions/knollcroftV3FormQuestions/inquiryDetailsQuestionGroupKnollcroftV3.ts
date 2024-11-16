@@ -4,7 +4,7 @@ import {
   FormQuestionGroup,
   FormQuestionType,
 } from "../../../models/formQuestions/formQuestion";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 export const inquiryDetailsQuestionKnollcroftV3: FormQuestion = {
   formQuestionId: "Inquiry Details",
@@ -41,16 +41,14 @@ export const companyNameQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_AREA,
   priority: 2,
   label: "Company",
-  conditionalUpon: [
-    {
-      type: FormQuestionResponseConditionType.MATCH,
-      questionWithResponse: {
-        responseType: QuestionResponseType.STRING,
-        formQuestionId: reasonForTravelQuestionKnollcroftV3.formQuestionId,
-        response: reasonForTravelQuestionKnollcroftV3BusinessOption.label,
-      },
+  conditionalUpon: {
+    type: FormQuestionResponseConditionType.MATCH,
+    questionWithResponse: {
+      responseType: FormQuestionResponseType.STRING,
+      formQuestionId: reasonForTravelQuestionKnollcroftV3.formQuestionId,
+      response: reasonForTravelQuestionKnollcroftV3BusinessOption.label,
     },
-  ],
+  },
 };
 
 export const companyWebsiteQuestionKnollcroftV3: FormQuestion = {
@@ -58,16 +56,14 @@ export const companyWebsiteQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_AREA,
   priority: 2,
   label: "Website",
-  conditionalUpon: [
-    {
-      type: FormQuestionResponseConditionType.MATCH,
-      questionWithResponse: {
-        responseType: QuestionResponseType.STRING,
-        formQuestionId: reasonForTravelQuestionKnollcroftV3.formQuestionId,
-        response: reasonForTravelQuestionKnollcroftV3BusinessOption.label,
-      },
+  conditionalUpon: {
+    type: FormQuestionResponseConditionType.MATCH,
+    questionWithResponse: {
+      responseType: FormQuestionResponseType.STRING,
+      formQuestionId: reasonForTravelQuestionKnollcroftV3.formQuestionId,
+      response: reasonForTravelQuestionKnollcroftV3BusinessOption.label,
     },
-  ],
+  },
 };
 
 export const inquiryDetailsQuestionGroupKnollcroftV3: FormQuestionGroup = {

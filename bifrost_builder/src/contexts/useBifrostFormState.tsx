@@ -5,7 +5,7 @@ import {
   BifrostFormStateContext,
   BifrostFormStateContextValue,
 } from "./BifrostFormStateProvider";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 export const useBifrostFormState = () => {
   const context: BifrostFormStateContextValue = useContext(
@@ -13,7 +13,7 @@ export const useBifrostFormState = () => {
   );
 
   const [questionsWithResponses, setQuestionsWithResponses] = useState<
-    QuestionWithResponse[]
+    FormQuestionWithResponse[]
   >(context.getQuestionsWithResponses());
 
   // Watch for updates in the context's questionsWithResponses and update local state

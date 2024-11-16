@@ -1,12 +1,7 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
-import { getSplitPaymentInstantBookOfferHoldRule } from "./getSplitPaymentInstantBookOfferHoldRule";
-import { CalendarDate } from "@/models/CalendarDate";
 import {
-  CalendarDateComarison,
-  compareCalendarDates,
-} from "@/utilities/dates/compareCalendarDates";
-import { InstantBookingOfferRuleTime } from "./models";
-import { getSplitPaymentInstantBookOfferDiscountDuration } from "./getSplitPaymentInstantBookOfferDiscountDuration";
+  RenderableBifrostInstantBookOffer,
+  RenderableBifrostInstantBookOfferRules,
+} from "@/api/instantBookOffers/models";
 
 interface RenderedSplitPayerRenderedInstantOfferRulesProps {
   countOfRoomsOffered: number;
@@ -17,55 +12,42 @@ export function RenderedSplitPayerRenderedInstantOfferRules({
   countOfRoomsOffered,
   renderableInstantOffers,
 }: RenderedSplitPayerRenderedInstantOfferRulesProps) {
-  const arrivalCalendarDate: CalendarDate = renderableInstantOffers.reduce(
-    (
-      accum: CalendarDate | undefined,
-      renderableInstantOffer: RenderableBifrostInstantBookOffer
-    ): CalendarDate => {
-      if (!accum) {
-        return renderableInstantOffer.startCalendarDate;
-      }
-
-      if (
-        compareCalendarDates({
-          firstCalendarDate: accum,
-          secondCalendarDate: renderableInstantOffer.startCalendarDate,
-        }) === CalendarDateComarison.FIRST_DATE_OCCURS_BEFORE_SECOND_DATE
-      ) {
-        return renderableInstantOffer.startCalendarDate;
-      } else {
-        return accum;
-      }
-    },
-    undefined
-  ) as CalendarDate;
-
-  const holdRule: InstantBookingOfferRuleTime =
-    getSplitPaymentInstantBookOfferHoldRule({
-      arrivalCalendarDate,
-    });
-
-  const discountDuration: InstantBookingOfferRuleTime =
-    getSplitPaymentInstantBookOfferDiscountDuration({
-      arrivalCalendarDate,
-    });
-
   const getDayOrHourLabel = (count: number, unit: "day" | "hour") => {
     return count === 1 ? unit : `${unit}s`;
   };
 
-  const renderedHoldRule: JSX.Element =
-    holdRule.days || holdRule.hours ? (
-      <li className="font-bold">
-        {countOfRoomsOffered} rooms will be held for{" "}
-        {(holdRule.days ?? 0) || (holdRule.hours ?? 0)}{" "}
-        {holdRule.days
-          ? getDayOrHourLabel(holdRule.days, "day")
-          : getDayOrHourLabel(holdRule.hours ?? 0, "hour")}
-      </li>
-    ) : (
-      <></>
-    );
+  const offerRules: RenderableBifrostInstantBookOfferRules =
+    renderableInstantOffers[0].offerRules;
+
+  const discountExpiresAtTimestamp: number =
+    offerRules.discountExpiresAtTimestamp;
+
+  const now: number = Date.now();
+
+  if (!discountExpiresAtTimestamp || discountExpiresAtTimestamp < now) {
+    return <></>;
+  }
+
+  const timeUntilDiscountExpires: number = discountExpiresAtTimestamp - now;
+
+  const discountDuration = {
+    days: Math.floor(timeUntilDiscountExpires / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((timeUntilDiscountExpires / (1000 * 60 * 60)) % 24),
+  };
+
+  const discountDurationUnit: "day" | "hour" =
+    discountDuration.hours > 48 ? "day" : "hour";
+  const discountedDurationUnitCount: number =
+    discountDuration.hours > 48
+      ? discountDuration.days
+      : discountDuration.hours;
+
+  const renderedHoldRule: JSX.Element = (
+    <li className="font-bold">
+      {countOfRoomsOffered} rooms will be held for {discountedDurationUnitCount}{" "}
+      {getDayOrHourLabel(discountedDurationUnitCount, discountDurationUnit)}
+    </li>
+  );
 
   const renderedDiscountMinimumRoomsBookingRule: JSX.Element = (
     <li className="font-bold">Discount for at least 3 rooms booked</li>

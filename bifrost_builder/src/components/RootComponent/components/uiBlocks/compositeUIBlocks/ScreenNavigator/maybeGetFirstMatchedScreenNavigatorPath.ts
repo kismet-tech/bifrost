@@ -1,10 +1,10 @@
 import { ScreenNavigatorUIBlockConditionPath } from "@/models/configuration";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { doFormQuestionResponsesMatchOnCondition } from "@/utilities/formQuestions/doFormQuestionResponsesMatchOnCondition";
 
 interface MaybeGetFirstMatchedScreenNavigatorPathProps {
   paths: ScreenNavigatorUIBlockConditionPath[];
-  formQuestionsWithResponses: QuestionWithResponse[];
+  formQuestionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const maybeGetFirstMatchedScreenNavigatorPath = ({

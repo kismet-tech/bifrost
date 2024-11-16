@@ -9,6 +9,8 @@ export interface SubmitBifrostFormRequestDto {
   localFormUserSessionId: string;
 
   formData: { [key: string]: string };
+
+  emailAddress: string;
 }
 
 export interface SubmitBifrostFormSuccessResponseDataDto {

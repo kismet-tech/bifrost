@@ -7,8 +7,8 @@ import {
   ScreenConfiguration,
 } from "@/models/configuration";
 import {
-  QuestionResponseType,
-  QuestionWithResponse,
+  FormQuestionResponseType,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 import styled from "styled-components";
 
@@ -64,7 +64,7 @@ export function ButtonUIBlock({
   const localFormUserSessionId: string =
     maybeGetLocalFormUserSessionId() as string;
 
-  const questionsWithResponses: QuestionWithResponse[] =
+  const questionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   const maybeUserSessionId = getUserSessionId();
@@ -82,7 +82,7 @@ export function ButtonUIBlock({
       setResponseToQuestion({
         questionWithResponse: {
           formQuestionId,
-          responseType: QuestionResponseType.STRING,
+          responseType: FormQuestionResponseType.STRING,
           response: formQuestionResponse,
         },
       });

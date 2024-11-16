@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { useState } from "react";
 import { maybeGetFirstMatchedScreenNavigatorPath } from "./maybeGetFirstMatchedScreenNavigatorPath";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface ScreenNavigatorProps {
   configuration: ScreenNavigatorUIBlockConfiguration;
@@ -50,7 +50,7 @@ export function ScreenNavigator({
   const localFormUserSessionId: string =
     maybeGetLocalFormUserSessionId() as string;
 
-  const formQuestionsWithResponses: QuestionWithResponse[] =
+  const formQuestionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   console.log(

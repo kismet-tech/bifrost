@@ -1,4 +1,3 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import { SinglePayerPresentationOfInstantOffers } from "./SinglePayerPresentationOfInstantOffers";
 import { SplitPayerPresentationOfInstantOffers } from "./SplitPayerPresentationOfInstantOffers";
@@ -6,7 +5,8 @@ import {
   splitPaymentQuestionKnollcroftV3,
   splitPaymentQuestionKnollcroftV3SplitPaymentOption,
 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/guestAndPaymentQuestionGroupKnollcroftV3";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface InstantOfferUIBlockProps {}
 
@@ -20,7 +20,7 @@ export function PresentationOfInstantOffersUIBlock({}: InstantOfferUIBlockProps)
     maybeGetInstantBookOffers() as RenderableBifrostInstantBookOffer[];
 
   const maybeSplitPaymentQuestionWithResponse:
-    | QuestionWithResponse
+    | FormQuestionWithResponse
     | undefined = maybeGetQuestionWithResponseByFormQuestionId({
     formQuestionId: splitPaymentQuestionKnollcroftV3.formQuestionId,
   });

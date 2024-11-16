@@ -9,7 +9,7 @@ import {
 import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface SelectInputUIBlockProps {
   configuration: SelectInputUIBlockConfiguration;
@@ -37,7 +37,7 @@ export function SelectInputUIBlock({
     setResponseToQuestion({
       questionWithResponse: {
         formQuestionId: formQuestionId,
-        responseType: QuestionResponseType.STRING,
+        responseType: FormQuestionResponseType.STRING,
         response: value,
       },
     });

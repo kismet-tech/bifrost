@@ -36,7 +36,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
 
   // if (hostname === "www.knollcroft.com" && urlPathname === "/contact") {
   if (hostname === "www.knollcroft.com") {
-    hotelId = "knollcroft";
+    hotelId = "mews-grand-hotel";
 
     if (urlPathname.includes("groups-beta")) {
       bifrostFormId = "16";
@@ -56,7 +56,7 @@ export function getBifrostConfiguration(): BifrostConfiguration {
       rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
     }
   } else if (hostname === "theknollcroft.com") {
-    hotelId = "knollcroft";
+    hotelId = "mews-grand-hotel";
     bifrostFormId = "2";
     rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
   } else if (hostname.includes("theneighborhoodhotel.com")) {

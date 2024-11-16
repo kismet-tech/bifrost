@@ -1,12 +1,12 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps {
   hotelId: string;
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
-  questionsWithResponses: QuestionWithResponse[];
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({

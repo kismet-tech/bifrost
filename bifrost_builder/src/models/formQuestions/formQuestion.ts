@@ -15,8 +15,7 @@ export interface BaseFormQuestion {
   type: FormQuestionType;
   formQuestionId: FormQuestionId;
   priority: number;
-  dependentUpon?: FormQuestionResponseCondition[];
-  conditionalUpon?: FormQuestionResponseCondition[];
+  conditionalUpon?: FormQuestionResponseCondition;
 }
 
 export interface TextInputFormQuestion extends BaseFormQuestion {

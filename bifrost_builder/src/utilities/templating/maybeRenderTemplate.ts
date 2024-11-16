@@ -1,8 +1,8 @@
 import { getTemplateVariablesFromTemplate } from "@/utilities/templating/getTemplateVariablesFromTemplate";
 import { renderCompactCalendarDateRange } from "../formatting/renderCompactCalendarDateRange";
 import {
-  QuestionWithResponse,
-  QuestionResponseType,
+  FormQuestionWithResponse,
+  FormQuestionResponseType,
 } from "@/models/formQuestions/questionWithResponse";
 
 interface MaybeRenderTemplateProps {
@@ -11,7 +11,7 @@ interface MaybeRenderTemplateProps {
     formQuestionId,
   }: {
     formQuestionId: string;
-  }) => QuestionWithResponse | undefined;
+  }) => FormQuestionWithResponse | undefined;
 }
 
 export const maybeRenderTemplate = ({
@@ -44,7 +44,8 @@ export const maybeRenderTemplate = ({
     );
 
     if (
-      maybeQuestionWithResponse?.responseType === QuestionResponseType.STRING
+      maybeQuestionWithResponse?.responseType ===
+      FormQuestionResponseType.STRING
     ) {
       templateVariableToResponseMap.set(
         templateVariable,
@@ -52,7 +53,7 @@ export const maybeRenderTemplate = ({
       );
     } else if (
       maybeQuestionWithResponse?.responseType ===
-      QuestionResponseType.CALENDAR_DATE_RANGE
+      FormQuestionResponseType.CALENDAR_DATE_RANGE
     ) {
       templateVariableToResponseMap.set(
         templateVariable,

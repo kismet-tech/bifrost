@@ -1,4 +1,3 @@
-import { Api } from "..";
 import { AxiosResponse } from "axios";
 import {
   MaybeGetInstantBookOffersRequestDto,
@@ -6,6 +5,7 @@ import {
   RenderableBifrostInstantBookOffer,
 } from "./models";
 import { ErrorResponseDto } from "@/models/monads";
+import { Api } from "@/api";
 
 export const maybeGetInstantBookOffers = async (
   request: MaybeGetInstantBookOffersRequestDto

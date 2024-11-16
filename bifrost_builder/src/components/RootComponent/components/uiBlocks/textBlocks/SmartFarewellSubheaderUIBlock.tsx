@@ -1,6 +1,6 @@
 import { getBifrostFormFarewellMessage } from "@/api/getBifrostFormFarewellMessage";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -19,7 +19,7 @@ export function SmartFarewellSubheaderUIBlock({}: SmartFarewellSubheaderUIBlockP
   const bifrostTravelerId: string = maybeGetBifrostTravelerId() as string;
   const hotelId: string = getHotelId();
 
-  const questionsWithResponses: QuestionWithResponse[] =
+  const questionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   useEffect(() => {

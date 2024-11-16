@@ -1,5 +1,6 @@
 import { selectedDatesQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/dateQuestionGroupKnollcroftV3";
 import { roomCountQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/guestAndPaymentQuestionGroupKnollcroftV3";
+import { inquiryDetailsQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/inquiryDetailsQuestionGroupKnollcroftV3";
 import {
   BlockType,
   ItinerarySummaryHeaderUIBlockConfiguration,
@@ -28,6 +29,7 @@ export const knollcroftV2SummaryHeader: ItinerarySummaryHeaderUIBlockConfigurati
         icon: ItinerarySummaryHeaderUIBlockFieldIcon.BELL,
         template: ``,
         updateDataLabel: "details",
+        formQuestionId: inquiryDetailsQuestionKnollcroftV3.formQuestionId,
       },
     ],
   };

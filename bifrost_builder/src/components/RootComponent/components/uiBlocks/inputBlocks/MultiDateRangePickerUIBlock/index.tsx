@@ -11,8 +11,8 @@ import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 import {
-  QuestionResponseType,
-  QuestionWithResponse,
+  FormQuestionResponseType,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 
 interface LocalCalendarDateRange {
@@ -43,7 +43,7 @@ export function MultiDateRangePickerUIBlock({
     maybeGetQuestionWithResponseByFormQuestionId,
   } = useBifrostFormState();
 
-  const maybeQuestionWithResponse: QuestionWithResponse | undefined =
+  const maybeQuestionWithResponse: FormQuestionWithResponse | undefined =
     maybeGetQuestionWithResponseByFormQuestionId({
       formQuestionId: questionId,
     });
@@ -158,8 +158,14 @@ export function MultiDateRangePickerUIBlock({
               questionWithResponse: {
                 formQuestionId: questionId,
                 responseType:
-                  QuestionResponseType.ARRAY_OF_CALENDAR_DATE_RANGES,
-                response: updatedLocalCalendarDateRanges as CalendarDateRange[],
+                  FormQuestionResponseType.ARRAY_OF_CALENDAR_DATE_RANGES,
+                response: (
+                  updatedLocalCalendarDateRanges as CalendarDateRange[]
+                ).filter(
+                  (localCalendarDateRange) =>
+                    localCalendarDateRange.startCalendarDate &&
+                    localCalendarDateRange.endCalendarDate
+                ),
               },
             });
 

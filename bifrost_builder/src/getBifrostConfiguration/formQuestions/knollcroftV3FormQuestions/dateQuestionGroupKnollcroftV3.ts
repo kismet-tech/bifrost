@@ -4,7 +4,7 @@ import {
   FormQuestionGroup,
   FormQuestionType,
 } from "../../../models/formQuestions/formQuestion";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 export const dateFlexibilityQuestionKnollcroftV3FirmDatesOption = {
   label: "My dates are firm",
@@ -34,16 +34,14 @@ export const selectedDatesQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.DATE_RANGE_PICKER,
   priority: 3,
   label: "Pick dates",
-  conditionalUpon: [
-    {
-      type: FormQuestionResponseConditionType.MATCH,
-      questionWithResponse: {
-        responseType: QuestionResponseType.STRING,
-        formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
-        response: dateFlexibilityQuestionKnollcroftV3FirmDatesOption.label,
-      },
+  conditionalUpon: {
+    type: FormQuestionResponseConditionType.MATCH,
+    questionWithResponse: {
+      responseType: FormQuestionResponseType.STRING,
+      formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
+      response: dateFlexibilityQuestionKnollcroftV3FirmDatesOption.label,
     },
-  ],
+  },
 };
 
 export const potentialDatesQuestionKnollcroftV3: FormQuestion = {
@@ -51,16 +49,14 @@ export const potentialDatesQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.MULTI_DATE_RANGE_PICKER,
   priority: 3,
   label: "Pick dates",
-  conditionalUpon: [
-    {
-      type: FormQuestionResponseConditionType.MATCH,
-      questionWithResponse: {
-        responseType: QuestionResponseType.STRING,
-        formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
-        response: dateFlexibilityQuestionKnollcroftV3FlexibleDatesOption.label,
-      },
+  conditionalUpon: {
+    type: FormQuestionResponseConditionType.MATCH,
+    questionWithResponse: {
+      responseType: FormQuestionResponseType.STRING,
+      formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
+      response: dateFlexibilityQuestionKnollcroftV3FlexibleDatesOption.label,
     },
-  ],
+  },
 };
 
 export const undecidedDateDetailsQuestionKnollcroftV3: FormQuestion = {
@@ -68,17 +64,15 @@ export const undecidedDateDetailsQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_AREA,
   priority: 3,
   label: "Details",
-  conditionalUpon: [
-    {
-      type: FormQuestionResponseConditionType.MATCH,
-      questionWithResponse: {
-        responseType: QuestionResponseType.STRING,
-        formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
-        response:
-          dateFlexibilityQuestionKnollcroftV3StillDecidingDatesOption.label,
-      },
+  conditionalUpon: {
+    type: FormQuestionResponseConditionType.MATCH,
+    questionWithResponse: {
+      responseType: FormQuestionResponseType.STRING,
+      formQuestionId: dateFlexibilityQuestionKnollcroftV3.formQuestionId,
+      response:
+        dateFlexibilityQuestionKnollcroftV3StillDecidingDatesOption.label,
     },
-  ],
+  },
 };
 
 export const dateQuestionGroupKnollcroftV3: FormQuestionGroup = {

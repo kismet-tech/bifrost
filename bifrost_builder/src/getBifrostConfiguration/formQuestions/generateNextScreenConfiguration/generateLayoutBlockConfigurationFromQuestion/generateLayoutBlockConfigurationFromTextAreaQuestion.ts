@@ -12,10 +12,12 @@ interface GenerateLayoutBlockConfigurationFromTextAreaQuestionProps {
 export const generateLayoutBlockConfigurationFromTextAreaQuestion = ({
   formQuestion,
 }: GenerateLayoutBlockConfigurationFromTextAreaQuestionProps): UIBlockConfiguration => {
-  return {
+  const uiBlockConfiguration: UIBlockConfiguration = {
     blockType: BlockType.UI_BLOCK,
     uiBlockType: UIBlockType.TEXT_AREA_INPUT,
     formQuestionId: formQuestion.formQuestionId,
     placeholder: "",
   };
+
+  return uiBlockConfiguration;
 };

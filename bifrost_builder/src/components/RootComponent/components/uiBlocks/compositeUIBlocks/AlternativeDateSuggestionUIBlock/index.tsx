@@ -9,7 +9,7 @@ import { routeWithPointer } from "@/components/RootComponent/utilities/routeWith
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { selectedDatesQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/dateQuestionGroupKnollcroftV3";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 const Wrapper = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ export function AlternativeDateSuggestionUIBlock({
       setResponseToQuestion({
         questionWithResponse: {
           formQuestionId: selectedDatesQuestionKnollcroftV3.formQuestionId,
-          responseType: QuestionResponseType.CALENDAR_DATE_RANGE,
+          responseType: FormQuestionResponseType.CALENDAR_DATE_RANGE,
           response: {
             startCalendarDate: maybeProposedAlternativeDates?.startCalendarDate,
             endCalendarDate: maybeProposedAlternativeDates?.endCalendarDate,

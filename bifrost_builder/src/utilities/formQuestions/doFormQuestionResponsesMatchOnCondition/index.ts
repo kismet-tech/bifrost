@@ -3,7 +3,7 @@ import {
   FormQuestionResponseCondition,
   FormQuestionResponseConditionType,
 } from "@/models/formQuestions/formQuestionResponseCondition";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { doFormQuestionResponsesMatchOnOrCondition } from "./doFormQuestionResponsesMatchOnOrCondition";
 import { doFormQuestionResponsesMatchOnAndCondition } from "./doFormQuestionResponsesMatchOnAndCondition";
 import { doesFormDataMatchOnKeyPathNotCondition } from "./doFormQuestionResponsesMatchOnNotCondition";
@@ -11,7 +11,7 @@ import { doFormQuestionResponsesMatchOnNotNullCondition } from "./doFormQuestion
 
 interface doFormQuestionResponsesMatchOnConditionProps {
   condition: FormQuestionResponseCondition;
-  formQuestionsWithResponses: QuestionWithResponse[];
+  formQuestionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const doFormQuestionResponsesMatchOnCondition = ({

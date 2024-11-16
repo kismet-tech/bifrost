@@ -1,4 +1,7 @@
-import { FormQuestionId, QuestionWithResponse } from "./questionWithResponse";
+import {
+  FormQuestionId,
+  FormQuestionWithResponse,
+} from "./questionWithResponse";
 
 export enum FormQuestionResponseConditionType {
   NOT_NULL = "NOT_NULL",
@@ -15,7 +18,7 @@ export interface BaseFormQuestionResponseCondition {
 export interface FormQuestionResponseMatchCondition
   extends BaseFormQuestionResponseCondition {
   type: FormQuestionResponseConditionType.MATCH;
-  questionWithResponse: QuestionWithResponse;
+  questionWithResponse: FormQuestionWithResponse;
 }
 
 export interface FormQuestionResponseNotNullCondition

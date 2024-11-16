@@ -12,10 +12,12 @@ interface GenerateLayoutBlockConfigurationFromDateRangePickerQuestionProps {
 export const generateLayoutBlockConfigurationFromDateRangePickerQuestion = ({
   formQuestion,
 }: GenerateLayoutBlockConfigurationFromDateRangePickerQuestionProps): UIBlockConfiguration => {
-  return {
+  const uiBlockConfiguration: UIBlockConfiguration = {
     blockType: BlockType.UI_BLOCK,
     uiBlockType: UIBlockType.DATE_RANGE_PICKER,
     formQuestionId: formQuestion.formQuestionId,
     label: formQuestion.label,
   };
+
+  return uiBlockConfiguration;
 };

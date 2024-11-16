@@ -1,15 +1,15 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import {
   BagOfQuestions,
-  QuestionWithResponse,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 
 export interface BifrostFormState {
   hotelId: string;
 
   bagOfQuestions: BagOfQuestions;
-  questionsWithResponses: QuestionWithResponse[];
+  questionsWithResponses: FormQuestionWithResponse[];
 
   userSessionId?: string;
   bifrostTravelerId?: string;

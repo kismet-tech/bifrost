@@ -9,7 +9,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface DatePickerUIBlockProps {
   configuration: DatePickerUIBlockConfiguration;
@@ -60,7 +60,7 @@ export function DatePickerUIBlock({
           setResponseToQuestion({
             questionWithResponse: {
               formQuestionId,
-              responseType: QuestionResponseType.CALENDAR_DATE,
+              responseType: FormQuestionResponseType.CALENDAR_DATE,
               response: calendarDate,
             },
           });

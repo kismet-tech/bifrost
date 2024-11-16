@@ -1,10 +1,10 @@
 import { FormQuestionResponseOrCondition } from "@/models/formQuestions/formQuestionResponseCondition";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { doFormQuestionResponsesMatchOnCondition } from ".";
 
 interface DoFormQuestionResponsesMatchOnOrConditionProps {
   condition: FormQuestionResponseOrCondition;
-  formQuestionsWithResponses: QuestionWithResponse[];
+  formQuestionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const doFormQuestionResponsesMatchOnOrCondition = ({

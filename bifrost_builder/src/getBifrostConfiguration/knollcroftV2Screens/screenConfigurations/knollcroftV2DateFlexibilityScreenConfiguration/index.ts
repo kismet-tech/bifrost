@@ -22,7 +22,7 @@ import {
 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/dateQuestionGroupKnollcroftV3";
 import { splitPaymentQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/guestAndPaymentQuestionGroupKnollcroftV3";
 import { FormQuestionResponseConditionType } from "@/models/formQuestions/formQuestionResponseCondition";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration =
   {
@@ -73,7 +73,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               condition: {
                 type: FormQuestionResponseConditionType.MATCH,
                 questionWithResponse: {
-                  responseType: QuestionResponseType.STRING,
+                  responseType: FormQuestionResponseType.STRING,
                   formQuestionId:
                     dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                   response:
@@ -86,7 +86,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               condition: {
                 type: FormQuestionResponseConditionType.MATCH,
                 questionWithResponse: {
-                  responseType: QuestionResponseType.STRING,
+                  responseType: FormQuestionResponseType.STRING,
                   formQuestionId:
                     dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                   response:
@@ -99,7 +99,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
               condition: {
                 type: FormQuestionResponseConditionType.MATCH,
                 questionWithResponse: {
-                  responseType: QuestionResponseType.STRING,
+                  responseType: FormQuestionResponseType.STRING,
                   formQuestionId:
                     dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                   response:
@@ -130,7 +130,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                   {
                     type: FormQuestionResponseConditionType.MATCH,
                     questionWithResponse: {
-                      responseType: QuestionResponseType.STRING,
+                      responseType: FormQuestionResponseType.STRING,
                       formQuestionId:
                         dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                       response:
@@ -161,7 +161,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                   {
                     type: FormQuestionResponseConditionType.MATCH,
                     questionWithResponse: {
-                      responseType: QuestionResponseType.STRING,
+                      responseType: FormQuestionResponseType.STRING,
                       formQuestionId:
                         dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                       response:
@@ -189,7 +189,7 @@ export const knollcroftV2DateFlexibilityScreenConfiguration: ScreenConfiguration
                   {
                     type: FormQuestionResponseConditionType.MATCH,
                     questionWithResponse: {
-                      responseType: QuestionResponseType.STRING,
+                      responseType: FormQuestionResponseType.STRING,
                       formQuestionId:
                         dateFlexibilityQuestionKnollcroftV3.formQuestionId,
                       response:

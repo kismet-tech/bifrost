@@ -18,7 +18,7 @@ import {
 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/inquiryDetailsQuestionGroupKnollcroftV3";
 import { firstNameQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/guestIdentiyQuestionGroup";
 import { FormQuestionResponseConditionType } from "@/models/formQuestions/formQuestionResponseCondition";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
   {
@@ -73,7 +73,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
               condition: {
                 type: FormQuestionResponseConditionType.MATCH,
                 questionWithResponse: {
-                  responseType: QuestionResponseType.STRING,
+                  responseType: FormQuestionResponseType.STRING,
                   formQuestionId:
                     reasonForTravelQuestionKnollcroftV3.formQuestionId,
                   response:
@@ -128,7 +128,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
                       questionWithResponse: {
                         formQuestionId:
                           companyNameQuestionKnollcroftV3.formQuestionId,
-                        responseType: QuestionResponseType.STRING,
+                        responseType: FormQuestionResponseType.STRING,
                         response:
                           reasonForTravelQuestionKnollcroftV3BusinessOption.label,
                       },
@@ -140,7 +140,7 @@ export const knollcroftV2TripDetailsScreenConfigurations: ScreenConfiguration =
                       {
                         type: FormQuestionResponseConditionType.MATCH,
                         questionWithResponse: {
-                          responseType: QuestionResponseType.STRING,
+                          responseType: FormQuestionResponseType.STRING,
                           formQuestionId:
                             reasonForTravelQuestionKnollcroftV3.formQuestionId,
                           response:

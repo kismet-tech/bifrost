@@ -1,10 +1,10 @@
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { Api } from ".";
 import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 interface DetermineIfBifrostTravelerRequiresAnEventSpaceProps {
   hotelId: string;
-  questionsWithResponses: QuestionWithResponse[];
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const determineIfBifrostTravelerRequiresAnEventSpace = async ({

@@ -8,18 +8,21 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
 } from "react";
-import { BifrostFormState } from "./models";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { BifrostFormState } from "../models";
 import { FormQuestion } from "@/models/formQuestions/formQuestion";
-import { getBagOfQuestions as getBagOfQuestionsForForm } from "./getBagOfQuestions";
+import { getBagOfQuestions as getBagOfQuestionsForForm } from "../getBagOfQuestions";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { deepEqual } from "@/utilities/core/deepEqual";
 import {
   BagOfQuestions,
   FormQuestionId,
-  QuestionWithResponse,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
+import { deleteResponsesToQuestionsWithMissingConditions } from "./deleteResponsesToQuestionsWithMissingConditions";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
+import { getBifrostTravelerId } from "@/contexts/BifrostFormStateProvider/utilities/getBifrostTravelerId";
 
 export interface BifrostFormStateContextValue {
   getHotelId: () => string;
@@ -70,14 +73,14 @@ export interface BifrostFormStateContextValue {
     formQuestionId,
   }: {
     formQuestionId: FormQuestionId;
-  }) => QuestionWithResponse | undefined;
+  }) => FormQuestionWithResponse | undefined;
 
-  getQuestionsWithResponses: () => QuestionWithResponse[];
+  getQuestionsWithResponses: () => FormQuestionWithResponse[];
 
   setResponseToQuestion: ({
     questionWithResponse,
   }: {
-    questionWithResponse: QuestionWithResponse;
+    questionWithResponse: FormQuestionWithResponse;
   }) => void;
 
   deleteResponseToQuestion: ({
@@ -95,7 +98,7 @@ export interface BifrostFormStateContextValue {
   getBagOfQuestions: () => BagOfQuestions;
 
   subscribeToQuestionsWithResponses: (
-    callback: (newResponses: QuestionWithResponse[]) => void
+    callback: (newResponses: FormQuestionWithResponse[]) => void
   ) => () => void;
 }
 
@@ -111,7 +114,7 @@ export const BifrostFormStateProvider = ({
   children,
 }: BifrostSessionDataProviderProps) => {
   const bifrostFormState: MutableRefObject<BifrostFormState> = useRef({
-    hotelId: "knollcroft",
+    hotelId: "mews-grand-hotel",
     bagOfQuestions: getBagOfQuestionsForForm(),
     questionsWithResponses: [],
   });
@@ -119,7 +122,17 @@ export const BifrostFormStateProvider = ({
   const [
     questionsWithResponsesSubscribers,
     setQuestionsWithResponsesSubscribers,
-  ] = useState<((responses: QuestionWithResponse[]) => void)[]>([]);
+  ] = useState<((responses: FormQuestionWithResponse[]) => void)[]>([]);
+
+  useEffect(() => {
+    const initializeBifrostTravelerId = async () => {
+      if (!bifrostFormState.current.bifrostTravelerId) {
+        const { bifrostTravelerId } = await getBifrostTravelerId();
+        bifrostFormState.current.bifrostTravelerId = bifrostTravelerId;
+      }
+    };
+    initializeBifrostTravelerId();
+  }, []);
 
   // Memoize functions using useCallback
   const getHotelId = useCallback(
@@ -228,10 +241,10 @@ export const BifrostFormStateProvider = ({
       formQuestionId,
     }: {
       formQuestionId: FormQuestionId;
-    }): QuestionWithResponse | undefined => {
-      const maybeQuestionWithResponse: QuestionWithResponse | undefined =
+    }): FormQuestionWithResponse | undefined => {
+      const maybeQuestionWithResponse: FormQuestionWithResponse | undefined =
         bifrostFormState.current.questionsWithResponses.find(
-          (questionWithResponse: QuestionWithResponse) => {
+          (questionWithResponse: FormQuestionWithResponse) => {
             return questionWithResponse.formQuestionId === formQuestionId;
           }
         );
@@ -242,7 +255,7 @@ export const BifrostFormStateProvider = ({
   );
 
   const getQuestionsWithResponses = useCallback(
-    (): QuestionWithResponse[] =>
+    (): FormQuestionWithResponse[] =>
       bifrostFormState.current.questionsWithResponses,
     []
   );
@@ -254,7 +267,7 @@ export const BifrostFormStateProvider = ({
   }, [questionsWithResponsesSubscribers]);
 
   const subscribeToQuestionsWithResponses = useCallback(
-    (callback: (newResponses: QuestionWithResponse[]) => void) => {
+    (callback: (newResponses: FormQuestionWithResponse[]) => void) => {
       setQuestionsWithResponsesSubscribers((prev) => [...prev, callback]);
       return () =>
         setQuestionsWithResponsesSubscribers((prev) =>
@@ -268,11 +281,11 @@ export const BifrostFormStateProvider = ({
     ({
       questionWithResponse,
     }: {
-      questionWithResponse: QuestionWithResponse;
+      questionWithResponse: FormQuestionWithResponse;
     }): void => {
       const currentResponses = bifrostFormState.current.questionsWithResponses;
 
-      const updatedQuestionsWithResponses = currentResponses.some(
+      let updatedFormQuestionWithResponse = currentResponses.some(
         (existingResponse) =>
           existingResponse.formQuestionId ===
           questionWithResponse.formQuestionId
@@ -285,10 +298,16 @@ export const BifrostFormStateProvider = ({
           )
         : [...currentResponses, questionWithResponse];
 
-      if (!deepEqual(updatedQuestionsWithResponses, currentResponses)) {
+      updatedFormQuestionWithResponse =
+        deleteResponsesToQuestionsWithMissingConditions({
+          formQuestionsWithResponses: updatedFormQuestionWithResponse,
+          bagOfQuestions: bifrostFormState.current.bagOfQuestions,
+        });
+
+      if (!deepEqual(updatedFormQuestionWithResponse, currentResponses)) {
         bifrostFormState.current.questionsWithResponses =
-          updatedQuestionsWithResponses;
-        notifySubscribers(); // Notify only if there’s a real change
+          updatedFormQuestionWithResponse;
+        notifySubscribers();
       }
     },
     [notifySubscribers]
@@ -296,20 +315,26 @@ export const BifrostFormStateProvider = ({
 
   const deleteResponseToQuestion = useCallback(
     ({ formQuestionId }: { formQuestionId: FormQuestionId }): void => {
-      const updatedQuestionsWithResponses =
+      let updatedFormQuestionWithResponse =
         bifrostFormState.current.questionsWithResponses.filter(
-          (questionWithResponse: QuestionWithResponse) =>
+          (questionWithResponse: FormQuestionWithResponse) =>
             questionWithResponse.formQuestionId !== formQuestionId
         );
 
+      updatedFormQuestionWithResponse =
+        deleteResponsesToQuestionsWithMissingConditions({
+          formQuestionsWithResponses: updatedFormQuestionWithResponse,
+          bagOfQuestions: bifrostFormState.current.bagOfQuestions,
+        });
+
       if (
         !deepEqual(
-          updatedQuestionsWithResponses,
+          updatedFormQuestionWithResponse,
           bifrostFormState.current.questionsWithResponses
         )
       ) {
         bifrostFormState.current.questionsWithResponses =
-          updatedQuestionsWithResponses;
+          updatedFormQuestionWithResponse;
         notifySubscribers();
       }
     },
@@ -318,20 +343,26 @@ export const BifrostFormStateProvider = ({
 
   const deleteResponsesToQuestions = useCallback(
     ({ formQuestionIds }: { formQuestionIds: FormQuestionId[] }): void => {
-      const updatedQuestionsWithResponses =
+      let updatedFormQuestionWithResponse: FormQuestionWithResponse[] =
         bifrostFormState.current.questionsWithResponses.filter(
-          (questionWithResponse: QuestionWithResponse) =>
+          (questionWithResponse: FormQuestionWithResponse) =>
             !formQuestionIds.includes(questionWithResponse.formQuestionId)
         );
 
+      updatedFormQuestionWithResponse =
+        deleteResponsesToQuestionsWithMissingConditions({
+          formQuestionsWithResponses: updatedFormQuestionWithResponse,
+          bagOfQuestions: bifrostFormState.current.bagOfQuestions,
+        });
+
       if (
         !deepEqual(
-          updatedQuestionsWithResponses,
+          updatedFormQuestionWithResponse,
           bifrostFormState.current.questionsWithResponses
         )
       ) {
         bifrostFormState.current.questionsWithResponses =
-          updatedQuestionsWithResponses;
+          updatedFormQuestionWithResponse;
         notifySubscribers();
       }
     },

@@ -5,8 +5,8 @@ import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import {
-  QuestionResponseType,
-  QuestionWithResponse,
+  FormQuestionResponseType,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 
 interface TextAreaInputUIBlockProps {
@@ -25,7 +25,7 @@ export function TextAreaInputUIBlock({
     maybeGetQuestionWithResponseByFormQuestionId,
   } = useBifrostFormState();
 
-  const maybeQuestionWithResponse: QuestionWithResponse | undefined =
+  const maybeQuestionWithResponse: FormQuestionWithResponse | undefined =
     maybeGetQuestionWithResponseByFormQuestionId({
       formQuestionId: formQuestionId,
     });
@@ -49,7 +49,7 @@ export function TextAreaInputUIBlock({
     setResponseToQuestion({
       questionWithResponse: {
         formQuestionId: formQuestionId,
-        responseType: QuestionResponseType.STRING,
+        responseType: FormQuestionResponseType.STRING,
         response: value,
       },
     });

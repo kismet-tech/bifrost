@@ -2,7 +2,7 @@ import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
 import { getBifrostConfiguration } from "./getBifrostConfiguration";
 import { registerBifrostPageVisit } from "./api/registerBifrostPageVisit";
-import { getBifrostTravelerId } from "./utilities/getBifrostTravelerId";
+import { getBifrostTravelerId } from "./contexts/BifrostFormStateProvider/utilities/getBifrostTravelerId";
 import { maybeJoinTravelerWithKismetCampaign } from "./utilities/maybeJoinTravelerWithKismetCampaign";
 import { BifrostConfiguration } from "./models/configuration";
 

@@ -13,9 +13,11 @@ export const generateLayoutBlockConfigurationFromMultiDateRangePickerQuestion =
   ({
     formQuestion,
   }: GenerateLayoutBlockConfigurationFromMultiDateRangePickerQuestionProps): UIBlockConfiguration => {
-    return {
+    const uiBlockConfiguration: UIBlockConfiguration = {
       blockType: BlockType.UI_BLOCK,
       formQuestionId: formQuestion.formQuestionId,
       uiBlockType: UIBlockType.MULTI_DATE_RANGE_PICKER,
     };
+
+    return uiBlockConfiguration;
   };

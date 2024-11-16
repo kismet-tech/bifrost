@@ -1,17 +1,21 @@
 import { Api } from "..";
 import { AxiosResponse } from "axios";
 import { ErrorResponseDto } from "@/models/monads";
-import { SubmitBifrostFormSuccessResponseDto } from "./models";
+import {
+  SubmitBifrostFormRequestDto,
+  SubmitBifrostFormSuccessResponseDto,
+} from "./models";
 import { sentryScope } from "@/instrument";
 import { rewriteQuestionsWithResponsesToFormData } from "../utilities/rewriteQuestionsWithResponsesToFormData";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { guestEmailQuestionKnollcroftV3 } from "@/getBifrostConfiguration/formQuestions/knollcroftV3FormQuestions/guestIdentiyQuestionGroup";
 
 interface SubmitBifrostFormProps {
   hotelId: string;
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  questionsWithResponses: QuestionWithResponse[];
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const submitBifrostForm = async ({
@@ -21,24 +25,30 @@ export const submitBifrostForm = async ({
   localFormUserSessionId,
   questionsWithResponses,
 }: SubmitBifrostFormProps): Promise<{ userSessionId: string }> => {
+  const emailAddressQuestion: FormQuestionWithResponse | undefined =
+    questionsWithResponses.find(
+      (q) => q.formQuestionId === guestEmailQuestionKnollcroftV3.formQuestionId
+    );
+
+  const emailAddress: string = emailAddressQuestion!.response as string;
+
   const formData = rewriteQuestionsWithResponsesToFormData({
     questionsWithResponses,
   });
 
   try {
+    const requestBody: SubmitBifrostFormRequestDto = {
+      hotelId,
+      bifrostTravelerId,
+      bifrostFormId,
+      localFormUserSessionId,
+      formData,
+      emailAddress,
+    };
+
     const response: AxiosResponse<
       SubmitBifrostFormSuccessResponseDto | ErrorResponseDto
-    > = await Api.post(
-      `/Bifrost/SubmitBifrostForm`,
-      {
-        hotelId,
-        bifrostTravelerId,
-        bifrostFormId,
-        localFormUserSessionId,
-        formData,
-      },
-      {}
-    );
+    > = await Api.post(`/Bifrost/SubmitBifrostForm`, requestBody, {});
 
     if ("error" in response.data) {
       const serverError = new Error(

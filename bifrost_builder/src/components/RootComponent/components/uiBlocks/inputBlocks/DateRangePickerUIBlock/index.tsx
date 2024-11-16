@@ -9,7 +9,7 @@ import { FormField } from "../../styles/FormField";
 import { FormLabel } from "../../styles/FormLabel";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
-import { QuestionResponseType } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionResponseType } from "@/models/formQuestions/questionWithResponse";
 
 interface LocalCalendarDateRange {
   startCalendarDate?: CalendarDate;
@@ -79,7 +79,7 @@ export function DateRangePickerUIBlock({
           setResponseToQuestion({
             questionWithResponse: {
               formQuestionId: formQuestionId,
-              responseType: QuestionResponseType.CALENDAR_DATE_RANGE,
+              responseType: FormQuestionResponseType.CALENDAR_DATE_RANGE,
               response: {
                 startCalendarDate:
                   updatedLocalCalendarDateRange.startCalendarDate,

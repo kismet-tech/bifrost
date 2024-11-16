@@ -8,7 +8,7 @@ import { BifrostScreen } from "./components/BifrostScreen";
 import { registerBifrostFormInput } from "@/api/registerBifrostFormInput";
 import { submitBifrostForm } from "@/api/submitBifrostForm";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface RootComponentWithProvidersProps {
   bifrostTravelerId: string;
@@ -25,7 +25,7 @@ export function RootComponentWithProviders({
     getQuestionsWithResponses,
   } = useBifrostFormState();
 
-  const questionsWithResponses: QuestionWithResponse[] =
+  const questionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   const [localFormUserSessionId] = useState<string>(uuidv4());

@@ -6,13 +6,13 @@ import {
 import { maybeRenderTemplate } from "@/utilities/templating/maybeRenderTemplate";
 import { Calendar, Hotel } from "lucide-react";
 import { handleGoToUpdateItineraryField } from "./handleGoToUpdateItineraryField";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import ConciergeBell from "./ConciergeBell.svg";
 import {
   BagOfQuestions,
-  QuestionWithResponse,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface ItinerarySummaryHeaderFieldProps {
   field: ItinerarySummaryHeaderUIBlockField;
@@ -37,8 +37,8 @@ interface ItinerarySummaryHeaderFieldProps {
     formQuestionId,
   }: {
     formQuestionId: string;
-  }) => QuestionWithResponse | undefined;
-  getQuestionsWithResponses: () => QuestionWithResponse[];
+  }) => FormQuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => FormQuestionWithResponse[];
   setProposedAlternativeDates: ({
     calendarDateRange,
   }: {

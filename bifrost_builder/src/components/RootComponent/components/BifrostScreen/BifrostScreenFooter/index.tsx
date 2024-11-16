@@ -4,11 +4,13 @@ export function BifrostScreenFooter() {
   return (
     <div className="flex items-center justify-center pt-4">
       made with{" "}
-      <img
-        src={KismetLogo}
-        alt="Kismet wordmark"
-        className="ml-2 pointer-events-none"
-      />
+      <a href="https://makekismet.com/" target="_blank" className="ml-2">
+        <img
+          src={KismetLogo}
+          alt="Kismet wordmark"
+          className="pointer-events-none"
+        />
+      </a>
     </div>
   );
 }

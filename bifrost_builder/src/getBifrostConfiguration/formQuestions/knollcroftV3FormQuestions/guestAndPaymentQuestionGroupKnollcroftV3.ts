@@ -9,7 +9,6 @@ export const guestCountQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 4,
   label: "Guests",
-  dependentUpon: [],
 };
 
 export const roomCountQuestionKnollcroftV3: FormQuestion = {
@@ -17,7 +16,6 @@ export const roomCountQuestionKnollcroftV3: FormQuestion = {
   type: FormQuestionType.TEXT_INPUT,
   priority: 4,
   label: "Rooms",
-  dependentUpon: [],
 };
 
 export const splitPaymentQuestionKnollcroftV3SplitPaymentOption = {

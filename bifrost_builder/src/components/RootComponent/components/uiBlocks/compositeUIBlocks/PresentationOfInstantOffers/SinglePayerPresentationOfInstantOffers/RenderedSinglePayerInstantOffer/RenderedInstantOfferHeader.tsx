@@ -1,7 +1,7 @@
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface RenderedInstantOfferHeaderProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;

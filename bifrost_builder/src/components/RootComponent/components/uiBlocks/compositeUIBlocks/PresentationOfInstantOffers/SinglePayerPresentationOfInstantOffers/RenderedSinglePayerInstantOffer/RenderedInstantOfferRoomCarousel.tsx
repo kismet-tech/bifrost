@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface RenderedInstantOfferRoomCarouselProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;

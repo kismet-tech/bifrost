@@ -1,5 +1,6 @@
 import {
   BlockType,
+  ConditonBlockConfiguration,
   LayoutBlockType,
   ScreenConfiguration,
   ScreenNavigatorUIBlockConfiguration,
@@ -16,6 +17,7 @@ import {
   BagOfQuestions,
   FormQuestionId,
 } from "@/models/formQuestions/questionWithResponse";
+import { generateConditionBlockConfigurationFromQuestion } from "./generateConditionBlockConfigurationFromQuestion";
 
 interface GenerateScreenConfigurationProps {
   bagOfQuestions: BagOfQuestions;
@@ -40,10 +42,27 @@ export const generateNextScreenConfiguration = ({
     questionsGroupOnScreen = bagOfQuestions[0];
   }
 
-  const questionBlockConfigurations: UIBlockConfiguration[] =
-    questionsGroupOnScreen.formQuestions.map((formQuestion: FormQuestion) => {
-      return generateLayoutBlockConfigurationFromQuestion({ formQuestion });
-    });
+  const questionBlockConfigurations: (
+    | UIBlockConfiguration
+    | ConditonBlockConfiguration
+  )[] = questionsGroupOnScreen.formQuestions.map(
+    (formQuestion: FormQuestion) => {
+      const uiBlockConfiguration: UIBlockConfiguration =
+        generateLayoutBlockConfigurationFromQuestion({ formQuestion });
+
+      if (!formQuestion.conditionalUpon) {
+        return uiBlockConfiguration;
+      } else {
+        const conditonBlockConfiguration: ConditonBlockConfiguration =
+          generateConditionBlockConfigurationFromQuestion({
+            formQuestionResponseCondition: formQuestion.conditionalUpon,
+            uiBlockConfiguration,
+          });
+
+        return conditonBlockConfiguration;
+      }
+    }
+  );
 
   const screenNavigator: ScreenNavigatorUIBlockConfiguration = {
     blockType: BlockType.UI_BLOCK,

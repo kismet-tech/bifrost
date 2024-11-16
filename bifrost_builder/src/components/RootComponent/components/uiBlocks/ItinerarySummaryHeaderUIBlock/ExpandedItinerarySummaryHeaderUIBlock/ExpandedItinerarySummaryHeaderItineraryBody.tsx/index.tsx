@@ -3,7 +3,7 @@ import { generateLayoutBlockConfigurationFromQuestion } from "@/getBifrostConfig
 import { UIBlockConfiguration } from "@/models/configuration";
 import { UIBlock } from "../../../UIBlock";
 import { FormQuestion } from "@/models/formQuestions/formQuestion";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface ExpandedItinerarySummaryHeaderItineraryBodyProps {}
 
@@ -11,19 +11,21 @@ export function ExpandedItinerarySummaryHeaderItineraryBody({}: ExpandedItinerar
   const { maybeGetFormQuestionByFormQuestionId, getQuestionsWithResponses } =
     useBifrostFormState();
 
-  const questionsWithResponses: QuestionWithResponse[] =
+  const questionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   const questionBlockConfigurations: UIBlockConfiguration[] =
-    questionsWithResponses.map((questionWithResponse: QuestionWithResponse) => {
-      const formQuestion = maybeGetFormQuestionByFormQuestionId({
-        formQuestionId: questionWithResponse.formQuestionId,
-      }) as FormQuestion;
+    questionsWithResponses.map(
+      (questionWithResponse: FormQuestionWithResponse) => {
+        const formQuestion = maybeGetFormQuestionByFormQuestionId({
+          formQuestionId: questionWithResponse.formQuestionId,
+        }) as FormQuestion;
 
-      return generateLayoutBlockConfigurationFromQuestion({
-        formQuestion,
-      });
-    });
+        return generateLayoutBlockConfigurationFromQuestion({
+          formQuestion,
+        });
+      }
+    );
 
   console.log(
     `questionsWithResponses: ${JSON.stringify(questionsWithResponses, null, 4)}`

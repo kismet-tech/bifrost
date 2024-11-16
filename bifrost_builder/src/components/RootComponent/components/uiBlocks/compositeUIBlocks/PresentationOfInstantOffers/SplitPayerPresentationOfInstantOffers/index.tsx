@@ -1,11 +1,10 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { SplitPayerRenderedInstantOfferSummary } from "./SplitPayerRenderedInstantOfferSummary";
 import { useState } from "react";
 import { SplitPayerRenderedInstantOffersFooter } from "./SplitPayerRenderedInstantOffersFooter";
 import { RenderedSplitPayerRenderedInstantOfferRules } from "./RenderedSplitPayerRenderedInstantOfferRules";
-import { getBifrostSinglePayerCheckoutUrl } from "@/api/getBifrostSinglePayerCheckoutUrl";
-import { GetBifrostSplitPayerCheckoutUrlHotelRoomInstantBookOffer } from "@/api/getBifrostSplitPayerCheckoutUrl/models";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
+import { getBifrostSplitPayerCheckoutUrl } from "@/api/getBifrostSplitPayerCheckoutUrl";
 
 interface SplitPayerPresentationOfInstantOffersProps {
   renderableInstantOffers: RenderableBifrostInstantBookOffer[];
@@ -68,25 +67,12 @@ export function SplitPayerPresentationOfInstantOffers({
       const renderableInstantOffer: RenderableBifrostInstantBookOffer =
         renderableInstantOffers.find((renderableInstantOffer) => {
           return (
-            renderableInstantOffer.bifrostInstantBookOfferId ===
+            renderableInstantOffer.itineraryOfferId ===
             selectedBifrostInstantBookOfferId
           );
         }) as RenderableBifrostInstantBookOffer;
 
-      const hotelRoomOffers: GetBifrostSplitPayerCheckoutUrlHotelRoomInstantBookOffer[] =
-        renderableInstantOffer.hotelRoomOffers.map(
-          (
-            hotelRoomOffer
-          ): GetBifrostSplitPayerCheckoutUrlHotelRoomInstantBookOffer => {
-            return {
-              countRequested: hotelRoomOffer.countOffered,
-              offerPriceInCents: hotelRoomOffer.offerPriceInCents,
-              hotelRoomId: hotelRoomOffer.hotelRoomId,
-            };
-          }
-        );
-
-      const { checkoutUrl } = await getBifrostSinglePayerCheckoutUrl({
+      const { checkoutUrl } = await getBifrostSplitPayerCheckoutUrl({
         hotelId,
         bifrostTravelerId,
         bifrostFormId,
@@ -95,7 +81,7 @@ export function SplitPayerPresentationOfInstantOffers({
         startCalendarDate: renderableInstantOffer.startCalendarDate,
         endCalendarDate: renderableInstantOffer.endCalendarDate,
 
-        hotelRoomOffers,
+        itineraryOfferId: renderableInstantOffer.itineraryOfferId,
         userSessionId,
       });
 
@@ -135,9 +121,7 @@ export function SplitPayerPresentationOfInstantOffers({
               localFormUserSessionId={localFormUserSessionId}
               userSessionId={userSessionId}
               handleClickSelectInstantOffer={() =>
-                selectInstantOffer(
-                  renderableInstantOffer.bifrostInstantBookOfferId
-                )
+                selectInstantOffer(renderableInstantOffer.itineraryOfferId)
               }
               selectedBifrostInstantBookOfferId={
                 selectedBifrostInstantBookOfferId

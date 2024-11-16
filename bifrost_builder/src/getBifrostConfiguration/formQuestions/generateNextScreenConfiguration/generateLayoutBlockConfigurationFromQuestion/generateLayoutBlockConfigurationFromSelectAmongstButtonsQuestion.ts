@@ -24,11 +24,13 @@ export const generateLayoutBlockConfigurationFromSelectAmongstButtonsQuestion =
         }
       );
 
-    return {
+    const uiBlockConfiguration: UIBlockConfiguration = {
       blockType: BlockType.UI_BLOCK,
       formQuestionId: formQuestion.formQuestionId,
       uiBlockType: UIBlockType.TOGGLE_GROUP,
       label: formQuestion.label,
       options: toggleGroupOptions,
     };
+
+    return uiBlockConfiguration;
   };

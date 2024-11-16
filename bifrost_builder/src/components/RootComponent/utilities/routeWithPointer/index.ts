@@ -6,9 +6,9 @@ import {
 } from "@/models/configuration/pointers/ScreenPointer";
 import { routeBranchByRoomAvailabilityOnDates } from "./routeBranchByRoomAvailabilityOnDates";
 import { routeBranchByInstantOfferAvailability } from "./routeBranchByInstantOfferAvailability";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
 import { CalendarDateRange } from "@/models/CalendarDateRange";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface routeWithPointerProps {
   pointer: ScreenPointer;
@@ -30,8 +30,8 @@ interface routeWithPointerProps {
     formQuestionId,
   }: {
     formQuestionId: string;
-  }) => QuestionWithResponse | undefined;
-  getQuestionsWithResponses: () => QuestionWithResponse[];
+  }) => FormQuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => FormQuestionWithResponse[];
   setProposedAlternativeDates: ({
     calendarDateRange,
   }: {
@@ -60,7 +60,7 @@ export const routeWithPointer = async ({
   } else if (
     pointer.type === ScreenPointerType.BRANCH_BY_EVENT_SPACE_REQUIREMENT
   ) {
-    const questionsWithResponses: QuestionWithResponse[] =
+    const questionsWithResponses: FormQuestionWithResponse[] =
       getQuestionsWithResponses();
 
     const { isEventSpaceRequired } =

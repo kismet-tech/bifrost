@@ -1,4 +1,4 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface RenderedInstantOfferPackageDescriptionProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;

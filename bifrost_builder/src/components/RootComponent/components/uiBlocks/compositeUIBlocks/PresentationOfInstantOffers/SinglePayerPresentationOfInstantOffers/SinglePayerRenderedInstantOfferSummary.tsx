@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button"; // Assuming the path to the Button component from ShadCN
+import { Button } from "@/components/ui/button"; // Adjust the path as necessary
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { RenderedInstantOffer } from "./RenderedInstantOffer";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderedSinglePayerInstantOffer } from "./RenderedSinglePayerInstantOffer";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 interface SinglePayerRenderedInstantOfferSummaryProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;
@@ -25,10 +25,8 @@ export function SinglePayerRenderedInstantOfferSummary({
   localFormUserSessionId,
   userSessionId,
 }: SinglePayerRenderedInstantOfferSummaryProps) {
-  // Manage Dialog open state
   const [instantOfferModalIsOpen, setInstantOfferModalIsOpen] = useState(false);
 
-  // Function to close the Dialog
   const handleCloseInstantOfferModal = () => {
     setInstantOfferModalIsOpen(false);
   };
@@ -54,7 +52,7 @@ export function SinglePayerRenderedInstantOfferSummary({
           onClick={() => setInstantOfferModalIsOpen(true)}
         >
           #{instantOfferIndex + 1} {renderableInstantOffer.instantBookOfferName}
-        </div>{" "}
+        </div>
         <div className="text mt-1">
           {renderableInstantOffer.startCalendarDate.month}/
           {renderableInstantOffer.startCalendarDate.day}/
@@ -62,7 +60,7 @@ export function SinglePayerRenderedInstantOfferSummary({
           {renderableInstantOffer.endCalendarDate.month}/
           {renderableInstantOffer.endCalendarDate.day}/
           {renderableInstantOffer.endCalendarDate.year.toString().slice(-2)}
-        </div>{" "}
+        </div>
         <div className="text mt-1">
           $
           {Math.round(
@@ -75,7 +73,7 @@ export function SinglePayerRenderedInstantOfferSummary({
             decimalPlaces: 0,
           })}
           % off)
-        </div>{" "}
+        </div>
       </div>
 
       <Dialog
@@ -90,11 +88,11 @@ export function SinglePayerRenderedInstantOfferSummary({
             info <ArrowRight className="ml-2" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-screen-md w-full overflow-hidden">
-          <RenderedInstantOffer
+        <DialogContent className="max-w-screen-md w-full p-4 box-border h-[calc(100vh-32px)] flex flex-col">
+          <RenderedSinglePayerInstantOffer
             instantOfferIndex={instantOfferIndex}
             renderableInstantOffer={renderableInstantOffer}
-            handleCloseInstantOfferModal={handleCloseInstantOfferModal} // Pass the close function down
+            handleCloseInstantOfferModal={handleCloseInstantOfferModal}
             hotelId={hotelId}
             bifrostTravelerId={bifrostTravelerId}
             bifrostFormId={bifrostFormId}

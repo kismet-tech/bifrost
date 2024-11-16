@@ -1,25 +1,26 @@
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { FormQuestionResponseMatchCondition } from "@/models/formQuestions/formQuestionResponseCondition";
 import {
-  QuestionResponseType,
-  QuestionWithResponse,
+  FormQuestionResponseType,
+  FormQuestionWithResponse,
 } from "@/models/formQuestions/questionWithResponse";
 
 interface DoFormQuestionResponsesMatchOnMatchConditionProps {
   condition: FormQuestionResponseMatchCondition;
-  formQuestionsWithResponses: QuestionWithResponse[];
+  formQuestionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const doFormQuestionResponsesMatchOnMatchCondition = ({
   condition: { questionWithResponse },
   formQuestionsWithResponses,
 }: DoFormQuestionResponsesMatchOnMatchConditionProps): boolean => {
-  const maybeAnsweredQuestionWithResponse: QuestionWithResponse | undefined =
-    formQuestionsWithResponses.find(
-      (answeredQuestionWithResponse) =>
-        answeredQuestionWithResponse.formQuestionId ===
-        questionWithResponse.formQuestionId
-    );
+  const maybeAnsweredQuestionWithResponse:
+    | FormQuestionWithResponse
+    | undefined = formQuestionsWithResponses.find(
+    (answeredQuestionWithResponse) =>
+      answeredQuestionWithResponse.formQuestionId ===
+      questionWithResponse.formQuestionId
+  );
 
   if (!maybeAnsweredQuestionWithResponse) {
     return false;
@@ -27,7 +28,7 @@ export const doFormQuestionResponsesMatchOnMatchCondition = ({
 
   if (
     maybeAnsweredQuestionWithResponse.responseType ===
-    QuestionResponseType.STRING
+    FormQuestionResponseType.STRING
   ) {
     return (
       maybeAnsweredQuestionWithResponse.response ===
@@ -35,7 +36,7 @@ export const doFormQuestionResponsesMatchOnMatchCondition = ({
     );
   } else if (
     maybeAnsweredQuestionWithResponse.responseType ===
-    QuestionResponseType.CALENDAR_DATE_RANGE
+    FormQuestionResponseType.CALENDAR_DATE_RANGE
   ) {
     return (
       maybeAnsweredQuestionWithResponse.response.startCalendarDate ===
@@ -46,7 +47,7 @@ export const doFormQuestionResponsesMatchOnMatchCondition = ({
     );
   } else if (
     maybeAnsweredQuestionWithResponse.responseType ===
-    QuestionResponseType.ARRAY_OF_CALENDAR_DATE_RANGES
+    FormQuestionResponseType.ARRAY_OF_CALENDAR_DATE_RANGES
   ) {
     return (
       maybeAnsweredQuestionWithResponse.response.every(

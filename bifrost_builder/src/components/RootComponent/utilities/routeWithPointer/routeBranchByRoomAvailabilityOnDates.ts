@@ -2,7 +2,7 @@ import { determineIfRoomsAreAvailableForBifrostTravelerOnDates } from "@/api/det
 import { CalendarDateRange } from "@/models/CalendarDateRange";
 import { ScreenConfiguration } from "@/models/configuration";
 import { BranchByRoomAvailabilityOnDatesScreenPointer } from "@/models/configuration/pointers/ScreenPointer";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface RouteBranchByRoomAvailabilityOnDatesProps {
   pointer: BranchByRoomAvailabilityOnDatesScreenPointer;
@@ -14,8 +14,8 @@ interface RouteBranchByRoomAvailabilityOnDatesProps {
     formQuestionId,
   }: {
     formQuestionId: string;
-  }) => QuestionWithResponse | undefined;
-  getQuestionsWithResponses: () => QuestionWithResponse[];
+  }) => FormQuestionWithResponse | undefined;
+  getQuestionsWithResponses: () => FormQuestionWithResponse[];
   setProposedAlternativeDates: ({
     calendarDateRange,
   }: {
@@ -31,7 +31,7 @@ export const routeBranchByRoomAvailabilityOnDates = async ({
   getQuestionsWithResponses,
   setProposedAlternativeDates,
 }: RouteBranchByRoomAvailabilityOnDatesProps) => {
-  const questionsWithResponses: QuestionWithResponse[] =
+  const questionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   const maybeQuestionWithResponse =

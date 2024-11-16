@@ -5,7 +5,7 @@ import {
 import { LayoutBlock } from "../layoutBlocks/LayoutBlock";
 import { useBifrostFormState } from "@/contexts/useBifrostFormState";
 import { doFormQuestionResponsesMatchOnCondition } from "@/utilities/formQuestions/doFormQuestionResponsesMatchOnCondition";
-import { QuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 export interface ConditionOutcome {
   renderedConditionPath: JSX.Element | null;
@@ -33,7 +33,7 @@ export function ConditionBlock({
 }: ConditionBlockProps) {
   const { getQuestionsWithResponses } = useBifrostFormState();
 
-  const formQuestionsWithResponses: QuestionWithResponse[] =
+  const formQuestionsWithResponses: FormQuestionWithResponse[] =
     getQuestionsWithResponses();
 
   const conditionOutcomes: ConditionOutcome[] = paths.map(

@@ -3,8 +3,7 @@ import { RenderedInstantOfferFooter } from "./RenderedInstantOfferFooter";
 import { RenderedInstantOfferHeader } from "./RenderedInstantOfferHeader";
 import { RenderedInstantOfferPackageDescription } from "./RenderedInstantOfferPackageDescription";
 import { RenderedInstantOfferRoomCarousel } from "./RenderedInstantOfferRoomCarousel";
-import { GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer } from "@/api/getBifrostSinglePayerCheckoutUrl/models";
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 
 export interface RenderedInstantOfferProps {
   renderableInstantOffer: RenderableBifrostInstantBookOffer;
@@ -18,7 +17,7 @@ export interface RenderedInstantOfferProps {
   userSessionId: string;
 }
 
-export function RenderedInstantOffer({
+export function RenderedSinglePayerInstantOffer({
   renderableInstantOffer,
   instantOfferIndex,
   handleCloseInstantOfferModal,
@@ -29,20 +28,7 @@ export function RenderedInstantOffer({
   localFormUserSessionId,
   userSessionId,
 }: RenderedInstantOfferProps) {
-  const handleVisitCheckoutPage: () => Promise<void> = async () => {
-    const hotelRoomOffers: GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer[] =
-      renderableInstantOffer.hotelRoomOffers.map(
-        (
-          hotelRoomOffer
-        ): GetBifrostSinglePayerCheckoutUrlHotelRoomInstantBookOffer => {
-          return {
-            countRequested: hotelRoomOffer.countOffered,
-            offerPriceInCents: hotelRoomOffer.offerPriceInCents,
-            hotelRoomId: hotelRoomOffer.hotelRoomId,
-          };
-        }
-      );
-
+  const handleVisitCheckoutPage = async () => {
     const { checkoutUrl } = await getBifrostSinglePayerCheckoutUrl({
       hotelId,
       bifrostTravelerId,
@@ -52,7 +38,7 @@ export function RenderedInstantOffer({
       startCalendarDate: renderableInstantOffer.startCalendarDate,
       endCalendarDate: renderableInstantOffer.endCalendarDate,
 
-      hotelRoomOffers,
+      itineraryOfferId: renderableInstantOffer.itineraryOfferId,
       userSessionId,
     });
 
@@ -60,23 +46,28 @@ export function RenderedInstantOffer({
   };
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full h-full flex flex-col">
+      {/* Header */}
       <RenderedInstantOfferHeader
         renderableInstantOffer={renderableInstantOffer}
         handleVisitCheckoutPage={handleVisitCheckoutPage}
         instantOfferIndex={instantOfferIndex}
       />
 
-      <div className="mt-4">
-        <RenderedInstantOfferPackageDescription
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-auto">
+        <div className="mt-4">
+          <RenderedInstantOfferPackageDescription
+            renderableInstantOffer={renderableInstantOffer}
+          />
+        </div>
+
+        <RenderedInstantOfferRoomCarousel
           renderableInstantOffer={renderableInstantOffer}
         />
       </div>
 
-      <RenderedInstantOfferRoomCarousel
-        renderableInstantOffer={renderableInstantOffer}
-      />
-
+      {/* Footer (always visible) */}
       <RenderedInstantOfferFooter
         handleCloseInstantOfferModal={handleCloseInstantOfferModal}
         handleVisitCheckoutPage={handleVisitCheckoutPage}

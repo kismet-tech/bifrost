@@ -1,4 +1,4 @@
-import { RenderableBifrostInstantBookOffer } from "@/api/maybeGetInstantBookOffers/models";
+import { RenderableBifrostInstantBookOffer } from "@/api/instantBookOffers/models";
 import { Button } from "@/components/ui/button";
 import { getDiscountPercent } from "@/utilities/formatting/getDiscountPercent";
 import { ArrowRight } from "lucide-react";
@@ -30,7 +30,7 @@ export function SplitPayerRenderedInstantOfferSummary({
 
   const isSelected =
     selectedBifrostInstantBookOfferId ===
-    renderableInstantOffer.bifrostInstantBookOfferId;
+    renderableInstantOffer.itineraryOfferId;
 
   return (
     <div className="flex items-center justify-between bg-white p-4 rounded-md shadow-md">
