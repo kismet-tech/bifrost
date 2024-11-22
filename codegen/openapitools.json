@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.10.0",
+    "generators": {
+      "typescript-axios": {
+        "generatorName": "typescript-axios",
+        "inputSpec": "spec.json",
+        "output": "../bifrost_builder/src/api/generated",
+        "typeMappings": {
+          "DateTime": "Date",
+          "Date": "Date"
+        },
+        "additionalProperties": {
+          "supportsES6": true,
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "services",
+          "modelPackage": "types",
+          "modelPropertyNaming": "original",
+          "withoutPrefixEnums": false
+        }
+      }
+    }
+  }
+}
