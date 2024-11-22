@@ -2,7 +2,8 @@ import axios from "axios";
 import { fork } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
-import { formatCode, removeDirectory, removeFile } from "./utils";
+import { removeDirectory, removeFile } from "./utils";
+import { processOpenAPISpec } from "./cleanOpenApiSpec";
 
 const SPEC_URL = "http://localhost:4000/swagger-json";
 const OUTPUT_DIRECTORY = path.resolve(
@@ -21,6 +22,8 @@ async function fetchOpenApiSpecification() {
 
 async function generateApiClient() {
   await fetchOpenApiSpecification();
+
+  await processOpenAPISpec(path.resolve(__dirname, "./spec.json"));
 
   console.log("Generating Services and Types...");
   await new Promise((resolve, reject) => {
@@ -46,6 +49,7 @@ async function generateApiClient() {
   console.log("Removing Unnecessary Files...");
   await Promise.all([
     removeFile(path.resolve(__dirname, "./spec.json")),
+    removeFile(path.resolve(__dirname, "./processedSpec.json")),
     removeFile(path.resolve(OUTPUT_DIRECTORY, "./.gitignore")),
     removeFile(path.resolve(OUTPUT_DIRECTORY, "./.npmignore")),
     removeFile(path.resolve(OUTPUT_DIRECTORY, "./.openapi-generator-ignore")),
