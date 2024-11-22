@@ -6,7 +6,7 @@
     "generators": {
       "typescript-axios": {
         "generatorName": "typescript-axios",
-        "inputSpec": "spec.json",
+        "inputSpec": "processedSpec.json",
         "output": "../bifrost_builder/src/api/generated",
         "typeMappings": {
           "DateTime": "Date",
