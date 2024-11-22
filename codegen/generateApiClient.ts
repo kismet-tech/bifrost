@@ -5,7 +5,10 @@ import path from "path";
 import { formatCode, removeDirectory, removeFile } from "./utils";
 
 const SPEC_URL = "http://localhost:4000/swagger-json";
-const OUTPUT_DIRECTORY = path.resolve(__dirname, "../bifrost_builder/src/api/generated");
+const OUTPUT_DIRECTORY = path.resolve(
+  __dirname,
+  "../bifrost_builder/src/api/generated",
+);
 
 async function fetchOpenApiSpecification() {
   console.log("Fetching OpenAPI specification...");
@@ -24,7 +27,7 @@ async function generateApiClient() {
     const process = fork(
       path.resolve(__dirname, "./node_modules/.bin/openapi-generator-cli"),
       ["generate"],
-      { stdio: [0, "pipe", 2, "ipc"] }
+      { stdio: [0, "pipe", 2, "ipc"] },
     );
 
     process.stdout?.resume();
@@ -50,8 +53,6 @@ async function generateApiClient() {
     removeDirectory(path.resolve(OUTPUT_DIRECTORY, "./.openapi-generator")),
   ]);
 
-  console.log("Formatting Generated Code...");
-  await formatCode(`${OUTPUT_DIRECTORY}/**/*.{js,jsx,ts,tsx}`);
   console.log("Done! 🎉");
 }
 
