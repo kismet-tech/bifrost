@@ -1,5 +1,7 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
+import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 export enum PrefilledBifrostFormValueType {
   NUMBER = "NUMBER",
@@ -10,9 +12,9 @@ export enum PrefilledBifrostFormValueType {
 
 interface AttemptToPrefillKismetFieldUsingPriorResponsesProps {
   hotelId: string;
-  formData: Record<string, string>;
+  questionWithResponse: FormQuestionWithResponse;
+  questionsWithResponses: FormQuestionWithResponse[];
 
-  targetKeyName: string;
   targetValueType: PrefilledBifrostFormValueType;
 }
 
@@ -25,24 +27,22 @@ interface AttemptToPrefillKismetFieldUsingPriorResponsesResponse {
 
 export const attemptToPrefillKismetFieldUsingPriorResponses = async ({
   hotelId,
-  targetKeyName,
+  questionWithResponse,
+  questionsWithResponses,
   targetValueType,
-  formData,
 }: AttemptToPrefillKismetFieldUsingPriorResponsesProps): Promise<AttemptToPrefillKismetFieldUsingPriorResponsesResponse> => {
   console.log(`Attempting to prefill Kismet field using prior responses`);
-  console.log(`targetKeyName: ${targetKeyName}`);
   console.log(`targetValueType: ${targetValueType}`);
-  console.log(`formData: ${JSON.stringify(formData, null, 4)}`);
 
-  if (formData[targetKeyName] !== undefined) {
-    return {};
-  }
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
 
   const response = await Api.post(
     `/Bifrost/AttemptToPrefillKismetFieldUsingPriorResponses`,
     {
       hotelId,
-      targetKeyName,
+      targetKeyName: questionWithResponse.formQuestionId,
       targetValueType,
       formData,
     },

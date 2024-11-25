@@ -3,15 +3,14 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { version } from "./package.json";
+import svgr from "vite-plugin-svgr";
 
 // eslint-disable-next-line no-empty-pattern
-export default defineConfig(({ }) => {
+export default defineConfig(({}) => {
   const entryFile = "src/main.tsx";
 
   return {
-    plugins: [react(),
-    cssInjectedByJsPlugin(),
-    ],
+    plugins: [react(), svgr(), cssInjectedByJsPlugin()],
     build: {
       lib: {
         entry: entryFile,

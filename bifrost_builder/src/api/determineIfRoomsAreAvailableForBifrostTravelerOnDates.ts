@@ -1,18 +1,19 @@
 import { CalendarDate } from "@/models/CalendarDate";
 import { Api } from ".";
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 
 interface DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps {
   hotelId: string;
   startCalendarDate: CalendarDate;
   endCalendarDate: CalendarDate;
-  formData: Record<string, string>;
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({
   hotelId,
   startCalendarDate,
   endCalendarDate,
-  formData,
+  questionsWithResponses,
 }: DetermineIfRoomsAreAvailableForBifrostTravelerOnDatesProps): Promise<{
   roomsAreAvailable: boolean;
   alternativeStartCalendarDate?: CalendarDate;
@@ -24,7 +25,7 @@ export const determineIfRoomsAreAvailableForBifrostTravelerOnDates = async ({
       hotelId,
       startCalendarDate,
       endCalendarDate,
-      formData,
+      formData: questionsWithResponses,
     },
     {}
   );

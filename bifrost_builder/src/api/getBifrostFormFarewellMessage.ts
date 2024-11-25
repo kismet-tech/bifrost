@@ -1,17 +1,23 @@
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { Api } from ".";
+import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 interface GetBifrostFormFarewellMessageProps {
   hotelId: string;
   bifrostTravelerId: string;
-  formData: Record<string, string>;
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const getBifrostFormFarewellMessage = async ({
   hotelId,
   bifrostTravelerId,
-  formData,
+  questionsWithResponses,
 }: GetBifrostFormFarewellMessageProps): Promise<{ farewellText: string }> => {
   console.log("CALLING getBifrostFormFarewellMessage");
+
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
 
   const response = await Api.post(
     `/Bifrost/GetBifrostFormFarewellMessage`,

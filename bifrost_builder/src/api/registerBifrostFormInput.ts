@@ -1,11 +1,13 @@
+import { FormQuestionWithResponse } from "@/models/formQuestions/questionWithResponse";
 import { Api } from ".";
+import { rewriteQuestionsWithResponsesToFormData } from "./utilities/rewriteQuestionsWithResponsesToFormData";
 
 interface RegisterBifrostFormInputProps {
   hotelId: string;
   bifrostTravelerId: string;
   bifrostFormId: string;
   localFormUserSessionId: string;
-  formData: Record<string, string>;
+  questionsWithResponses: FormQuestionWithResponse[];
 }
 
 export const registerBifrostFormInput = async ({
@@ -13,8 +15,12 @@ export const registerBifrostFormInput = async ({
   bifrostTravelerId,
   bifrostFormId,
   localFormUserSessionId,
-  formData,
+  questionsWithResponses,
 }: RegisterBifrostFormInputProps) => {
+  const formData = rewriteQuestionsWithResponsesToFormData({
+    questionsWithResponses,
+  });
+
   await Api.post(
     `/Bifrost/RegisterBifrostFormInput`,
     {

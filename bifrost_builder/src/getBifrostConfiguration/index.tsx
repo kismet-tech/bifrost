@@ -1,12 +1,12 @@
 import {
   BifrostConfiguration,
-  FormBlockConfiguration,
-  FormBlockType,
-} from "@/components/KismetForm/models";
-import { nbhdGroupBookingsFormBlocks } from "./nbhdFormBlocks/nbhdGroupBookings";
-import { nbhdExtendedStayBlocks } from "./nbhdFormBlocks/nbhdExtendedStays";
-import { knollcroftFormBlocks } from "./knollcroftFormBlocks";
-import { nbhdRetreatBlocks } from "./nbhdFormBlocks/nbhdRetreat";
+  BlockType,
+  LayoutBlockType,
+  ScreenConfiguration,
+} from "@/models/configuration";
+import { ThemeVariables, knollcroftTheme } from "@/models/configuration/themes";
+import { knollcroftV2InstantOfferScreenConfiguration } from "./knollcroftV2Screens/screenConfigurations/knollcroftV2InstantOfferScreenConfiguration";
+import { knollcroftV2RootScreenConfiguration } from "./knollcroftV2Screens/screenConfigurations/knollcroftV2RootScreenConfiguration";
 
 export function getBifrostConfiguration(): BifrostConfiguration {
   //   const currentUrl = window.location.href;
@@ -23,84 +23,58 @@ export function getBifrostConfiguration(): BifrostConfiguration {
   console.log(`urlPathname: ${urlPathname}`);
 
   let hotelId: string = "";
-  let formBlocks: FormBlockConfiguration[] = [];
+  let rootScreenConfiguration: ScreenConfiguration = {
+    formQuestionIds: [],
+    layout: {
+      blockType: BlockType.LAYOUT_BLOCK,
+      layoutBlockType: LayoutBlockType.ROWS,
+      rows: [],
+    },
+  };
   let bifrostFormId: string = "";
+  const themeVariables: ThemeVariables = knollcroftTheme;
 
   // if (hostname === "www.knollcroft.com" && urlPathname === "/contact") {
   if (hostname === "www.knollcroft.com") {
-    hotelId = "knollcroft";
+    hotelId = "mews-grand-hotel";
 
-    if (
-      ["/contact", "/groups"].some((knollcroftPathname) =>
+    if (urlPathname.includes("groups-beta")) {
+      bifrostFormId = "16";
+      rootScreenConfiguration = knollcroftV2InstantOfferScreenConfiguration;
+    } else if (
+      ["/contact"].some((knollcroftPathname) =>
+        urlPathname.includes(knollcroftPathname)
+      )
+    ) {
+      rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
+    } else if (
+      ["/groups"].some((knollcroftPathname) =>
         urlPathname.includes(knollcroftPathname)
       )
     ) {
       bifrostFormId = "1";
-
-      formBlocks = knollcroftFormBlocks;
+      rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
     }
-
-    return {
-      hotelId,
-      bifrostFormId,
-      formBlocks,
-    };
   } else if (hostname === "theknollcroft.com") {
-    hotelId = "knollcroft";
+    hotelId = "mews-grand-hotel";
     bifrostFormId = "2";
-
-    formBlocks = [
-      {
-        formBlockType: FormBlockType.METADATA,
-        keyName: "inquiryCategory",
-        keyValue: "Group Booking",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Full name",
-        keyName: "fullName",
-        placeholder: "Your full name",
-        inputType: "text",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Email",
-        keyName: "email",
-        placeholder: "",
-        inputType: "email",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_INPUT,
-        label: "Phone",
-        keyName: "phoneNumber",
-        placeholder: "Your phone number",
-        inputType: "tel",
-      },
-      {
-        formBlockType: FormBlockType.TEXT_AREA_INPUT,
-        label: "The details",
-        keyName: "additionalDetails",
-        placeholder: "Tell us about your plans...",
-      },
-    ];
+    rootScreenConfiguration = knollcroftV2RootScreenConfiguration;
   } else if (hostname.includes("theneighborhoodhotel.com")) {
     hotelId = "nbhd";
 
     if (urlPathname.includes("/group-bookings")) {
       bifrostFormId = "3";
-      formBlocks = nbhdGroupBookingsFormBlocks;
     } else if (urlPathname.includes("/extended-stays")) {
       bifrostFormId = "4";
-      formBlocks = nbhdExtendedStayBlocks;
     } else if (urlPathname.includes("/host-a-retreat")) {
       bifrostFormId = "5";
-      formBlocks = nbhdRetreatBlocks;
     }
   }
 
   return {
     hotelId,
     bifrostFormId,
-    formBlocks,
+    rootScreenConfiguration,
+    themeVariables,
   };
 }

@@ -1,20 +1,17 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useLayoutEffect } from "react";
-import { KismetForm } from "./components/KismetForm";
-import {
-  blueTheme,
-  radiusPresets,
-} from "./components/KismetForm/models/themes";
-import { knollcroftFormBlocks } from "./getBifrostConfiguration/knollcroftFormBlocks";
+import { KismetRootComponent } from "./components/RootComponent/RootComponent";
 import { injectTheme } from "./injectDynamicRFP/replaceForm";
+import { blueTheme, knollcroftTheme } from "./models/configuration/themes";
+import { knollcroftV2RootScreenConfiguration } from "./getBifrostConfiguration/knollcroftV2Screens/screenConfigurations/knollcroftV2RootScreenConfiguration";
 
-const meta: Meta<typeof KismetForm> = {
+const meta: Meta<typeof KismetRootComponent> = {
   title: "KismetForm",
-  component: KismetForm,
+  component: KismetRootComponent,
 };
 export default meta;
 
-type Story = StoryObj<typeof KismetForm>;
+type Story = StoryObj<typeof KismetRootComponent>;
 
 export const Example: Story = {
   args: {
@@ -22,12 +19,12 @@ export const Example: Story = {
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
+      rootScreenConfiguration: knollcroftV2RootScreenConfiguration,
     },
   },
 };
 
-export const WithCustomTheme: Story = {
+export const WithBlueTheme: Story = {
   render: (args) => {
     useLayoutEffect(() => {
       const formContainer = document.querySelector(
@@ -45,15 +42,43 @@ export const WithCustomTheme: Story = {
       }
     }, []);
 
-    return <KismetForm {...args} />;
+    return <KismetRootComponent {...args} />;
   },
   args: {
     bifrostTravelerId: "local_testing",
     bifrostConfiguration: {
       hotelId: "testing",
       bifrostFormId: "testing-1",
-      formBlocks: knollcroftFormBlocks,
-      themeVariables: { ...blueTheme, radius: radiusPresets.xl },
+      rootScreenConfiguration: knollcroftV2RootScreenConfiguration,
+      themeVariables: blueTheme,
+    },
+  },
+};
+
+export const WithKnollcroftTheme: Story = {
+  render: (args) => {
+    useLayoutEffect(() => {
+      const formContainer = document.querySelector(
+        ".kismet-dynamic-rfp-widget"
+      ) as HTMLDivElement;
+      const themeVariables = args.bifrostConfiguration.themeVariables;
+
+      if (formContainer && themeVariables) {
+        // Apply the theme from the bifrost configuration
+        // This will normally be done in our `replaceForm` function
+        injectTheme(formContainer, themeVariables);
+      }
+    }, []);
+
+    return <KismetRootComponent {...args} />;
+  },
+  args: {
+    bifrostTravelerId: "local_testing",
+    bifrostConfiguration: {
+      hotelId: "testing",
+      bifrostFormId: "testing-1",
+      rootScreenConfiguration: knollcroftV2RootScreenConfiguration,
+      themeVariables: knollcroftTheme,
     },
   },
 };
