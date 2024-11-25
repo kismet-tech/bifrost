@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Kismet",
+  "scripts": {
+    "codegen": "ts-node generateApiClient.ts"
+  },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.15.3",
     "@types/node": "^22.9.1",
