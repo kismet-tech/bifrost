@@ -1,14 +1,20 @@
 import "@/globals.css";
-import { KismetRootComponent } from "../components/RootComponent/RootComponent";
-import { localTestingConfiguration } from "./localTestingConfiguration";
+import {
+  BifrostApi,
+  BifrostFormApplication,
+  BifrostFormStateProvider,
+} from "@kismet_ai/aura";
 
 function SelfContainedApp() {
   return (
     <div className="kismet-dynamic-rfp-widget">
-      <KismetRootComponent
-        bifrostTravelerId="local_testing"
-        bifrostConfiguration={localTestingConfiguration}
-      />
+      {/* <BifrostFormApplication /> */}
+
+      {/* <AppViewport> */}
+      <BifrostFormStateProvider bifrostApi={new BifrostApi()}>
+        <BifrostFormApplication />
+      </BifrostFormStateProvider>
+      {/* </AppViewport> */}
     </div>
   );
 }

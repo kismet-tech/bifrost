@@ -3,6 +3,10 @@
   @tailwind components;
   @tailwind utilities;
 
+  body {
+    @apply font-sans;
+  }
+
   @keyframes spin {
     from {
       transform: rotate(0deg);

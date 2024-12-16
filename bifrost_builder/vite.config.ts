@@ -4,13 +4,14 @@ import { defineConfig } from "vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { version } from "./package.json";
 import svgr from "vite-plugin-svgr";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // eslint-disable-next-line no-empty-pattern
 export default defineConfig(({}) => {
   const entryFile = "src/main.tsx";
 
   return {
-    plugins: [react(), svgr(), cssInjectedByJsPlugin()],
+    plugins: [react(), svgr(), cssInjectedByJsPlugin(), nodePolyfills()],
     build: {
       lib: {
         entry: entryFile,

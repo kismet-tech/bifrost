@@ -1,19 +1,6 @@
-import { BifrostConfiguration } from "@/models/configuration";
 import { replaceForm } from "./replaceForm";
 
-interface InjectDynamicRFPProps {
-  bifrostTravelerId: string;
-  bifrostConfiguration: BifrostConfiguration;
-}
-
-export const injectDynamicRFP = ({
-  bifrostTravelerId,
-  bifrostConfiguration,
-}: InjectDynamicRFPProps) => {
-  if (!bifrostConfiguration.rootScreenConfiguration) {
-    return;
-  }
-
+export const injectDynamicRFP = () => {
   // <div id="kismet-dynamic-rfp-widget"></div>
   // Placeholder
   let dynamicRfpWidgetContainer: HTMLElement | null = document.getElementById(
@@ -23,8 +10,6 @@ export const injectDynamicRFP = ({
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
-      bifrostTravelerId,
-      bifrostConfiguration,
     });
   }
 
@@ -35,8 +20,6 @@ export const injectDynamicRFP = ({
   if (dynamicRfpWidgetContainer) {
     return replaceForm({
       dynamicRfpWidgetContainer,
-      bifrostTravelerId,
-      bifrostConfiguration,
     });
   }
 

@@ -1,10 +1,5 @@
 import "@/globals.css";
 import { injectDynamicRFP } from "./injectDynamicRFP";
-import { getBifrostConfiguration } from "./getBifrostConfiguration";
-import { registerBifrostPageVisit } from "./api/registerBifrostPageVisit";
-import { getBifrostTravelerId } from "./contexts/BifrostFormStateProvider/utilities/getBifrostTravelerId";
-import { maybeJoinTravelerWithKismetCampaign } from "./utilities/maybeJoinTravelerWithKismetCampaign";
-import { BifrostConfiguration } from "./models/configuration";
 
 declare global {
   interface Window {
@@ -18,24 +13,9 @@ const loadBifrost = async () => {
   console.log("🧊  App Version: " + __APP_VERSION__ + " 🧊");
   console.log("🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊🧊");
 
-  const bifrostConfiguration: BifrostConfiguration = getBifrostConfiguration();
+  console.log("THIS HERE WAS HIT TODAY");
 
-  const { bifrostTravelerId } = await getBifrostTravelerId();
-
-  console.log(`bifrostTravelerId: '${bifrostTravelerId}'`);
-
-  registerBifrostPageVisit({
-    hotelId: bifrostConfiguration.hotelId,
-    url: window.location.href,
-    referrerUrl: document.referrer,
-    bifrostTravelerId,
-  });
-
-  maybeJoinTravelerWithKismetCampaign({
-    bifrostTravelerId,
-  });
-
-  injectDynamicRFP({ bifrostTravelerId, bifrostConfiguration });
+  injectDynamicRFP();
 };
 
 export const main = () => {
