@@ -11,8 +11,12 @@ export default defineConfig(({}) => {
   const entryFile = "src/main.tsx";
 
   return {
-    plugins: [react(), svgr(), cssInjectedByJsPlugin(), nodePolyfills()],
+    plugins: [react(), svgr(), nodePolyfills(), cssInjectedByJsPlugin()],
+    css: {
+      postcss: "./postcss.config.js",
+    },
     build: {
+      minify: false,
       lib: {
         entry: entryFile,
         name: "bifrost",
@@ -21,6 +25,8 @@ export default defineConfig(({}) => {
       },
       rollupOptions: {
         input: { main: entryFile },
+        compact: false,
+        preferConst: true,
         output: {
           globals: {
             react: "React",
@@ -36,6 +42,7 @@ export default defineConfig(({}) => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
+        zlib: "browserify-zlib",
       },
     },
   };

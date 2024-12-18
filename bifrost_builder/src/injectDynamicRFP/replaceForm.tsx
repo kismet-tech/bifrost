@@ -22,9 +22,12 @@ export const replaceForm = async ({
   // }
 
   const root = createRoot(newFormContainer);
+  // const apiBaseUrl: string = "https://api.makekismet.com";
+  const apiBaseUrl: string = "http://localhost:4000";
+
   root.render(
     <>
-      <BifrostFormStateProvider bifrostApi={new BifrostApi()}>
+      <BifrostFormStateProvider bifrostApi={new BifrostApi({ apiBaseUrl })}>
         <BifrostFormApplication />
       </BifrostFormStateProvider>
     </>

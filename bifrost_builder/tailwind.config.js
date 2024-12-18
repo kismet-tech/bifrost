@@ -1,7 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./node_modules/@kismet_ai/aura/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@radix-ui/aura/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-day-picker/**/*.{js,ts,jsx,tsx}",
+  ],
   // corePlugins: { preflight: false },
   theme: {
     extend: {
@@ -82,5 +87,16 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/nesting"),
+    require("tailwindcss"),
+    require("autoprefixer"),
+    require("postcss-preset-env")({
+      features: {
+        nesting: true,
+      },
+    }),
+  ],
 };
