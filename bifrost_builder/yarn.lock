@@ -798,10 +798,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kismet_ai/aura@^1.0.137":
-  version "1.0.141"
-  resolved "https://registry.yarnpkg.com/@kismet_ai/aura/-/aura-1.0.141.tgz#a793957dfc0cab2c8866aeed52adb196003e17c4"
-  integrity sha512-R6jCECICieP4W0bTMHr3rMxMo+2ZOSTwnhFWvEhZmJt7HPfvyNw8enpI727izcwfWq+tGv/gbWB9Ft44NLhF8g==
+"@kismet_ai/aura@^1.0.145":
+  version "1.0.145"
+  resolved "https://registry.yarnpkg.com/@kismet_ai/aura/-/aura-1.0.145.tgz#00d574dd1c59c2d6c877908eebe8459d95b0e40e"
+  integrity sha512-6YdTYIrnHKgEnupLvnV7v5cpjSReXNihMqGHPGyW4xpCitY1jcpmE1Yxg5QKegApApXCs/1UKg5Im6+klTSAnQ==
   dependencies:
     "@fontsource/inter" "^5.1.0"
     "@kismet_ai/foundation" "^1.0.84"

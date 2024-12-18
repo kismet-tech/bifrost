@@ -10,8 +10,8 @@ import "@radix-ui/themes/styles.css";
 import "react-day-picker/dist/style.css";
 
 function SelfContainedApp() {
-  // const apiBaseUrl: string = "https://api.makekismet.com";
-  const apiBaseUrl: string = "http://localhost:4000";
+  const apiBaseUrl: string = "https://api.makekismet.com";
+  // const apiBaseUrl: string = "http://localhost:4000";
 
   return (
     <div className="kismet-dynamic-rfp-widget">

@@ -3,7 +3,7 @@
   "version": "1.814.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode preview",
+    "dev": "yarn upgrade_libraries && vite --mode preview",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
-    "@kismet_ai/aura": "^1.0.137",
+    "@kismet_ai/aura": "^1.0.145",
     "@kismet_ai/foundation": "^1.0.84",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.1.1",
